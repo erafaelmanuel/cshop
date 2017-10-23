@@ -5,6 +5,13 @@
     <title>Login</title>
 </head>
 <body>
-    <p th:text="'Hello ' + ${name}"/>
+    <p th:if="${param.error} != null and ${param.error[0]}">Invalid username or password</p>
+    <form id="form-login" method="post" action="login">
+        <input id="username" name="username" placeholder="Username"/><br />
+        <input id="password" name="password" placeholder="Password"/><br />
+        <input type="submit" />
+    </form>
+
+    <script th:src="@{/js/login.js}"></script>
 </body>
 </html>

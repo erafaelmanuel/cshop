@@ -1,11 +1,11 @@
-package io.ermdev.ecloth.model;
+package io.ermdev.ecloth.model.entity;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
-@Table(name="tbluser")
+@Table(name = "tbluser")
 public class User {
 
     @Id
@@ -14,7 +14,7 @@ public class User {
     private String username;
     private String password;
 
-    public User(){}
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;

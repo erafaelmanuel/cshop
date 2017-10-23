@@ -9,36 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>core</artifactId>
-
+    <artifactId>web-service</artifactId>
+    
     <dependencies>
         <dependency>
             <groupId>io.ermdev</groupId>
-            <artifactId>web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>web-service</artifactId>
+            <artifactId>data</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.ermdev</groupId>
             <artifactId>model</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>data</artifactId>
-        </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
 </project>
