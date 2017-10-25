@@ -29,7 +29,7 @@ public class UserResource {
     @GET
     public Response getById(@PathParam("userId") long userId) {
         try {
-            User user = userService.getById(userId);
+            User user = userService.findById(userId);
             return Response.status(Response.Status.FOUND).entity(user).build();
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
@@ -41,9 +41,9 @@ public class UserResource {
     public Response getAll() {
         List<User> userList = new ArrayList<>();
         try {
-            userList.addAll(userService.getAll());
+            userList.addAll(userService.findAll());
             return Response.status(Response.Status.FOUND).entity(userList).build();
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).entity(userList).build();
         }
@@ -52,7 +52,7 @@ public class UserResource {
     @POST
     public Response add(User user) {
         try {
-            user = userService.add(user);
+            userService.add(user);
             return Response.status(Response.Status.OK).entity(user).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class UserResource {
     @PUT
     public Response updateById(@PathParam("userId") final long userId, final User nUser) {
         try {
-            User user = userService.updateById(userId, nUser);
+            User user=userService.updateById(userId, nUser);
             if(user != null)
                 return Response.status(Response.Status.OK).entity(user).build();
             else

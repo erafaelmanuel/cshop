@@ -1,8 +1,9 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
-import io.ermdev.ecloth.data.repository.UserRepository;
+import io.ermdev.ecloth.data.mapper.UserRepository;
 import io.ermdev.ecloth.model.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,48 +13,48 @@ public class UserService {
 
     private UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User getById(final long userId) throws EntityNotFoundException {
-        User user = userRepository.getById(userId);
+    public User findById(Long userId) throws EntityNotFoundException {
+        User user = userRepository.findById(userId);
         if(user != null)
             return user;
         else
             throw new EntityNotFoundException("No user found with id " + userId);
     }
 
-    public List<User> getAll() throws EntityNotFoundException {
-        return userRepository.getAll();
-    }
-
-    public User add(final User user) {
-        return userRepository.add(user);
-    }
-
-    public User updateById(final long userId, final User nUser) throws EntityNotFoundException {
-        User user = userRepository.getById(userId);
-        if(user==null)
-            throw new EntityNotFoundException("No user found with id " + userId);
-        else if(nUser==null)
-            return user;
-        else {
-            if(nUser.getUsername()==null || nUser.getUsername().trim().equals(""))
-                nUser.setUsername(user.getUsername());
-
-            if(nUser.getPassword()==null || nUser.getPassword().trim().equals(""))
-                nUser.setPassword(user.getPassword());
-
-            return userRepository.update(userId, nUser);
-        }
-    }
-
-    public User deleteById(final long userId) throws EntityNotFoundException {
-        User user = userRepository.getById(userId);
-        if(user==null)
-            throw new EntityNotFoundException("No user found with id " + userId);
+    public List<User> findAll() throws EntityNotFoundException{
+        List<User> userList = userRepository.findAll();
+        if(userList != null)
+            return userList;
         else
-            return userRepository.deleteById(userId);
+            throw new EntityNotFoundException("No user found");
+    }
+
+    public User add(User user) {
+        userRepository.add(user);
+        return user;
+    }
+
+    public User updateById(Long userId, User user) throws EntityNotFoundException {
+        final User oldUser = findById(userId);
+        if(user == null)
+            return oldUser;
+        user.setId(userId);
+        if(user.getUsername() == null || user.getUsername().trim().equals(""))
+            user.setUsername(oldUser.getUsername());
+        if(user.getPassword() == null || user.getPassword().trim().equals(""))
+            user.setPassword(oldUser.getPassword());
+        userRepository.updateById(user);
+        return user;
+    }
+
+    public User deleteById(Long userId) throws EntityNotFoundException {
+        User user = findById(userId);
+        userRepository.deleteById(userId);
+        return user;
     }
 }

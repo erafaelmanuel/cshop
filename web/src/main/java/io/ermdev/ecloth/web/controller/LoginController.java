@@ -6,7 +6,12 @@ import io.ermdev.ecloth.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes({"user", "authenticate"})
@@ -41,7 +46,7 @@ public class LoginController {
             if (password == null || password.trim().equals("")) {
                 return "redirect:/login?error=true";
             }
-            for (User _user : userService.getAll()) {
+            for (User _user : userService.findAll()) {
                 if(username.trim().equals(_user.getUsername()) && password.trim().equals(_user.getPassword())) {
                     authenticate=true;
                     user=_user;
@@ -57,5 +62,16 @@ public class LoginController {
             e.printStackTrace();
             return "error";
         }
+    }
+
+    @GetMapping("logout")
+    public String doLogout(ModelMap model, HttpSession session) {
+        model.remove("authenticate");
+        model.remove("user");
+
+        session.removeAttribute("authenticate");
+        session.removeAttribute("user");
+
+        return "redirect:/login";
     }
 }
