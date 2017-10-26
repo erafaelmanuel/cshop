@@ -6,6 +6,16 @@
         if(!validate(username, password)) return false;
     };
 
+    (function() {
+        var elements = document.getElementsByClassName("form-control");
+        for (e of elements) {
+            e.addEventListener("focusout", function(){
+                changeState(this);
+            })
+            changeState(e);
+        }
+    })();
+
     function validate(username, password) {
         var isValid = true;
 
@@ -22,5 +32,14 @@
             password.style.border = "1px solid #bdc3c7";
         }
         return isValid;
+    }
+
+    function changeState(formControl){
+        if(formControl.value.length > 0){
+        formControl.className += " has-value";
+      }
+      else{
+        formControl.className = "form-control";
+      }  
     }
 })();
