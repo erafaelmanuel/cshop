@@ -52,7 +52,7 @@ public class UserResource {
     @POST
     public Response add(User user) {
         try {
-            userService.add(user);
+            user = userService.add(user);
             return Response.status(Response.Status.OK).entity(user).build();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,8 @@
 package io.ermdev.ecloth.model.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
 
     private Long id;

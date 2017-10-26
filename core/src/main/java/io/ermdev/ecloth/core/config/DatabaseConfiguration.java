@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DatabaseConfiguration implements CommandLineRunner{
 
-
     private InitMapper initMapper;
 
     public DatabaseConfiguration(InitMapper initMapper) {
@@ -16,6 +15,11 @@ public class DatabaseConfiguration implements CommandLineRunner{
 
     @Override
     public void run(String... strings) throws Exception {
-        initMapper.createUserTableIfNotExist();
+        initMapper.createUserTable();
+        initMapper.createCategoryTable();
+        initMapper.createTagTable();
+        initMapper.createItemTable();
+        initMapper.createItemCategoryTable();
+        initMapper.createItemTagTable();
     }
 }

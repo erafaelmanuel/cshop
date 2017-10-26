@@ -27,9 +27,9 @@ public class UserService {
     }
 
     public List<User> findAll() throws EntityNotFoundException{
-        List<User> userList = userRepository.findAll();
-        if(userList != null)
-            return userList;
+        List<User> users = userRepository.findAll();
+        if(users != null)
+            return users;
         else
             throw new EntityNotFoundException("No user found");
     }
