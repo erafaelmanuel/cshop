@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" href="css/login.css" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" href="../static/css/login.css" />
 </head>
 <body>
-    <p th:if="${param.error} != null and ${param.error[0]}">Invalid username or password</p>
-    <form id="form-login" method="post" action="login">
-        <div class="input-group">
-            <input id="username" class="form-control" name="username"/>
-            <label for="username">Username</label>
+    <br />
+    <br />
+    <br />
+    <p id="message-error" th:if="${param.error} != null and ${param.error[0]}">Incorrect username or password</p>
+    <div id="wrapper">
+        <div id="header">
+            <p>Login</p>
         </div>
-        <div class="input-group">
-            <input id="password" class="form-control" name="password" type="password"/>
-            <label for="password">Password</label>
-        </div>    
-        <button>Login</button>
-    </form>
-    <script th:src="@{/js/login.js}" src="js/login.js"></script>
+        <form id="form-login" method="post" action="login">
+            <div class="input-group">
+                <input id="username" class="form-control" name="username"/>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-group">
+                <input id="password" class="form-control" name="password" type="password"/>
+                <label for="password">Password</label>
+            </div>    
+            <button>Login</button>
+        </form>
+    </div>
+    <script th:src="@{/js/login.js}" src="../static/js/login.js"></script>
 </body>
 </html>
