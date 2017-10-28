@@ -23,8 +23,8 @@ public interface InitMapper {
             "varchar(100), primary key(id))")
     void createCategoryTable();
 
-    @Insert("create table if not exists tbltag(id bigint not null auto_increment, name varchar(45), value var" +
-            "char(100), primary key(id))")
+    @Insert("create table if not exists tbltag(id bigint not null auto_increment, title varchar(45), description " +
+            "varchar(200), keyword varchar(45), primary key(id))")
     void createTagTable();
 
     @Insert("create table if not exists tblitem(id bigint not null auto_increment, name varchar(100), description " +
@@ -38,8 +38,14 @@ public interface InitMapper {
     void createItemCategoryTable();
 
     @Insert("create table if not exists tblitem_tag(id bigint not null auto_increment, itemId bigint not null, " +
-            "categoryId bigint not null, primary key(id), foreign key(itemId) references tblitem(id) on delete " +
-            "cascade on update cascade, foreign key(categoryId) references tbltag(id) on delete cascade on " +
+            "tagId bigint not null, primary key(id), foreign key(itemId) references tblitem(id) on delete " +
+            "cascade on update cascade, foreign key(tagId) references tbltag(id) on delete cascade on " +
             "update cascade)")
     void createItemTagTable();
+
+    @Insert("create table if not exists tblrelated_tag(id bigint not null auto_increment, tagId bigint not null, " +
+            "relatedTagId bigint not null, primary key(id), foreign key(tagId) references tbltag(id) on delete " +
+            "cascade on update cascade, foreign key(relatedTagId) references tbltag(id) on delete cascade on update " +
+            "cascade)")
+    void createRelatedTagTable();
 }

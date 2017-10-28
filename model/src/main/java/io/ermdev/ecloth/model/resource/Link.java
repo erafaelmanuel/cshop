@@ -2,22 +2,14 @@ package io.ermdev.ecloth.model.resource;
 
 public class Link {
 
-    private String link;
     private String rel;
+    private String href;
 
     public Link() {}
 
-    public Link(String link, String rel) {
-        this.link = link;
+    public Link(String rel, String href) {
         this.rel = rel;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
+        this.href = href;
     }
 
     public String getRel() {
@@ -26,5 +18,13 @@ public class Link {
 
     public void setRel(String rel) {
         this.rel = rel;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
     }
 }

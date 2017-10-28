@@ -32,8 +32,23 @@ public class TagService {
         return tags;
     }
 
+    public List<Tag> findRelatedTag(Long tagId) throws EntityNotFoundException {
+        List<Tag> tags = tagRepository.findRelatedTag(tagId);
+        if(tags == null)
+            throw new EntityNotFoundException("No tag found");
+        return tags;
+    }
+
     public Tag add(Tag tag) {
         tagRepository.add(tag);
+        return tag;
+    }
+
+    public Tag addRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException {
+        Tag tag = findById(tagId);
+        Tag relatedTag = findById(relatedTagId);
+
+        tagRepository.addRelatedTag(tag.getId(), relatedTag.getId());
         return tag;
     }
 
@@ -42,10 +57,12 @@ public class TagService {
         if(tag == null)
             return oldTag;
         tag.setId(tagId);
-        if(tag.getName() == null || tag.getName().trim().equals(""))
-            tag.setName(oldTag.getName());
-        if(tag.getValue() == null || tag.getValue().trim().equals(""))
-            tag.setValue(oldTag.getValue());
+        if(tag.getTitle() == null || tag.getTitle().trim().equals(""))
+            tag.setTitle(oldTag.getTitle());
+        if(tag.getDescription() == null || tag.getDescription().trim().equals(""))
+            tag.setDescription(oldTag.getDescription());
+        if(tag.getKeyword() == null || tag.getKeyword().trim().equals(""))
+            tag.setKeyword(oldTag.getKeyword());
         tagRepository.updateById(tag);
 
         return tag;
@@ -54,6 +71,14 @@ public class TagService {
     public Tag deleteById(Long tagId) throws EntityNotFoundException {
         Tag tag = tagRepository.findById(tagId);
         tagRepository.deleteById(tagId);
+        return tag;
+    }
+
+    public Tag deleteRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException {
+        Tag tag = tagRepository.findById(tagId);
+        Tag relatedTag = findById(relatedTagId);
+
+        tagRepository.deleteRelatedTag(tag.getId(), relatedTag.getId());
         return tag;
     }
 }

@@ -1,6 +1,5 @@
 package io.ermdev.ecloth.data.mapper;
 
-import io.ermdev.ecloth.model.entity.Category;
 import io.ermdev.ecloth.model.entity.Tag;
 import org.apache.ibatis.annotations.*;
 
@@ -12,19 +11,30 @@ public interface TagRepository {
     @Select("select * from tbltag where id = #{tagId}")
     Tag findById(@Param("tagId") Long tagId);
 
-    @Select("select _T.id as id, _T.name as name, _T.value as value from tblitem_tag as _IT join tbltag " +
-            "as _T on _IT.categoryId=_T.id where _IT.itemId = #{itemId} group by _IT.categoryId")
+    @Select("select _T.id as id, _T.title as title, _T.description as description, _T.keyword as keyword from " +
+            "tblitem_tag as _IT join tbltag as _T on _IT.tagId=_T.id where _IT.itemId=#{itemId} group by " +
+            "_IT.tagId")
     List<Tag> findByItemId(@Param("itemId") Long itemId);
 
     @Select("select * from tbltag")
     List<Tag> findAll();
 
-    @Insert("insert into tbltag(name, value) values(#{name}, #{value})")
+    @Select("select _T.id as id, _T.title as title, _T.description as description, _T.keyword as keyword from " +
+            "tblrelated_tag as _RT join tbltag as _T on _RT.relatedTagId=_T.id WHERE _RT.tagId=#{tagId}")
+    List<Tag> findRelatedTag(@Param("tagId") Long tagId);
+
+    @Insert("insert into tbltag(title, description, keyword) values(#{title}, #{description}, #{keyword})")
     void add(Tag tag);
 
-    @Update("update tbltag set name=#{name}, value=#{value} where id=#{id}")
+    @Insert("insert into tblrelated_tag(tagId, relatedTagId) values(#{tagId}, #{relatedTagId})")
+    void addRelatedTag(@Param("tagId") Long tagId, @Param("relatedTagId") Long relatedTagId);
+
+    @Update("update tbltag set title=#{title}, description=#{description}, keyword=#{keyword} where id=#{id}")
     void updateById(Tag tag);
 
     @Delete("delete from tbltag where id=#{tagId}")
     void deleteById(Long tagId);
+
+    @Delete("delete from tblrelated_tag where tagId=#{tagId} and relatedTagId=#{relatedTagId}")
+    void deleteRelatedTag(@Param("tagId") Long tagId, @Param("relatedTagId") Long relatedTagId);
 }
