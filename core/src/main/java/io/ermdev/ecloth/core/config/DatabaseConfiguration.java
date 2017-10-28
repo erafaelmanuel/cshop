@@ -22,5 +22,7 @@ public class DatabaseConfiguration implements CommandLineRunner{
         initMapper.createItemCategoryTable();
         initMapper.createItemTagTable();
         initMapper.createRelatedTagTable();
+        initMapper.createAttributeTable();
+        initMapper.createItemAttributeTable();
     }
 }

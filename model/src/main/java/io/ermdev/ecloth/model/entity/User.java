@@ -1,6 +1,10 @@
 package io.ermdev.ecloth.model.entity;
 
+import io.ermdev.ecloth.model.resource.Link;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class User {
@@ -8,6 +12,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private List<Link> links = new ArrayList<>();
 
     public User() {}
 
@@ -38,6 +43,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     @Override

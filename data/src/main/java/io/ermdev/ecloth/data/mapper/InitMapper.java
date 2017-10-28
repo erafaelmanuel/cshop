@@ -48,4 +48,14 @@ public interface InitMapper {
             "cascade on update cascade, foreign key(relatedTagId) references tbltag(id) on delete cascade on update " +
             "cascade)")
     void createRelatedTagTable();
+
+    @Insert("create table if not exists tblattribute(id bigint not null auto_increment, title varchar(45), " +
+            "description varchar(200), type varchar(45), primary key(id))")
+    void createAttributeTable();
+
+    @Insert("create table if not exists tblitem_attribute(id bigint not null auto_increment, itemId bigint not " +
+            "null, attributeId bigint not null, primary key(id), foreign key (itemId) references tblitem(id) " +
+            "on delete cascade on update cascade, foreign key(attributeId) references tblattribute(id) on delete " +
+            "cascade on update cascade)")
+    void createItemAttributeTable();
 }

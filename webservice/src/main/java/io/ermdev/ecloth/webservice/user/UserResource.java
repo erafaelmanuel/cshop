@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,9 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Path("user")
 public class UserResource {
+
+    @Context
+    private UriInfo uriInfo;
 
     private UserService userService;
 
@@ -30,6 +35,7 @@ public class UserResource {
     public Response getById(@PathParam("userId") long userId) {
         try {
             User user = userService.findById(userId);
+            user.getLinks().add(UserLinks.self(userId, uriInfo));
             return Response.status(Response.Status.FOUND).entity(user).build();
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
@@ -39,13 +45,13 @@ public class UserResource {
 
     @GET
     public Response getAll() {
-        List<User> userList = new ArrayList<>();
         try {
-            userList.addAll(userService.findAll());
+            List<User> userList = userService.findAll();
+            userList.forEach(user -> user.getLinks().add(UserLinks.self(user.getId(), uriInfo)));
             return Response.status(Response.Status.FOUND).entity(userList).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).entity(userList).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ArrayList<User>()).build();
         }
     }
 
@@ -53,6 +59,7 @@ public class UserResource {
     public Response add(User user) {
         try {
             user = userService.add(user);
+            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,13 +69,11 @@ public class UserResource {
 
     @Path("{userId}")
     @PUT
-    public Response updateById(@PathParam("userId") final long userId, final User nUser) {
+    public Response updateById(@PathParam("userId") Long userId, User user) {
         try {
-            User user=userService.updateById(userId, nUser);
-            if(user != null)
-                return Response.status(Response.Status.OK).entity(user).build();
-            else
-                throw new Exception();
+            user=userService.updateById(userId, user);
+            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(user).build();
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -80,13 +85,11 @@ public class UserResource {
 
     @Path("{userId}")
     @DELETE
-    public Response deleteById(@PathParam("userId") final long userId) {
+    public Response deleteById(@PathParam("userId") final Long userId) {
         try {
             User user = userService.deleteById(userId);
-            if(user != null)
-                return Response.status(Response.Status.OK).entity(user).build();
-            else
-                throw new Exception();
+            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(user).build();
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
