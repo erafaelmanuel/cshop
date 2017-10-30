@@ -35,7 +35,7 @@ ItemResource {
     public Response getById(@PathParam("itemId") long itemId) {
         try {
             Item item = itemService.findById(itemId);
-            return Response.status(Response.Status.FOUND).entity(item).build();
+            return Response.status(Response.Status.OK).entity(item).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -46,7 +46,7 @@ ItemResource {
     public Response getAll() {
         try {
             List<Item> items = itemService.findAll();
-            return Response.status(Response.Status.FOUND).entity(items).build();
+            return Response.status(Response.Status.OK).entity(items).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -57,7 +57,7 @@ ItemResource {
     public Response add(Item item) {
         try {
             item = itemService.add(item, categoryId);
-            return Response.status(Response.Status.OK).entity(item).build();
+            return Response.status(Response.Status.CREATED).entity(item).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();

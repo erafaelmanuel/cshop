@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.webservice.item;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.TagService;
 import io.ermdev.ecloth.model.entity.Tag;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class TagResource {
     @Context
     private UriInfo uriInfo;
 
+    @QueryParam("relatedTagId")
+
     private TagService tagService;
 
     public TagResource(TagService tagService) {
@@ -34,9 +37,10 @@ public class TagResource {
             Tag tag = tagService.findById(tagId);
             tag.getLinks().add(TagLinks.self(tagId, uriInfo));
             tag.getLinks().add(TagLinks.related(tagId, uriInfo));
-            return Response.status(Response.Status.FOUND).entity(tag).build();
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -50,7 +54,8 @@ public class TagResource {
             });
             return Response.status(Response.Status.FOUND).entity(tags).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -58,9 +63,13 @@ public class TagResource {
     public Response add(Tag tag) {
         try {
             tag = tagService.add(tag);
-            return Response.status(Response.Status.FOUND).entity(tag).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.CREATED).entity(tag).build();
+        } catch (EntityNotFoundException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (UnsatisfiedEntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
@@ -69,9 +78,10 @@ public class TagResource {
     public Response updateById(@PathParam("tagId") Long tagId, Tag tag) {
         try {
             tag = tagService.updateById(tagId, tag);
-            return Response.status(Response.Status.FOUND).entity(tag).build();
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -80,9 +90,10 @@ public class TagResource {
     public Response deleteById(@PathParam("tagId") Long tagId) {
         try {
             final Tag tag = tagService.deleteById(tagId);
-            return Response.status(Response.Status.FOUND).entity(tag).build();
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 

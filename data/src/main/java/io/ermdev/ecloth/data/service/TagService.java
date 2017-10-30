@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.TagRepository;
 import io.ermdev.ecloth.model.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,24 @@ public class TagService {
         return tags;
     }
 
-    public Tag add(Tag tag) {
+    public Tag add(Tag tag)throws EntityNotFoundException, UnsatisfiedEntityException {
+        if(tag.getTitle()==null || tag.getTitle().trim().equals(""))
+            throw new UnsatisfiedEntityException("Title is required");
+        if(tag.getDescription()==null || tag.getDescription().trim().equals(""))
+            throw new UnsatisfiedEntityException("Description is required");
+        if(tag.getKeyword()==null || tag.getKeyword().trim().equals(""))
+            throw new UnsatisfiedEntityException("Keyword is required");
+
         tagRepository.add(tag);
         return tag;
     }
 
-    public Tag addRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException {
-        Tag tag = findById(tagId);
-        Tag relatedTag = findById(relatedTagId);
+    public Tag addRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException, UnsatisfiedEntityException {
+        final Tag tag = findById(tagId);
+        if(relatedTagId == null)
+            throw new UnsatisfiedEntityException("Related Id is required");
 
+        final Tag relatedTag = findById(relatedTagId);
         tagRepository.addRelatedTag(tag.getId(), relatedTag.getId());
         return tag;
     }

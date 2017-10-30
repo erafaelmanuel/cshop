@@ -1,6 +1,10 @@
 package io.ermdev.ecloth.model.entity;
 
+import io.ermdev.ecloth.model.resource.Link;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class Category {
@@ -9,6 +13,7 @@ public class Category {
     private String name;
     private String description;
     private Long parentId;
+    private List<Link> links = new ArrayList<>();
 
     public Category() {}
 
@@ -48,6 +53,14 @@ public class Category {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     @Override
