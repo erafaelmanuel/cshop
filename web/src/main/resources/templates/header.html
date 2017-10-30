@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/header.css}" href="static/css/header.css"/>
+    <link rel="stylesheet" th:href="@{/css/import/bootstrap.min.css}" href="/css/import/bootstrap.min.css"/>
 </head>
 <body>
-    <header th:fragment="header" class="header-default header-skin sans">
-        <div class="header-brand"><a href="/"><img src="https://cdn.rawgit.com/rightscale/design-kit/master/media/logos/gov-logo.svg" alt="RightScale Governance"/></a></div>
-        <div class="header-nav">
-            <nav><a href="/">Mark one</a><a href="/">Mark two</a><a href="/">Mark three</a></nav>
-        </div>
+    <header th:fragment="header">
+        <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Ecloth</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
     </header>
+    <script th:src="@{/js/import/jquery-3.2.1.min.js}" src="/js/import/jquery-3.2.1.min.js"></script>
+    <script th:src="@{/js/import/bootstrap.min.js}" src="/js/import/bootstrap.min.js"></script>
 </body>
 </html>
