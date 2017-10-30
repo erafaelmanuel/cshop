@@ -26,6 +26,12 @@ public class CategoryService {
         return category;
     }
 
+    public List<Category> findByParent(Long parentId) throws EntityNotFoundException {
+        List<Category> categories = categoryRepository.findByParent(parentId);
+        if(categories == null)
+            throw new EntityNotFoundException("No category found");
+        return categories;
+    }
     public List<Category> findAll() throws EntityNotFoundException {
         List<Category> categories = categoryRepository.findAll();
         if(categories == null)

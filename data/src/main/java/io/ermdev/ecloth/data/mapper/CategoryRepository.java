@@ -15,6 +15,9 @@ public interface CategoryRepository {
             "tblitem as _I left join tblcategory as _C on _I.categoryId=_C.id where _I.id = #{itemId}")
     Category findByItemId(@Param("itemId") Long itemId);
 
+    @Select("select * from tblcategory where parentId=#{parentId}")
+    List<Category> findByParent(@Param("parentId") Long parentId);
+
     @Select("select * from tblcategory")
     List<Category> findAll();
 
