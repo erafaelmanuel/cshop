@@ -12,16 +12,13 @@ public class Item {
     private String description;
     private Double price;
     private Double discount;
-    private List<Category> categories;
-    private List<Tag> tags;
+    private Category category;
+    private List<Attribute> attributes = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
 
-    public Item() {
-        categories=new ArrayList<>();
-        tags=new ArrayList<>();
-    }
+    public Item() {}
 
     public Item(String name, String description, Double price, Double discount) {
-        this();
         this.name = name;
         this.description = description;
         this.price = price;
@@ -68,12 +65,20 @@ public class Item {
         this.discount = discount;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     public List<Tag> getTags() {
@@ -92,6 +97,7 @@ public class Item {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", discount=" + discount +
+                ", category=" + category +
                 '}';
     }
 }

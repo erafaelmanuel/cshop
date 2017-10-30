@@ -1,8 +1,10 @@
 package io.ermdev.ecloth.webservice.item;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.CategoryService;
 import io.ermdev.ecloth.model.entity.Category;
+import io.ermdev.ecloth.model.resource.Error;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -29,7 +31,8 @@ public class CategoryResource {
             Category category = categoryService.findById(categoryId);
             return Response.status(Response.Status.FOUND).entity(category).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -39,7 +42,8 @@ public class CategoryResource {
             List<Category> categories = categoryService.findAll();
             return Response.status(Response.Status.FOUND).entity(categories).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -47,9 +51,13 @@ public class CategoryResource {
     public Response add(Category category) {
         try {
             category = categoryService.add(category);
-            return Response.status(Response.Status.FOUND).entity(category).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.OK).entity(category).build();
+        } catch (EntityNotFoundException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (UnsatisfiedEntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
@@ -58,9 +66,10 @@ public class CategoryResource {
     public Response updateById(@PathParam("categoryId") Long categoryId, Category category) {
         try {
             category = categoryService.updateById(categoryId, category);
-            return Response.status(Response.Status.FOUND).entity(category).build();
+            return Response.status(Response.Status.OK).entity(category).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -69,9 +78,10 @@ public class CategoryResource {
     public Response deleteById(@PathParam("categoryId") Long categoryId) {
         try {
             final Category category = categoryService.deleteById(categoryId);
-            return Response.status(Response.Status.FOUND).entity(category).build();
+            return Response.status(Response.Status.OK).entity(category).build();
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 }

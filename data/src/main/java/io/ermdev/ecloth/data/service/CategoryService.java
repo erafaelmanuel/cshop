@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.CategoryRepository;
 import io.ermdev.ecloth.model.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,14 @@ public class CategoryService {
         return categories;
     }
 
-    public Category add(Category category) {
+    public Category add(Category category) throws EntityNotFoundException, UnsatisfiedEntityException {
+        if(category.getName() == null || category.getName().trim().equals(""))
+            throw new UnsatisfiedEntityException("Name is required");
+        if(category.getDescription() == null || category.getDescription().trim().equals(""))
+            throw new UnsatisfiedEntityException("Description is required");
+        if(category.getParentId() != null && categoryRepository.findById(category.getParentId()) == null)
+            throw new EntityNotFoundException("No category found with id " + category.getParentId());
+
         categoryRepository.add(category);
         return category;
     }
@@ -44,8 +52,10 @@ public class CategoryService {
         category.setId(categoryId);
         if(category.getName() == null || category.getName().trim().equals(""))
             category.setName(oldCategory.getName());
-        if(category.getValue() == null || category.getValue().trim().equals(""))
-            category.setValue(oldCategory.getValue());
+        if(category.getDescription() == null || category.getDescription().trim().equals(""))
+            category.setDescription(oldCategory.getDescription());
+        if(category.getParentId() == null || category.getParentId() < 1)
+            category.setParentId(oldCategory.getParentId());
         categoryRepository.updateById(category);
 
         return category;

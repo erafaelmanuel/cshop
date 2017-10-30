@@ -14,11 +14,13 @@ public interface ItemRepository {
     @Select("select * from tblitem")
     List<Item> findAll();
 
-    @Insert("insert into tblitem(name, value) values(#{name}, #{value})")
-    void add(Item item);
+    @Insert("insert into tblitem(name, description, price, discount, categoryId) values(#{name}, #{description}, " +
+            "#{price}, #{discount}, #{categoryId})")
+    void add(@Param("name") String name, @Param("description") String description, @Param("price") Double price,
+             @Param("discount") Double discount, @Param("categoryId") Long categoryId);
 
-    @Update("update tblitem set name=#{name}, description=#{description}, price=#{price}, discount=#{discount} " +
-            "where id=#{id}")
+    @Update("update tblitem set name=#{name}, description=#{description}, price=#{price}, discount=#{discount}, " +
+            "categoryId=#{categoryId} where id=#{id}")
     void updateById(Item item);
 
     @Delete("delete from tblitem where id=#{itemId}")

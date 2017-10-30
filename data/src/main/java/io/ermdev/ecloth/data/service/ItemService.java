@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.CategoryRepository;
 import io.ermdev.ecloth.data.mapper.ItemRepository;
 import io.ermdev.ecloth.data.mapper.TagRepository;
@@ -31,11 +32,10 @@ public class ItemService {
         if(item == null)
             throw new EntityNotFoundException("No item found with id " + itemId);
 
-        final List<Category> categories = categoryRepository.findByItemId(itemId);
+        final Category category = categoryRepository.findByItemId(itemId);
         final List<Tag> tags = tagRepository.findByItemId(itemId);
 
-        if(categories != null && categories.size() > 0)
-            item.getCategories().addAll(categories);
+        item.setCategory(category);
         if(tags != null && tags.size() > 0)
             item.getTags().addAll(tags);
 
@@ -47,23 +47,40 @@ public class ItemService {
         if(items == null)
             throw new EntityNotFoundException("No item found");
         items.forEach(item -> {
-            final List<Category> categories = categoryRepository.findByItemId(item.getId());
+            final Category category = categoryRepository.findByItemId(item.getId());
             final List<Tag> tags = tagRepository.findByItemId(item.getId());
 
-            if(categories != null && categories.size() > 0)
-                item.getCategories().addAll(categories);
+            item.setCategory(category);
             if(tags != null && tags.size() > 0)
                 item.getTags().addAll(tags);
         });
         return items;
     }
 
-    public Item add(Item item) {
-        itemRepository.add(item);
+    public Item add(Item item, Long categoryId) throws EntityNotFoundException, UnsatisfiedEntityException {
+        if(item == null)
+            throw new UnsatisfiedEntityException("Item is null");
+        if(item.getName() == null || item.getName().equals(""))
+            throw new UnsatisfiedEntityException("Name is required");
+        if(item.getDescription() == null || item.getDescription().equals(""))
+            throw new UnsatisfiedEntityException("Description is required");
+        if(item.getPrice() == null || item.getPrice() < 0)
+            throw new UnsatisfiedEntityException("Price is required");
+        if(item.getDiscount() == null || item.getDiscount() < 0)
+            throw new UnsatisfiedEntityException("Discount is required");
+        if(categoryId == null)
+            throw new UnsatisfiedEntityException("Category is required");
+
+        final Category category = categoryRepository.findById(categoryId);
+        if(category == null)
+            throw new EntityNotFoundException("No category found with id " + categoryId);
+        itemRepository.add(item.getName(), item.getDescription(), item.getPrice(), item.getDiscount(), categoryId);
+
+        item.setCategory(category);
         return item;
     }
 
-    public Item updateById(Long itemId, Item item) throws EntityNotFoundException {
+    public Item updateById(Long itemId, Item item, Long categoryId) throws EntityNotFoundException {
         final Item oldItem = itemRepository.findById(itemId);
         if(item == null)
             return oldItem;
@@ -76,8 +93,11 @@ public class ItemService {
             item.setPrice(oldItem.getPrice());
         if(item.getDiscount() == null || item.getDiscount() == 0)
             item.setDiscount(oldItem.getDiscount());
+        if(categoryId != null) {
+            final Category category = categoryRepository.findById(categoryId);
+            item.setCategory(category);
+        }
         itemRepository.updateById(item);
-
         return item;
     }
 

@@ -19,8 +19,9 @@ public interface InitMapper {
             "varchar(45), primary key(id))")
     void createUserTable();
 
-    @Insert("create table if not exists tblcategory(id bigint not null auto_increment, name varchar(45), value " +
-            "varchar(100), primary key(id))")
+    @Insert("create table if not exists tblcategory(id bigint not null auto_increment, name varchar(45), description " +
+            "varchar(200), parentId bigint default null, primary key(id), foreign key(parentId) references " +
+            "tblcategory(id) on delete cascade on update cascade)")
     void createCategoryTable();
 
     @Insert("create table if not exists tbltag(id bigint not null auto_increment, title varchar(45), description " +
@@ -28,14 +29,9 @@ public interface InitMapper {
     void createTagTable();
 
     @Insert("create table if not exists tblitem(id bigint not null auto_increment, name varchar(100), description " +
-            "varchar(200), price decimal(11, 2), discount decimal(11, 2), primary key(id))")
+            "varchar(200), price decimal(11, 2), discount decimal(11, 2), categoryId bigint not null, primary " +
+            "key(id), foreign key(categoryId) references tblcategory(id) on delete cascade on update cascade)")
     void createItemTable();
-
-    @Insert("create table if not exists tblitem_category(id bigint not null auto_increment, itemId bigint not null, " +
-            "categoryId bigint not null, primary key(id), foreign key(itemId) references tblitem(id) on delete " +
-            "cascade on update cascade, foreign key(categoryId) references tblcategory(id) on delete cascade on " +
-            "update cascade)")
-    void createItemCategoryTable();
 
     @Insert("create table if not exists tblitem_tag(id bigint not null auto_increment, itemId bigint not null, " +
             "tagId bigint not null, primary key(id), foreign key(itemId) references tblitem(id) on delete " +
