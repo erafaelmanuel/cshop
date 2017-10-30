@@ -1,14 +1,15 @@
 package io.ermdev.ecloth.webservice.item;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.TagService;
 import io.ermdev.ecloth.model.entity.Tag;
+import io.ermdev.ecloth.model.resource.Error;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -35,8 +36,8 @@ public class RelatedTagResource {
             });
             return Response.status(Response.Status.FOUND).entity(relatedTags).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.FOUND).entity(new ArrayList<Tag>()).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -50,8 +51,11 @@ public class RelatedTagResource {
 
             return Response.status(Response.Status.FOUND).entity(tag).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (UnsatisfiedEntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
@@ -62,11 +66,13 @@ public class RelatedTagResource {
             Tag tag = tagService.deleteRelatedTag(tagId, relatedTagId);
             tag.getLinks().add(TagLinks.self(tagId, uriInfo));
             tag.getLinks().add(TagLinks.related(tagId, uriInfo));
-
             return Response.status(Response.Status.FOUND).entity(tag).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (UnsatisfiedEntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 }

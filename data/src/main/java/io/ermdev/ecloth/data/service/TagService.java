@@ -84,9 +84,11 @@ public class TagService {
         return tag;
     }
 
-    public Tag deleteRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException {
-        Tag tag = tagRepository.findById(tagId);
-        Tag relatedTag = findById(relatedTagId);
+    public Tag deleteRelatedTag(Long tagId, Long relatedTagId) throws EntityNotFoundException, UnsatisfiedEntityException {
+        final Tag tag = tagRepository.findById(tagId);
+        if(relatedTagId == null)
+            throw new UnsatisfiedEntityException("Related Id is required");
+        final Tag relatedTag = findById(relatedTagId);
 
         tagRepository.deleteRelatedTag(tag.getId(), relatedTag.getId());
         return tag;
