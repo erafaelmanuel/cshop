@@ -25,17 +25,12 @@ public class LoginController {
     }
 
     @GetMapping("login")
-    public String showLogin() {
+    public String showLoginPage() {
         return "login";
     }
 
-    @GetMapping("index")
-    public String index() {
-        return "index";
-    }
-
     @PostMapping("login")
-    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password,
+    public String performLogin(@RequestParam("username") String username, @RequestParam("password") String password,
                           ModelMap model) {
         try {
             boolean authenticate = false;
@@ -65,7 +60,7 @@ public class LoginController {
     }
 
     @GetMapping("logout")
-    public String doLogout(ModelMap model, HttpSession session) {
+    public String performLogout(ModelMap model, HttpSession session) {
         model.remove("authenticate");
         model.remove("user");
 

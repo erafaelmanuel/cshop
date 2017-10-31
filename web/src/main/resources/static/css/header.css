@@ -1,54 +1,58 @@
-.header-default {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 46px;
-    background-color: #0069CC;
-  }
-  
-  .header-default.header-skin {
-    background-color: #076CCA;
-    background-image: linear-gradient(#076CCA, #065BAC);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.08);
-  }
-  
-  .header-default .header-brand {
-    float: left;
-    padding: 0 15px;
-    overflow: hidden;
-    color: #fff;
-  }
-  
-  .header-default .header-brand a {
-    display: block;
-    float: left;
-    height: 100%;
-    padding: 12px 0 9px;
-  }
-  
-  .header-default .header-brand img {
-    height: 100%;
-  }
-  
-  .header-default .header-nav {
-    float: right;
-    font-size: 13px;
-  }
-  
-  .header-default .header-nav a {
-    display: block;
-    float: left;
-    height: 100%;
-    padding: .8rem .8rem .8rem;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all .1s;
-  }
-  
-  .header-default .header-nav a:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+.dropdown-menu {
+  border-top: 2px solid #c0392b;
+  height: 310px;
+  overflow-y: hidden;
+}
+
+#dropdown-cart {
+  list-style: none;
+  width: 300px;
+  overflow-y: scroll;
+  height: 250px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.cart-item {
+
+}
+
+.cart-item-image {
+  width: 40px;
+  height: 50px;
+  border: 1px solid #ecf0f1;
+  margin-left: 5px;
+}
+
+.cart-item-title {
+  display: inline;
+  font-weight: bold;
+}
+
+.dropdown-footer {
+  background: #ecf0f1;
+  width: 100%;
+  height: 60px;
+  padding: 20px 0px 5px 120px
+}
+
+button{
+    color:white;
+    font-size:10px;;
+    text-transform:uppercase;
+    font-weight:200;
+    height:24px;
+    border-radius:2px;
+    box-shadow:0 2px 1px rgba(0, 0, 0, 0.3);
+    width: 80px;
+}
+
+.dropdown-footer button:nth-child(1) {
+  border:1px solid #16a085;
+  background-color:#16a085;
+}
+
+.dropdown-footer button:nth-child(2) {
+  border:1px solid #c0392b;
+  background-color:#c0392b;
+}
