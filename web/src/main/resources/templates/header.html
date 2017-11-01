@@ -10,46 +10,31 @@
                 <div class="container-fluid">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                         <a class="navbar-brand" href="#">Ecloth</a>
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                <a href="#" th:class="(${items} != null and ${#lists.size(items)} > 0) ? 'dropdown-toggle':'dropdown-toggle disabled'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-shopping-cart"></span></a>
                                 <div class="dropdown-menu">
                                   <ul id="dropdown-cart">
-                                        <li class="cart-item">
+                                        <li th:each="item, iterStat : ${items}" class="cart-item">
                                             <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
-                                            <h6 class="cart-item-title">Sample shirt</h6>
+                                            <h6 class="cart-item-title" th:text="${item.name}"></h6>
                                             <li role="separator" class="divider"></li>
                                         </li>
-                                        <li class="cart-item">
-                                            <img class="cart-item-image" th:src="@{/images/4.jpg}"/>
-                                            <h6 class="cart-item-title">Sample shirt</h6>
-                                            <li role="separator" class="divider"></li>
-                                        </li>
-                                        <li class="cart-item">
-                                            <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
-                                            <h6 class="cart-item-title">Sample shirt</h6>
-                                            <li role="separator" class="divider"></li>
-                                        </li>
-                                        <li class="cart-item">
-                                            <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
-                                            <h6 class="cart-item-title">Sample shirt</h6>
-                                            <li role="separator" class="divider"></li>
-                                        </li>
-                                        <li class="cart-item">
-                                            <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
-                                            <h6 class="cart-item-title">Sample shirt</h6>
-                                            <li role="separator" class="divider"></li>
-                                        </li>
-
                                     </ul>
                                     <div class="dropdown-footer">
-                                        <button>VIEW CART</button>
-                                        <button>CHECKOUT</button>
+                                        <button class="button">VIEW CART</button>
+                                        <button class="button">CHECKOUT</button>
                                     </div>
                                 </div>
                             </li>
