@@ -18,15 +18,21 @@
                         </button>
                         <a class="navbar-brand" href="#">Ecloth</a>
                     </div>
+                    <form action="/catalog" method="get" class="navbar-form navbar-left">
+                        <div class="form-group">
+                          <input id="search-item" type="text" class="form-control" placeholder="Search" name="q"/>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
-                                <a href="#" th:class="(${items} != null and ${#lists.size(items)} > 0) ? 'dropdown-toggle':'dropdown-toggle disabled'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                <a href="#" th:class="(${sessionItems} != null and ${#lists.size(sessionItems)} > 0) ? 'dropdown-toggle':'dropdown-toggle disabled'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SHOPPING CART &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-shopping-cart"></span></a>
                                 <div class="dropdown-menu">
                                   <ul id="dropdown-cart">
-                                        <li th:each="item, iterStat : ${items}" class="cart-item">
+                                        <li th:each="item, iterStat : ${sessionItems}" class="cart-item">
                                             <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
                                             <h6 class="cart-item-title" th:text="${item.name}"></h6>
                                             <li role="separator" class="divider"></li>
@@ -38,7 +44,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="#">Logout</a></li>
                         </ul>
                   </div>
             </div>

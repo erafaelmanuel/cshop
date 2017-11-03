@@ -58,6 +58,22 @@ public class ItemService {
         return items;
     }
 
+    public List<Item> findByName(String name) throws EntityNotFoundException {
+        final List<Item> items = itemRepository.findByName("%" + name + "%");
+        if(items == null)
+            throw new EntityNotFoundException("No item found");
+
+        items.forEach(item -> {
+            final Category category = categoryRepository.findByItemId(item.getId());
+            final List<Tag> tags = tagRepository.findByItemId(item.getId());
+
+            item.setCategory(category);
+            if(tags != null && tags.size() > 0)
+                item.getTags().addAll(tags);
+        });
+        return items;
+    }
+
     public List<Item> findAll() throws EntityNotFoundException {
         final List<Item> items = itemRepository.findAll();
         if(items == null)

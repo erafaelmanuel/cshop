@@ -14,6 +14,9 @@ public interface ItemRepository {
     @Select("select * from tblitem where categoryId=#{categoryId}")
     List<Item> findByCategory(@Param("categoryId") Long categoryId);
 
+    @Select("select * from tblitem where name LIKE #{name}")
+    List<Item> findByName(@Param("name") String name);
+
     @Select("select * from tblitem")
     List<Item> findAll();
 

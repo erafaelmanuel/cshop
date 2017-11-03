@@ -1,3 +1,12 @@
+
+.navbar {
+  padding: 0px 250px;
+}
+
+#search-item {
+    width: 450px;
+}
+
 .dropdown-menu {
   border-top: 2px solid #c0392b;
   height: 310px;
