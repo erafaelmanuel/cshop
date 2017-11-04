@@ -13,7 +13,7 @@
         <div class="row">
             <div th:each="item, iterStat : ${items}" class="col-xs-6 col-md-2">
                 <a href="#" class="thumbnail">
-                    <img th:src="@{/images/4.jpg}" />
+                    <img th:src="@{${#lists.size(item.images)} > 0 ? ${item.images[0]} : '/images/item/no_image.png'}"/>
                 </a>
                 <span th:text="${item.name}"/>
             </div>

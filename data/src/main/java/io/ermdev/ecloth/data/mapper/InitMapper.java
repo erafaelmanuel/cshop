@@ -54,4 +54,9 @@ public interface InitMapper {
             "on delete cascade on update cascade, foreign key(attributeId) references tblattribute(id) on delete " +
             "cascade on update cascade)")
     void createItemAttributeTable();
+
+    @Insert("create table if not exists tblitem_image(id bigint not null auto_increment, itemId bigint not null, " +
+            "src varchar(200), primary key(id), foreign key(itemId) references tblitem(id) on delete cascade on " +
+            "update cascade)")
+    void createItemImageTable();
 }

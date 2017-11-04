@@ -13,6 +13,7 @@ public class Item {
     private Double price;
     private Double discount;
     private Category category;
+    private List<String> images = new ArrayList<>();
     private List<Attribute> attributes = new ArrayList<>();
     private List<Tag> tags = new ArrayList<>();
 
@@ -71,6 +72,14 @@ public class Item {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public List<Attribute> getAttributes() {

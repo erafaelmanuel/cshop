@@ -7,3 +7,7 @@
 .thumbnail {
     margin-bottom: 0px;
 }
+
+.thumbnail img {
+    height: 200px;
+}

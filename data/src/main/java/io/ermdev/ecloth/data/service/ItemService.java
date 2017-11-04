@@ -3,6 +3,7 @@ package io.ermdev.ecloth.data.service;
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
 import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.CategoryRepository;
+import io.ermdev.ecloth.data.mapper.ImageRepository;
 import io.ermdev.ecloth.data.mapper.ItemRepository;
 import io.ermdev.ecloth.data.mapper.TagRepository;
 import io.ermdev.ecloth.model.entity.Category;
@@ -19,12 +20,15 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final ImageRepository imageRepository;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, CategoryRepository categoryRepository, TagRepository tagRepository) {
+    public ItemService(ItemRepository itemRepository, CategoryRepository categoryRepository, TagRepository
+            tagRepository, ImageRepository imageRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
+        this.imageRepository = imageRepository;
     }
 
     public Item findById(Long itemId) throws EntityNotFoundException {
@@ -34,10 +38,13 @@ public class ItemService {
 
         final Category category = categoryRepository.findByItemId(itemId);
         final List<Tag> tags = tagRepository.findByItemId(itemId);
+        final List<String> images = imageRepository.findByItemId(itemId);
 
         item.setCategory(category);
         if(tags != null && tags.size() > 0)
             item.getTags().addAll(tags);
+        if(images != null && images.size() > 0)
+            item.getImages().addAll(images);
 
         return item;
     }
@@ -50,10 +57,13 @@ public class ItemService {
         items.forEach(item -> {
             final Category category = categoryRepository.findByItemId(item.getId());
             final List<Tag> tags = tagRepository.findByItemId(item.getId());
+            final List<String> images = imageRepository.findByItemId(item.getId());
 
             item.setCategory(category);
             if(tags != null && tags.size() > 0)
                 item.getTags().addAll(tags);
+            if(images != null && images.size() > 0)
+                item.getImages().addAll(images);
         });
         return items;
     }
@@ -66,10 +76,13 @@ public class ItemService {
         items.forEach(item -> {
             final Category category = categoryRepository.findByItemId(item.getId());
             final List<Tag> tags = tagRepository.findByItemId(item.getId());
+            final List<String> images = imageRepository.findByItemId(item.getId());
 
             item.setCategory(category);
             if(tags != null && tags.size() > 0)
                 item.getTags().addAll(tags);
+            if(images != null && images.size() > 0)
+                item.getImages().addAll(images);
         });
         return items;
     }
@@ -81,10 +94,13 @@ public class ItemService {
         items.forEach(item -> {
             final Category category = categoryRepository.findByItemId(item.getId());
             final List<Tag> tags = tagRepository.findByItemId(item.getId());
+            final List<String> images = imageRepository.findByItemId(item.getId());
 
             item.setCategory(category);
             if(tags != null && tags.size() > 0)
                 item.getTags().addAll(tags);
+            if(images != null && images.size() > 0)
+                item.getImages().addAll(images);
         });
         return items;
     }
