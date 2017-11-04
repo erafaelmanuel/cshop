@@ -8,13 +8,15 @@ public class Attribute {
     private Long id;
 
     private String title;
+    private String content;
     private String description;
     private String type;
 
     public Attribute() {}
 
-    public Attribute(String title, String description, String type) {
+    public Attribute(String title, String content, String description, String type) {
         this.title = title;
+        this.content = content;
         this.description = description;
         this.type = type;
     }
@@ -33,6 +35,14 @@ public class Attribute {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getDescription() {
@@ -56,6 +66,7 @@ public class Attribute {
         return "Attribute{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 '}';

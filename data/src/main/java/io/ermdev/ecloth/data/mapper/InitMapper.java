@@ -46,7 +46,7 @@ public interface InitMapper {
     void createRelatedTagTable();
 
     @Insert("create table if not exists tblattribute(id bigint not null auto_increment, title varchar(45), " +
-            "description varchar(200), type varchar(45), primary key(id))")
+            "content varchar(200), description varchar(200), type varchar(45), primary key(id))")
     void createAttributeTable();
 
     @Insert("create table if not exists tblitem_attribute(id bigint not null auto_increment, itemId bigint not " +

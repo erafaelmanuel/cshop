@@ -14,10 +14,12 @@ public interface AttributeRepository {
     @Select("select * from tblattribute")
     List<Attribute> findAll();
 
-    @Insert("insert into tblattribute(title, description, type) values(#{title}, #{description}, #{type})")
+    @Insert("insert into tblattribute(title, content, description, type) values(#{title}, #{content}, " +
+            "#{description}, #{type})")
     Attribute add(Attribute attribute);
 
-    @Update("update tblattribute set title=#{title}, description=#{description}, type=#{type} where id=#{id}")
+    @Update("update tblattribute set title=#{title}, content=#{content}, description=#{description}, type=#{type} " +
+            "where id=#{id}")
     Attribute updateById(Attribute attribute);
 
     @Delete("detele from tblattribute where id=#{attributeId}")

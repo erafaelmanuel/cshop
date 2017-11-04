@@ -44,6 +44,8 @@ public class AttributeService {
         attribute.setId(attributeId);
         if(attribute.getTitle() == null || attribute.getTitle().trim().equals(""))
             attribute.setTitle(oldAttribute.getTitle());
+        if(attribute.getContent() == null || attribute.getContent().trim().equals(""))
+            attribute.setContent(oldAttribute.getContent());
         if(attribute.getDescription() == null || attribute.getDescription().trim().equals(""))
             attribute.setDescription(oldAttribute.getDescription());
         if(attribute.getType() == null || attribute.getType().trim().equals(""))

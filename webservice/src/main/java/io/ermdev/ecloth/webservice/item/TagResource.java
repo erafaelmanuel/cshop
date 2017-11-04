@@ -4,6 +4,7 @@ import io.ermdev.ecloth.data.exception.EntityNotFoundException;
 import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.TagService;
 import io.ermdev.ecloth.model.entity.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -22,10 +23,9 @@ public class TagResource {
     @Context
     private UriInfo uriInfo;
 
-    @QueryParam("relatedTagId")
-
     private TagService tagService;
 
+    @Autowired
     public TagResource(TagService tagService) {
         this.tagService = tagService;
     }
