@@ -1,6 +1,6 @@
 (function(){
     var xmlhttp = new XMLHttpRequest();
-    $(document).on("submit", ".form-add-to-cart", function() {
+    $(document).on("submit", ".form-remove-to-cart", function() {
         var url = $(this).attr("action") + "?" + $(this).serialize();
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {

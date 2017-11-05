@@ -38,9 +38,9 @@
                                         <li th:each="item, iterStat : ${cartItems}" class="cart-item">
                                             <img class="cart-item-image" th:src="@{${item.images[0]}}"/>
                                             <h6 class="cart-item-title" th:text="${item.name}"></h6>
-                                            <form class="cart-item-remove" action="/card-remove">
+                                            <form class="form-remove-to-cart" action="/cart-remove" method="get">
                                                 <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                                <a role="button">x</a>
+                                                <button>x</button>
                                             </form>
                                             <li role="separator" class="divider"></li>
                                         </li>

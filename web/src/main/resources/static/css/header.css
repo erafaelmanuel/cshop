@@ -22,9 +22,10 @@
   margin: 0px;
 }
 
-.cart-item-remove {
-    display: inline;
-    margin-left: 170px;
+.form-remove-to-cart {
+    float: right;
+    padding: 15px 0px;
+    margin-right: 10px;
 }
 
 .cart-item-image {

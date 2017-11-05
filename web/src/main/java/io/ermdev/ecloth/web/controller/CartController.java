@@ -41,4 +41,19 @@ public class CartController {
         modelMap.addAttribute("cartItems", items);
         return "header";
     }
+
+    @GetMapping("/cart-remove")
+    public String removeToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
+        List<Item> items = new ArrayList<>();
+        Object sessionObject = modelMap.get("cartItems");
+        if(sessionObject != null) {
+            for (Object object : (ArrayList) sessionObject) {
+                final Item item = (Item) object;
+                if(!item.getId().equals(itemId))
+                    items.add((Item) item);
+            }
+        }
+        modelMap.addAttribute("cartItems", items);
+        return "header";
+    }
 }
