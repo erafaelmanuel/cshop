@@ -45,6 +45,8 @@ public class ItemService {
             item.getTags().addAll(tags);
         if(images != null && images.size() > 0)
             item.getImages().addAll(images);
+        else
+            item.getImages().add("/images/item/no_image.png");
 
         return item;
     }
@@ -64,6 +66,8 @@ public class ItemService {
                 item.getTags().addAll(tags);
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
+            else
+                item.getImages().add("/images/item/no_image.png");
         });
         return items;
     }
@@ -83,6 +87,8 @@ public class ItemService {
                 item.getTags().addAll(tags);
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
+            else
+                item.getImages().add("/images/item/no_image.png");
         });
         return items;
     }
@@ -101,6 +107,8 @@ public class ItemService {
                 item.getTags().addAll(tags);
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
+            else
+                item.getImages().add("/images/item/no_image.png");
         });
         return items;
     }

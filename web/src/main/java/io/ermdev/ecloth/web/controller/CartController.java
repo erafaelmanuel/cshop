@@ -15,28 +15,30 @@ import java.util.List;
 
 @Controller
 @SessionAttributes({"cartItems"})
-public class CatalogController {
+public class CartController {
 
     private ItemService itemService;
 
     @Autowired
-    public CatalogController(ItemService itemService) {
+    public CartController(ItemService itemService) {
         this.itemService = itemService;
     }
 
-    @GetMapping("catalog")
-    public String search(ModelMap modelMap, @RequestParam(required = false, value = "q") String q) {
+    @GetMapping("/cart-add")
+    public String addToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
+        List<Item> items = new ArrayList<>();
+        Object sessionObject = modelMap.get("cartItems");
+        if(sessionObject != null) {
+            for (Object item : (ArrayList) sessionObject) {
+                items.add((Item) item);
+            }
+        }
         try {
-            final List<Item> items = new ArrayList<>();
-            if(q != null)
-                items.addAll(itemService.findByName(q));
-            else
-                items.addAll(itemService.findAll());
-            modelMap.addAttribute("items", items);
+            items.add(itemService.findById(itemId));
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
-
-        return "catalog";
+        modelMap.addAttribute("cartItems", items);
+        return "header";
     }
 }

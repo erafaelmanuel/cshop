@@ -22,8 +22,9 @@
   margin: 0px;
 }
 
-.cart-item {
-
+.cart-item-remove {
+    display: inline;
+    margin-left: 170px;
 }
 
 .cart-item-image {

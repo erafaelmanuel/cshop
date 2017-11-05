@@ -29,12 +29,19 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
-                                <a href="#" th:class="(${sessionItems} != null and ${#lists.size(sessionItems)} > 0) ? 'dropdown-toggle':'dropdown-toggle disabled'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SHOPPING CART &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                <!--<a href="#" th:class="(${cartItems} != null and ${#lists.size(cartItems)} > 0) ? 'dropdown-toggle':'dropdown-toggle disabled'" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SHOPPING CART &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-shopping-cart"></span></a>-->
+                                <a href="#" th:class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    SHOPPING CART &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-shopping-cart"></span>
+                                </a>
                                 <div class="dropdown-menu">
                                   <ul id="dropdown-cart">
-                                        <li th:each="item, iterStat : ${sessionItems}" class="cart-item">
-                                            <img class="cart-item-image" th:src="@{/images/3.jpg}"/>
+                                        <li th:each="item, iterStat : ${cartItems}" class="cart-item">
+                                            <img class="cart-item-image" th:src="@{${item.images[0]}}"/>
                                             <h6 class="cart-item-title" th:text="${item.name}"></h6>
+                                            <form class="cart-item-remove" action="/card-remove">
+                                                <input type="hidden" name="itemId" th:value="${item.id}"/>
+                                                <a role="button">x</a>
+                                            </form>
                                             <li role="separator" class="divider"></li>
                                         </li>
                                     </ul>
