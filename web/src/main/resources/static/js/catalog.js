@@ -13,4 +13,8 @@
 
         return false;
     });
+
+    $("#collapseCategory").click(function() {
+        $("#collapseCategory-target").toggle();
+    });
 })();

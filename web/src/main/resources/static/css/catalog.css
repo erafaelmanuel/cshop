@@ -12,6 +12,14 @@
     height: 200px;
 }
 
+.catalog-item {
+    margin-bottom: 30px;
+}
 #form-add-to-cart {
 
+}
+
+#option-panel {
+    border: 1px solid black;
+    height: 400px;
 }
