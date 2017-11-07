@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.UserRepository;
 import io.ermdev.ecloth.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,13 @@ public class UserService {
             throw new EntityNotFoundException("No user found");
     }
 
-    public User add(User user) {
+    public User add(User user) throws UnsatisfiedEntityException {
+        if(user == null)
+            throw new UnsatisfiedEntityException("User is null");
+        if(user.getUsername() == null || user.getUsername().trim().equals(""))
+            throw new UnsatisfiedEntityException("Username is required");
+        if(user.getPassword() == null || user.getPassword().trim().equals(""))
+            throw new UnsatisfiedEntityException("Password is required");
         userRepository.add(user);
         return user;
     }

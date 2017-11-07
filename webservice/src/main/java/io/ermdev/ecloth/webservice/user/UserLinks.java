@@ -9,6 +9,8 @@ public class UserLinks {
     private UserLinks(){}
 
     public static Link self(Long userId, UriInfo uriInfo) throws NullPointerException {
+        if(userId == null)
+            throw new NullPointerException("UserId is null");
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
         String rel = "self";

@@ -1,8 +1,10 @@
 package io.ermdev.ecloth.webservice.user;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.UserService;
 import io.ermdev.ecloth.model.entity.User;
+import io.ermdev.ecloth.model.resource.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -38,8 +39,8 @@ public class UserResource {
             user.getLinks().add(UserLinks.self(userId, uriInfo));
             return Response.status(Response.Status.FOUND).entity(user).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -50,8 +51,8 @@ public class UserResource {
             userList.forEach(user -> user.getLinks().add(UserLinks.self(user.getId(), uriInfo)));
             return Response.status(Response.Status.FOUND).entity(userList).build();
         } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).entity(new ArrayList<User>()).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -61,9 +62,9 @@ public class UserResource {
             user = userService.add(user);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        } catch (UnsatisfiedEntityException | NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
@@ -71,15 +72,12 @@ public class UserResource {
     @PUT
     public Response updateById(@PathParam("userId") Long userId, User user) {
         try {
-            user=userService.updateById(userId, user);
+            user = userService.updateById(userId, user);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
@@ -91,11 +89,8 @@ public class UserResource {
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 }
