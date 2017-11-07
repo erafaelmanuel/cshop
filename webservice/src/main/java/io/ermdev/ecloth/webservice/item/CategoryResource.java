@@ -39,6 +39,9 @@ public class CategoryResource {
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -53,6 +56,9 @@ public class CategoryResource {
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -68,6 +74,9 @@ public class CategoryResource {
         } catch (UnsatisfiedEntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -81,6 +90,9 @@ public class CategoryResource {
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -94,6 +106,9 @@ public class CategoryResource {
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 }

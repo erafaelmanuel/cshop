@@ -1,6 +1,10 @@
 package io.ermdev.ecloth.model.entity;
 
+import io.ermdev.ecloth.model.resource.Link;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 public class Attribute {
@@ -11,6 +15,7 @@ public class Attribute {
     private String content;
     private String description;
     private String type;
+    private List<Link> links = new ArrayList<>();
 
     public Attribute() {}
 
@@ -59,6 +64,14 @@ public class Attribute {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
     @Override

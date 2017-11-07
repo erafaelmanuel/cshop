@@ -9,6 +9,8 @@ public class TagLinks {
     private TagLinks() {}
 
     public static Link self(Long tagId, UriInfo uriInfo) throws NullPointerException {
+        if(tagId == null)
+            throw new NullPointerException("tagId is null");
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
 
@@ -18,6 +20,8 @@ public class TagLinks {
     }
 
     public static Link related(Long tagId, UriInfo uriInfo) throws NullPointerException {
+        if(tagId == null)
+            throw new NullPointerException("tagId is null");
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
 
@@ -28,6 +32,8 @@ public class TagLinks {
     }
 
     public static Link removeRelated(Long tagId, Long relatedTagId, UriInfo uriInfo) throws NullPointerException {
+        if(tagId == null)
+            throw new NullPointerException("tagId is null");
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
 

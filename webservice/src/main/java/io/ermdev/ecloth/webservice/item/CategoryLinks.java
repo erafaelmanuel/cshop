@@ -7,6 +7,8 @@ import javax.ws.rs.core.UriInfo;
 public class CategoryLinks {
 
     public static Link self(Long categoryId, UriInfo uriInfo) throws NullPointerException {
+        if(categoryId == null)
+            throw new NullPointerException("categoryId is null");
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
 

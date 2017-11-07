@@ -1,15 +1,18 @@
 package io.ermdev.ecloth.webservice.item;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.service.AttributeService;
 import io.ermdev.ecloth.model.entity.Attribute;
+import io.ermdev.ecloth.model.resource.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
@@ -17,6 +20,9 @@ import java.util.List;
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Path("attribute")
 public class AttributeResource {
+
+    @Context
+    private UriInfo uriInfo;
 
     private AttributeService attributeService;
 
@@ -30,10 +36,14 @@ public class AttributeResource {
     public Response getById(@PathParam("attributeId") Long attributeId) {
         try {
             Attribute attribute = attributeService.findById(attributeId);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
             return Response.status(Response.Status.FOUND).entity(attribute).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -41,10 +51,14 @@ public class AttributeResource {
     public Response getAll() {
         try {
             List<Attribute> attributes = attributeService.findAll();
+            attributes.forEach(attribute -> attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo)));
             return Response.status(Response.Status.FOUND).entity(attributes).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).entity(new ArrayList<Attribute>()).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -52,10 +66,14 @@ public class AttributeResource {
     public Response add(Attribute attribute) {
         try {
             attribute = attributeService.add(attribute);
+            attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(attribute).build();
+        } catch (UnsatisfiedEntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         } catch (NullPointerException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -64,10 +82,14 @@ public class AttributeResource {
     public Response updateById(@PathParam("attributeId") Long attributeId, Attribute attribute) {
         try {
             attribute = attributeService.updateById(attributeId, attribute);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
             return Response.status(Response.Status.OK).entity(attribute).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
@@ -76,10 +98,14 @@ public class AttributeResource {
     public Response deleteById(@PathParam("attributeId") Long attributeId) {
         try {
             Attribute attribute = attributeService.findById(attributeId);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
             return Response.status(Response.Status.OK).entity(attribute).build();
         } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        } catch (NullPointerException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 }

@@ -1,6 +1,7 @@
 package io.ermdev.ecloth.data.service;
 
 import io.ermdev.ecloth.data.exception.EntityNotFoundException;
+import io.ermdev.ecloth.data.exception.UnsatisfiedEntityException;
 import io.ermdev.ecloth.data.mapper.AttributeRepository;
 import io.ermdev.ecloth.model.entity.Attribute;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,17 @@ public class AttributeService {
         return attributes;
     }
 
-    public Attribute add(Attribute attribute) {
+    public Attribute add(Attribute attribute) throws UnsatisfiedEntityException {
         if(attribute == null)
-            return null;
+            throw new UnsatisfiedEntityException("attribute is null");
+        if(attribute.getTitle() == null || attribute.getTitle().trim().equals(""))
+            throw new UnsatisfiedEntityException("Title is required");
+        if(attribute.getContent() == null || attribute.getContent().trim().equals(""))
+            throw new UnsatisfiedEntityException("Content is required");
+        if(attribute.getDescription() == null || attribute.getDescription().trim().equals(""))
+            throw new UnsatisfiedEntityException("Description is required");
+        if(attribute.getType() == null || attribute.getType().trim().equals(""))
+            throw new UnsatisfiedEntityException("Type is required");
         attributeRepository.add(attribute);
         return attribute;
     }
