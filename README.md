@@ -1,6 +1,7 @@
 # ecloth
 
 Ecloth is a personal project. An ecommerce website for clothings.
+For questions or suggestions please contact me at erafaelmanuel@gmail.com
 
 ## Project Structure
 ```
@@ -40,7 +41,7 @@ Ecloth is a personal project. An ecommerce website for clothings.
 ## User (getById)
 
 <b>Request</b>
-* Requirement: none
+* Required: none
 * Method : GET
 * URI : /api/user/[USER_ID]
 
@@ -73,7 +74,7 @@ error
 ## User (getAll)
 
 <b>Request</b>
-* Requirement: none
+* Required: none
 * Method : GET
 * URI : /api/user
 
@@ -106,7 +107,7 @@ error
 ## User (add)
 
 <b>Request</b>
-* Requirement: body
+* Required: username, password
 * Method : POST
 * URI : /api/user
 * Body : 
@@ -140,7 +141,7 @@ error
 ## User (updateById)
 
 <b>Request</b>
-* Requirement: body
+* Required: none
 * Method : PUT
 * URI : /api/user/[USER_ID]
 * Body :
@@ -181,7 +182,7 @@ error
 ## User (deleteById)
 
 <b>Request</b>
-* Requirement: none
+* Required: none
 * Method : DELETE
 * URI : /api/user/[USER_ID]
 
@@ -212,9 +213,312 @@ error
 }
 ```
 
-[**Item**](readme/department.md)
-* [GET] getById
-* [GET] getAll
-* [POST] add
-* [PUT] updateById
-* [DELETE] deleteById
+## Tag (getById)
+
+<b>Request</b>
+* Required: none
+* Method : GET
+* URI : /api/tag/[TAG_ID]
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+error
+```
+{
+    "message": "No tag found with id 1"
+}
+```
+
+## Tag (getAll)
+
+<b>Request</b>
+* Required: none
+* Method : GET
+* URI : /api/tag
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+```
+[{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}]
+```
+error
+```
+{
+    "message": "No tag found"
+}
+```
+
+## Tag (getRelatedTag)
+
+<b>Request</b>
+* Required: none
+* Method : GET
+* URI : /api/tag/[TAG_ID]/related
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+```
+[{
+    "id": 2,
+    "title": "Yellow-Pokemon",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#yellowpokemon",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/2"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/2/related"
+        }
+    ]
+}]
+```
+error
+```
+{
+    "message": "No tag found with id 1"
+}
+```
+
+## Tag (add)
+
+<b>Request</b>
+* Required: title, description, keyword
+* Method : POST
+* URI : /api/tag
+* Body : 
+
+```
+{
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+}
+```
+
+<b>Response</b>
+* Status: 201
+* Content-Type : xml, json
+* Body :
+
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+
+## Tag (addRelatedTag)
+
+<b>Request</b>
+* Required: none;
+* Method : POST
+* URI : /api/tag/[TAG_ID]/related/[RELATED_TAG_ID]
+
+<b>Response</b>
+* Status: 201
+* Content-Type : xml, json
+* Body :
+
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+
+## Tag (updateById)
+
+<b>Request</b>
+* Required: none
+* Method : PUT
+* URI : /api/tag/[TAG_ID]
+* Body :
+```
+{
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+}
+```
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+error
+```
+{
+    "message": "No tag found with id 1"
+}
+```
+
+## Tag (deleteById)
+
+<b>Request</b>
+* Required: none
+* Method : DELETE
+* URI : /api/tag/[TAG_ID]
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+error
+```
+{
+    "message": "No tag found with id 1"
+}
+```
+
+## Tag (deleteRelatedTagId)
+
+<b>Request</b>
+* Required: none
+* Method : DELETE
+* URI : /api/tag/[TAG_ID]/related/[RELATED_TAG_ID]
+
+<b>Response</b>
+* Status: 200
+* Content-Type : xml, json
+* Body :
+
+success
+
+```
+{
+    "id": 1,
+    "title": "Black-Ninja",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    "keyword": "#blackninja",
+    "links": [
+        {
+            "rel": "self",
+            "href": "/api/tag/1"
+        },
+        {
+            "rel": "related",
+            "href": "/api/tag/1/related"
+        }
+    ]
+}
+```
+error
+```
+{
+    "message": "No tag found with id 1"
+}
+```
