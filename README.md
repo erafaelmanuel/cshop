@@ -484,7 +484,7 @@ error
 }
 ```
 
-## Tag (deleteRelatedTagId)
+## Tag (deleteRelatedTag)
 
 <b>Request</b>
 * Required: none
