@@ -1,6 +1,6 @@
 # ecloth
 
-Ecloth is a personal project. An ecommerce website for clothings.
+Ecloth is a personal project. An ecommerce website for clothings. <br />
 For questions or suggestions please contact me at erafaelmanuel@gmail.com
 
 ## Project Structure
