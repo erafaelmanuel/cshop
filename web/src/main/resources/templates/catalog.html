@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/import/bootstrap.min.css}" href="/css/import/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/libs/bootstrap.min.css}" href="/css/libs/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/libs/bootstrap-treeview.min.css}" href="/css/libs/bootstrap-treeview.min.css"/>
     <link rel="stylesheet" th:href="@{/css/header.css}" href="/css/header.css"/>
     <link rel="stylesheet" th:href="@{/css/catalog.css}" href="/css/catalog.css"/>
 </head>
@@ -12,38 +13,27 @@
     <div class="wrapper">
         <div class="row">
             <div class="col-md-3 col-lg-2" id="option-panel">
-                <div>
-                    <button id="collapseCategory">Category</button>
-                    <div id="collapseCategory-target">
-                        <ul>
-                            <li th:each="category : ${categories}">
-                                <form action="/catalog" method="get">
-                                    <input type="hidden" th:value="${category.id}" name="categoryId"/>
-                                    <button><span th:text="${category.name}"></span></button>
-                                </form>
-                            </li>
-                        </ul>
+                <div id="tree"></div>
+            </div>
+            <div class="col-md-9 col-lg-10">
+                <div class="row">
+                    <div th:each="item, iterStat : ${items}" class="col-xs-6 col-md-3 catalog-item">
+                        <a href="#" class="thumbnail">
+                            <img th:src="@{${item.images[0]}}"/>
+                        </a>
+                        <span th:text="${item.name}"/>
+                        <form class="form-add-to-cart" action="/cart-add" method="get">
+                            <input type="hidden" name="itemId" th:value="${item.id}"/>
+                            <button>Add to cart</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 col-lg-10">
-                    <div class="row">
-                        <div th:each="item, iterStat : ${items}" class="col-xs-6 col-md-3 catalog-item">
-                            <a href="#" class="thumbnail">
-                                <img th:src="@{${item.images[0]}}"/>
-                            </a>
-                            <span th:text="${item.name}"/>
-                            <form class="form-add-to-cart" action="/cart-add" method="get">
-                                <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                <button>Add to cart</button>
-                            </form>
-                        </div>
-                    </div>
-            </div>
         </div>
     </div>
-    <script th:src="@{/js/import/jquery-3.2.1.min.js}" src="/js/import/jquery-3.2.1.min.js"></script>
-    <script th:src="@{/js/import/bootstrap.min.js}" src="/js/import/bootstrap.min.js"></script>
+    <script th:src="@{/js/libs/jquery-3.2.1.min.js}" src="/js/libs/jquery-3.2.1.min.js"></script>
+    <script th:src="@{/js/libs/bootstrap.min.js}" src="/js/libs/bootstrap.min.js"></script>
+    <script th:src="@{/js/libs/bootstrap-treeview.min.js}" src="/js/libs/bootstrap-treeview.min.js"></script>
     <script th:src="@{/js/header.js}" src="/js/header.js"></script>
     <script th:src="@{/js/catalog.js}" src="/js/catalog.js"></script>
 </body>

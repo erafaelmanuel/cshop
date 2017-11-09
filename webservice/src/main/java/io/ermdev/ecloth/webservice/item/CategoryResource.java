@@ -12,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,6 +23,9 @@ public class CategoryResource {
 
     @Context
     private UriInfo uriInfo;
+
+    @QueryParam("parentId")
+    private Long parentId;
 
     private CategoryService categoryService;
 
@@ -48,7 +52,13 @@ public class CategoryResource {
     @GET
     public Response getAll() {
         try {
-            List<Category> categories = categoryService.findAll();
+            final List<Category> categories = new ArrayList<>();
+
+            if(parentId == null) {
+                categories.addAll(categoryService.findAll());
+            } else {
+                categories.addAll(categoryService.findByParent(parentId));
+            }
             categories.forEach(category -> {
                 category.getLinks().add(CategoryLinks.self(category.getId(), uriInfo));
             });

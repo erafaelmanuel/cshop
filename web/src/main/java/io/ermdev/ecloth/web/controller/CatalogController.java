@@ -37,19 +37,26 @@ public class CatalogController {
     }
 
     @GetMapping("catalog")
-    public String search(ModelMap modelMap,
-                         @RequestParam(required = false, value = "q") String q,
-                         @RequestParam(required = false, value = "categoryId") Long categoryId) {
+    public String load(ModelMap modelMap,
+                       @RequestParam(required = false, value = "q") String query,
+                       @RequestParam(required = false, value = "c") Long categoryId,
+                       @RequestParam(required = false, value = "p") Long parentId) {
         try {
             final List<Item> items = new ArrayList<>();
-            final List<Category> categories = categoryService.findAll();
+            final List<Category> categories = new ArrayList<>();
 
-            if(q != null)
-                items.addAll(itemService.findByName(q));
+            if(query != null)
+                items.addAll(itemService.findByName(query));
             else if(categoryId != null)
                 items.addAll(itemHelper.searchFromCategories(categoryHelper.startWith(categoryId)));
             else
                 items.addAll(itemService.findAll());
+
+            if(parentId != null) {
+                categories.addAll(categoryService.findByParent(parentId));
+            } else {
+                categories.add(categoryService.findById(1L));
+            }
 
             modelMap.addAttribute("items", items);
             modelMap.addAttribute("categories", categories);
@@ -59,4 +66,6 @@ public class CatalogController {
 
         return "catalog";
     }
+
+
 }

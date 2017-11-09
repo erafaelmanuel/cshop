@@ -20,6 +20,21 @@
 }
 
 #option-panel {
+    position: relative;
     border: 1px solid black;
     height: 400px;
+    padding: 5px;
+}
+
+#tree {
+    position: relative;
+    height: 100%;
+    display: block;
+    overflow-x: scroll;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    white-space: nowrap;
 }
