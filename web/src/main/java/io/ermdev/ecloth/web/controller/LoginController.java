@@ -50,7 +50,7 @@ public class LoginController {
             if(authenticate) {
                 model.put("authenticate", true);
                 model.put("user", user);
-                return "index";
+                return "redirect:/";
             } else
                 return "redirect:/login?error=true";
         } catch (EntityNotFoundException e) {

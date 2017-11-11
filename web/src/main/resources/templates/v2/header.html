@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" th:href="@{/css/v2/header.css}"/>
+</head>
+<body th:fragment="header">
+    <div class="header">
+        <div class="brand">
+            <span><img src="#" alt="" width="200px"/></span>
+        </div>
+        <div class="header-left">
+            <form class="" action="index.html" method="post">
+                <div class="form-inner">
+                    <input class="item-search-box" type="text" name="q" placeholder="Search Items" autocomplete="off"/>
+                    <button class="search-box-button"><a class="material-icons">search</a></button>
+                </div>
+            </form>
+            <a id="item-cart" class="material-icons">shopping_cart</a>
+            <a id="header-login">LOGIN</a>
+        </div>
+    </div>
+</body>
+</html>

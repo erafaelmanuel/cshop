@@ -60,11 +60,12 @@ public class CatalogController {
 
             modelMap.addAttribute("items", items);
             modelMap.addAttribute("categories", categories);
+            modelMap.addAttribute("cartItems", items);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
 
-        return "catalog";
+        return "v2/catalog";
     }
 
 

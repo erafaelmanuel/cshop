@@ -67,7 +67,7 @@ public class RelatedTagResource {
 
     @Path("{relatedTagId}")
     @DELETE
-    public Response remove(@PathParam("tagId") Long tagId, @PathParam("relatedTagId") Long relatedTagId) {
+    public Response delete(@PathParam("tagId") Long tagId, @PathParam("relatedTagId") Long relatedTagId) {
         try {
             Tag tag = tagService.deleteRelatedTag(tagId, relatedTagId);
             tag.getLinks().add(TagLinks.self(tagId, uriInfo));
