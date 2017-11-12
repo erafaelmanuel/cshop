@@ -9,12 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
-
+    <artifactId>web-service</artifactId>
+    
     <dependencies>
         <dependency>
             <groupId>io.ermdev</groupId>
-            <artifactId>web-service</artifactId>
+            <artifactId>data</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>model</artifactId>
         </dependency>
     </dependencies>
+
+
 </project>
