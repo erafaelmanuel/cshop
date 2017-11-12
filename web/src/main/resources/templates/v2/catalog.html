@@ -59,7 +59,7 @@
     <!-- Page Heading -->
     <div class="my-4">
       <h2>Result for "All"</h2>
-      <big th:text="'('+ ${#lists.size(items)} + ' Items found)'"/>
+      <big th:text="'('+ ${itemCount} + ' Items found)'"/>
     </div>
 
     <div class="row">
@@ -93,23 +93,32 @@
 
     <!-- Pagination -->
     <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
+      <li th:class="${page} == 1 ? 'page-item disabled':'page-item'">
+        <a class="page-link" th:href="'/catalog?page=' + ${page-1}" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
           <span class="sr-only">Previous</span>
         </a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">1</a>
+      <li class="page-item" th:if="${page} != 1">
+        <a class="page-link" href="/catalog?page=1">1</a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">2</a>
+      <li class="page-item" th:if="${page} !=1 and ${page} !=2">
+        <a class="page-link">...</a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">3</a>
+      <li th:each="i:${#numbers.sequence(0, pageCount &lt; 3 ? pageCount : 3)}" th:if="${page+i} &lt; ${pageCount}" th:class="${page+i} == ${page} ? 'page-item active':'page-item'">
+        <a class="page-link" th:href="'/catalog?page=' + ${page+i}" th:text="${page+i}"/>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
+
+      <li class="page-item" th:if="${page+4} &lt; ${pageCount}">
+        <a class="page-link">...</a>
+      </li>
+      <li th:class="${page} == ${pageCount} ? 'page-item active':'page-item'">
+        <a class="page-link" th:href="'/catalog?page=' + ${pageCount}" th:text="${pageCount}"></a>
+      </li>
+
+
+      <li th:class="${page} == ${pageCount} ? 'page-item disabled':'page-item'">
+        <a class="page-link" th:href="'/catalog?page=' + ${page+1}" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
         </a>

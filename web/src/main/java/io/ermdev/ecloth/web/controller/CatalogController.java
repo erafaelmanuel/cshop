@@ -40,27 +40,47 @@ public class CatalogController {
     public String load(ModelMap modelMap,
                        @RequestParam(required = false, value = "q") String query,
                        @RequestParam(required = false, value = "c") Long categoryId,
-                       @RequestParam(required = false, value = "p") Long parentId) {
+                       @RequestParam(required = false, value = "p") Long parentId,
+                       @RequestParam(required = false, value = "page") Integer page) {
         try {
             final List<Item> items = new ArrayList<>();
             final List<Category> categories = new ArrayList<>();
+            Long itemCount=0L;
+            Integer pageCount=0;
 
-            if(query != null)
+            if(query != null) {
                 items.addAll(itemService.findByName(query));
-            else if(categoryId != null)
+                itemCount= (long) items.size();
+            } else if(categoryId != null) {
                 items.addAll(itemHelper.searchFromCategories(categoryHelper.startWith(categoryId)));
-            else
-                items.addAll(itemService.findAll());
+                itemCount= (long) items.size();
+            } else {
+                itemCount= itemService.countAll();
+                pageCount = (int) (itemCount/20);
+                pageCount = pageCount * 20 == itemCount ? pageCount : pageCount+1;
 
+                if(page == null || page < 1 || page > pageCount)
+                    page=1;
+                if(page == 1)
+                    items.addAll(itemService.findAll(1, 20));
+                else
+                    items.addAll(itemService.findAll(((page-1) * 20) + 1, 20));
+            }
             if(parentId != null) {
                 categories.addAll(categoryService.findByParent(parentId));
             } else {
                 categories.add(categoryService.findById(1L));
             }
 
+            if(page == null || page < 1 || page > pageCount)
+                page=1;
+
             modelMap.addAttribute("items", items);
+            modelMap.addAttribute("itemCount", itemCount);
+            modelMap.addAttribute("pageCount", pageCount);
+            modelMap.addAttribute("category", "All");
             modelMap.addAttribute("categories", categories);
-            modelMap.addAttribute("cartItems", items);
+            modelMap.addAttribute("page", page);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }

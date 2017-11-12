@@ -93,8 +93,51 @@ public class ItemService {
         return items;
     }
 
+    public List<Item> findByName(String name, Long offset, Long size) throws EntityNotFoundException {
+        final List<Item> items = itemRepository
+                .findByNameFilter(name, offset< 1 ? 0 : (long) offset-1, size < 1 ? itemRepository.countAll() : (long) size);
+        if(items == null)
+            throw new EntityNotFoundException("No item found");
+
+        items.forEach(item -> {
+            final Category category = categoryRepository.findByItemId(item.getId());
+            final List<Tag> tags = tagRepository.findByItemId(item.getId());
+            final List<String> images = imageRepository.findByItemId(item.getId());
+
+            item.setCategory(category);
+            if(tags != null && tags.size() > 0)
+                item.getTags().addAll(tags);
+            if(images != null && images.size() > 0)
+                item.getImages().addAll(images);
+            else
+                item.getImages().add("/images/item/no_image.png");
+        });
+        return items;
+    }
+
     public List<Item> findAll() throws EntityNotFoundException {
         final List<Item> items = itemRepository.findAll();
+        if(items == null)
+            throw new EntityNotFoundException("No item found");
+        items.forEach(item -> {
+            final Category category = categoryRepository.findByItemId(item.getId());
+            final List<Tag> tags = tagRepository.findByItemId(item.getId());
+            final List<String> images = imageRepository.findByItemId(item.getId());
+
+            item.setCategory(category);
+            if(tags != null && tags.size() > 0)
+                item.getTags().addAll(tags);
+            if(images != null && images.size() > 0)
+                item.getImages().addAll(images);
+            else
+                item.getImages().add("/images/item/no_image.png");
+        });
+        return items;
+    }
+
+    public List<Item> findAll(Integer offset, Integer size) throws EntityNotFoundException {
+        final List<Item> items = itemRepository
+                .findAllFilter(offset< 1 ? 0 : (long) offset-1, size < 1 ? itemRepository.countAll() : (long) size);
         if(items == null)
             throw new EntityNotFoundException("No item found");
         items.forEach(item -> {
@@ -161,5 +204,13 @@ public class ItemService {
         final Item item = itemRepository.findById(itemId);
         itemRepository.deleteById(itemId);
         return item;
+    }
+
+    public Long countAll() {
+        return itemRepository.countAll();
+    }
+
+    public Long countByName(String name) {
+        return itemRepository.countByName(name);
     }
 }

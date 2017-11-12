@@ -8,6 +8,12 @@ import java.util.List;
 @Mapper
 public interface ItemRepository {
 
+    @Select("select count(*) from tblitem where name LIKE #{name}")
+    Long countByName(@Param("name") String name);
+
+    @Select("select count(*) from tblitem")
+    Long countAll();
+
     @Select("select * from tblitem where id = #{itemId}")
     Item findById(@Param("itemId") Long itemId);
 
@@ -16,6 +22,12 @@ public interface ItemRepository {
 
     @Select("select * from tblitem where name LIKE #{name}")
     List<Item> findByName(@Param("name") String name);
+
+    @Select("select * from tblitem where name LIKE #{name} LIMIT #{offset}, #{size}")
+    List<Item> findByNameFilter(@Param("name") String name, @Param("offset") Long offset, @Param("size") Long size);
+
+    @Select("select * from tblitem LIMIT #{offset}, #{size}")
+    List<Item> findAllFilter(@Param("offset") Long offset, @Param("size") Long size);
 
     @Select("select * from tblitem")
     List<Item> findAll();
