@@ -8,50 +8,25 @@
   <meta name="description" content="Ecommerce for clothing"/>
   <meta name="author" content="Rafael Manuel"/>
 
-  <title>Ecloth</title>
+  <title>Cloth Shop</title>
   <!-- Google material fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
 
+  <!-- Custom styles for header html -->
+  <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+
   <!-- Custom styles for this html -->
-  <link th:href="@{/css/catalog-item.css}" rel="stylesheet"/>
+  <link th:href="@{/css/v2/catalog.css}" rel="stylesheet"/>
 
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">ClothShop</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="material-icons">email</i></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="material-icons">shopping_cart</i>
-              <span class="badge badge-success" th:if="${cartItems != null and #lists.size(cartItems) > 0}" th:text="${#lists.size(cartItems)}"/>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" style="font-size:14px;font-weight:500;">LOGIN</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <th:block th:replace="v2/header :: header"/>
 
   <!-- Page Content -->
   <div class="container">
@@ -69,9 +44,24 @@
             <img class="card-img-top" th:src="@{${item.images[0]}}" alt=""/>
             <div href="#" class="card-img-overlay text-center">
               <ul class="catalog-item-option">
-                <li><a href="#"><i class="material-icons">pageview</i></a></li>
-                <li><a href="#"><i class="material-icons">shopping_cart</i></a></li>
-                <li><a href="#"><i class="material-icons">favorite</i></a></li>
+                <li>
+                  <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to view">
+                    <i class="material-icons">pageview</i>
+                  </a>
+                </li>
+                <li>
+                  <form action="/cart-add" method="get">
+                    <input type="hidden" name="itemId" th:value="${item.id}"/>
+                    <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom" title="Add to cart">
+                      <i class="material-icons">shopping_cart</i>
+                    </a>
+                  </form>
+                </li>
+                <li>
+                  <a href="#" data-toggle="tooltip" data-placement="bottom" title="Add to favorite">
+                    <i class="material-icons">favorite</i>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -136,8 +126,8 @@
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/v2/cart.js}"></script>
   <script th:src="@{/js/v2/catalog.js}"></script>
-
 </body>
 
 </html>

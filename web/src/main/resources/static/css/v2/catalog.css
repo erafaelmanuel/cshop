@@ -47,7 +47,7 @@ body {
   background: #fff;
 }
 
-.catalog-item-option {
+ul.catalog-item-option {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
@@ -58,7 +58,16 @@ body {
 ul.catalog-item-option li {
     display: inline-flex;
     border-radius: 2px;
+    cursor: pointer;
     -webkit-box-shadow: 0 1px 6px 0 rgba(0,0,0,0.4);
+}
+
+ul.catalog-item-option li form {
+  display: flex;
+}
+
+ul.catalog-item-option li form a{
+  margin: auto;
 }
 
 ul.catalog-item-option li:nth-child(1) {
@@ -81,18 +90,6 @@ ul.catalog-item-option li a, ul.catalog-item-option li a i{
   font-size: 14px;
   margin: auto;
   color: #fff;
-}
-
-.badge {
-    position: relative;
-    display: inline-block;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 300;
-    top: -14px;
-    right: 12px;
-    padding:2px 5px;
-    border-radius: 1px;
 }
 
 .pagination {

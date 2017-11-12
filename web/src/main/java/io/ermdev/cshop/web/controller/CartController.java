@@ -39,7 +39,7 @@ public class CartController {
             e.printStackTrace();
         }
         modelMap.addAttribute("cartItems", items);
-        return "header";
+        return "v2/header";
     }
 
     @GetMapping("/cart-remove")
