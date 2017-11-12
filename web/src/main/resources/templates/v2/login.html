@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Ecommerce for clothing"/>
+    <meta name="author" content="Rafael Manuel"/>
+
+    <title>Cloth Shop</title>
+    <!-- Google material fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/login.css}" rel="stylesheet"/>
+
+</head>
+<body>
+    <th:block th:include="v2/header :: header"/>
+
+    <div class="login-page">
+        <div class="login-error" th:if="${param.error} != null">
+            <p>Incorrect username or password</p>
+        </div>
+        <div class="login-title" th:if="${param.error} eq null">
+            <h2>Welcome Back</h2>
+            <p>You can sign in with your email.</p>
+        </div>
+        <div class="form">
+            <form action="/login" method="post" class="login-form">
+                <input type="text" placeholder="Username" name="username" autocomplete="off"/>
+                <input type="password" placeholder="Password" name="password" autocomplete="off"/>
+                <button>login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/v2/login.js}"></script>
+</body>
+</html>

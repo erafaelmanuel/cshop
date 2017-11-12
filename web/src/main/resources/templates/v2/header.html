@@ -17,7 +17,7 @@
     <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
 
     <!-- Custom styles for this html -->
-    <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
+    <link th:href="@{/css/v2/catalog.css}" rel="stylesheet"/>
 </head>
 <body th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -42,7 +42,7 @@
                         <span class="badge badge-success" th:if="${cartItems != null and #lists.size(cartItems) > 0}" th:text="${#lists.size(cartItems)}"/>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="font-size:14px;font-weight:500;">LOGIN</a>
+                        <a class="nav-link" href="/login" style="font-size:14px;font-weight:500;">LOGIN</a>
                     </li>
                 </ul>
             </div>

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes({"user", "authenticate"})
+@SessionAttributes({"user", "authenticate", "cartItems"})
 public class LoginController {
 
     private UserService userService;
@@ -26,7 +26,7 @@ public class LoginController {
 
     @GetMapping("login")
     public String showLoginPage() {
-        return "login";
+        return "v2/login";
     }
 
     @PostMapping("login")
@@ -36,10 +36,10 @@ public class LoginController {
             boolean authenticate = false;
             User user = null;
             if (username == null || username.trim().equals("")) {
-                return "redirect:/login?error=true";
+                return "redirect:/login?error";
             }
             if (password == null || password.trim().equals("")) {
-                return "redirect:/login?error=true";
+                return "redirect:/login?error";
             }
             for (User _user : userService.findAll()) {
                 if(username.trim().equals(_user.getUsername()) && password.trim().equals(_user.getPassword())) {
@@ -52,7 +52,7 @@ public class LoginController {
                 model.put("user", user);
                 return "redirect:/";
             } else
-                return "redirect:/login?error=true";
+                return "redirect:/login?error";
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return "error";
