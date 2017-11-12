@@ -15,14 +15,14 @@ body {
 }
 
 .card {
-  border-radius: 2px;
+  border-radius: 1px;
   border: none;
   background: #fff;
   -webkit-box-shadow: 0 1px 6px 0 rgba(135,152,164,0.4);
 }
 
 .card:hover {
-  -webkit-box-shadow: 0 4px 12px 0 rgba(135,152,164,0.6);
+  -webkit-box-shadow: 0 2px 10px 0 rgba(135,152,164,0.8);
 }
 
 .card-img-top {
@@ -33,7 +33,7 @@ body {
 .catalog-item-img {
   display: flex;
   align-items: center;
-  height: 350px;
+  height: 280px;
 }
 
 .catalog-item {
@@ -43,7 +43,7 @@ body {
 .card-img-overlay {
   display: none;
   position: absolute;
-  height: 350px;
+  height: 280px;
   background: #fff;
 }
 
@@ -51,7 +51,7 @@ body {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
-    padding: 0px 20%;
+    padding: 0px 10%;
     padding-top: 25%
 }
 

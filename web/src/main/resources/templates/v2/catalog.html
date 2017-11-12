@@ -63,7 +63,7 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-4 catalog-item" th:each="item : ${items}">
+      <div class="col-lg-3 catalog-item" th:each="item : ${items}">
         <div class="card h-100">
           <div class="catalog-item-img">
             <img class="card-img-top" th:src="@{${item.images[0]}}" alt=""/>
@@ -77,11 +77,8 @@
           </div>
           <div class="card-body">
             <div class="card-block">
-              <h5 class="card-title">
-                <a href="#"><span th:text="${item.name}"/></a>
-              </h5>
               <h6 class="card-title">
-                <p th:text="${item.description}"/>
+                <a href="#"><span th:text="${item.name}"/></a>
               </h6>
               <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
             </div>

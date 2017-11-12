@@ -6,4 +6,7 @@
    $(".card-img-overlay").mouseleave(function(){
      $(this).css("display","none");
    });
+   $(".card").mouseleave(function(){
+        $(this).find(".card-img-overlay").css("display","none");
+   });
 })();
