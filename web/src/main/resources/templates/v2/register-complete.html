@@ -23,22 +23,13 @@
 <body>
     <th:block th:include="v2/header :: header"/>
 
-    <div class="login-page">
-        <div class="login-error" th:if="${param.error} != null">
-            <p>Incorrect username or password</p>
-        </div>
-        <div class="login-title" th:if="${param.error} eq null">
-            <h2>Welcome Back</h2>
-            <p>You can sign in with your email.</p>
-        </div>
-        <div class="form">
-            <form action="/login" method="post" class="login-form">
-                <input type="text" placeholder="Username" name="username" autocomplete="off"/>
-                <input type="password" placeholder="Password" name="password" autocomplete="off"/>
-                <button>login</button>
-                <p class="message">Not registered? <a href="/join">Create an account</a></p>
-            </form>
-        </div>
+
+    <div class="alert alert-success registration-message" role="alert">
+        <h4 class="alert-heading">Message</h4>
+        <p>Your account has been created and an activation link has been sent to the email address you entered.
+            Note that you must activate the account by selecting the activation link when you get the email
+            before you can login.
+        </p>
     </div>
 
     <!-- Footer -->

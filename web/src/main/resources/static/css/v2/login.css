@@ -1,6 +1,7 @@
+
 .login-page {
   width: 360px;
-  padding: 5% 0 0;
+  padding-top: 5%;
   margin: auto;
   padding-bottom: 200px;
 }
@@ -78,4 +79,37 @@
 .form .message a {
   color: #4CAF50;
   text-decoration: none;
+}
+
+.registration-message {
+    width: 80%;
+    margin: 8% auto;
+    margin-bottom: 400px;
+}
+
+@media (max-width:360px) {
+
+  .login-page {
+    width: 90%;
+    padding-bottom: 80px;
+  }
+
+  .login-error {
+    width: 100%;
+  }
+
+  .form {
+    width: 100%;
+    padding: 45px 8px;
+  }
+
+  .form input {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .form button {
+    padding: 10px;
+    font-size: 12px;
+  }
 }

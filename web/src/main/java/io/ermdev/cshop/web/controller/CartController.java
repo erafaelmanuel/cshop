@@ -24,7 +24,7 @@ public class CartController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/cart-add")
+    @GetMapping("cart-add")
     public String addToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
         List<Item> items = new ArrayList<>();
         Object sessionObject = modelMap.get("cartItems");
@@ -42,7 +42,7 @@ public class CartController {
         return "v2/header";
     }
 
-    @GetMapping("/cart-remove")
+    @GetMapping("cart-remove")
     public String removeToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
         List<Item> items = new ArrayList<>();
         Object sessionObject = modelMap.get("cartItems");

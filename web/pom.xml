@@ -16,5 +16,10 @@
             <groupId>io.ermdev</groupId>
             <artifactId>web-service</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
     </dependencies>
 </project>

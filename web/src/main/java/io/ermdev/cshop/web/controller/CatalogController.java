@@ -37,7 +37,7 @@ public class CatalogController {
     }
 
     @GetMapping("catalog")
-    public String load(ModelMap modelMap,
+    public String showCatalog(ModelMap modelMap,
                        @RequestParam(required = false, value = "q") String query,
                        @RequestParam(required = false, value = "c") Long categoryId,
                        @RequestParam(required = false, value = "p") Long parentId,
