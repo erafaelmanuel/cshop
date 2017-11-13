@@ -25,7 +25,7 @@
 
     <div th:if="${registrationComplete eq null or registrationComplete eq false}" class="login-page">
         <div class="register-error" th:if="${param.error} != null">
-            <p>Invalid email</p>
+            <p>Invalid email address</p>
         </div>
         <div class="login-title" th:if="${param.error} eq null">
             <h2>Create Your Account</h2>
@@ -33,9 +33,9 @@
         </div>
         <div class="form">
             <form action="/join" method="post" class="register-form">
-                <input type="text" placeholder="Name"/>
-                <input type="password" placeholder="Password"/>
-                <input type="text" placeholder="Email"/>
+                <input th:value="${name}" type="text" placeholder="Name" name="name"/>
+                <input th:value="${password}" type="password" placeholder="Password" name="password"/>
+                <input th:value="${email}" type="text" placeholder="Email" name="email"/>
                 <button>create</button>
                 <p class="message">Already registered? <a href="/login">Sign In</a></p>
             </form>

@@ -14,10 +14,12 @@ public interface UserRepository {
     @Select("select * from tbluser")
     List<User> findAll();
 
-    @Insert("insert into tbluser(username, password) values(#{username}, #{password})")
+    @Insert("insert into tbluser(name, email, username, password, activated) values(#{name}, #{email}, #{username}," +
+            " #{password}, #{activated})")
     void add(User user);
 
-    @Update("update tbluser set username=#{username}, password=#{password} where id=#{id}")
+    @Update("update tbluser set name=#{name}, email=#{email}, username=#{username}, password=#{password}, " +
+            "activated=#{activated} where id=#{id}")
     void updateById(User user);
 
     @Delete("delete from tbluser where id=#{userId}")

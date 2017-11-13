@@ -15,8 +15,8 @@ public interface InitMapper {
     @Insert("use dbecloth")
     void useDatabase();
 
-    @Insert("create table if not exists tbluser(id bigint not null auto_increment, username varchar(45), password " +
-            "varchar(45), primary key(id))")
+    @Insert("create table if not exists tbluser(id bigint not null auto_increment, name varchar(45), email " +
+            "varchar(45), username varchar(45), password varchar(45), activated tinyint(1), primary key(id))")
     void createUserTable();
 
     @Insert("create table if not exists tblcategory(id bigint not null auto_increment, name varchar(45), description " +

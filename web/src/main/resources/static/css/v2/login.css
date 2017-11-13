@@ -32,6 +32,23 @@
     border: 1px solid #c0392b;
 }
 
+.register-error {
+  display: flex;
+  width: 360px;
+  height: 86px;
+}
+
+.register-error p {
+    flex: 1;
+    color: #c0392b;
+    text-align: center;
+    margin: auto;
+    padding: 8px 16px;
+    border-radius: 3px;
+    background: #f5beba;
+    border: 1px solid #c0392b;
+}
+
 .form {
   position: relative;
   z-index: 1;
@@ -97,6 +114,10 @@
   .login-error {
     width: 100%;
   }
+
+  .register-error {
+      width: 100%;
+    }
 
   .form {
     width: 100%;

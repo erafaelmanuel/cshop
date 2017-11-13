@@ -38,10 +38,16 @@ public class UserService {
     public User add(User user) throws UnsatisfiedEntityException {
         if(user == null)
             throw new UnsatisfiedEntityException("User is null");
+        if(user.getName() == null || user.getName().trim().equals(""))
+            throw new UnsatisfiedEntityException("Name is required");
+        if(user.getEmail() == null || user.getEmail().trim().equals(""))
+            throw new UnsatisfiedEntityException("Email is required");
         if(user.getUsername() == null || user.getUsername().trim().equals(""))
             throw new UnsatisfiedEntityException("Username is required");
         if(user.getPassword() == null || user.getPassword().trim().equals(""))
             throw new UnsatisfiedEntityException("Password is required");
+        if(user.getActivated() == null)
+            user.setActivated(false);
         userRepository.add(user);
         return user;
     }
@@ -51,10 +57,16 @@ public class UserService {
         if(user == null)
             return oldUser;
         user.setId(userId);
+        if(user.getName() == null || user.getName().trim().equals(""))
+            user.setName(oldUser.getName());
+        if(user.getEmail() == null || user.getEmail().trim().equals(""))
+            user.setEmail(oldUser.getEmail());
         if(user.getUsername() == null || user.getUsername().trim().equals(""))
             user.setUsername(oldUser.getUsername());
         if(user.getPassword() == null || user.getPassword().trim().equals(""))
             user.setPassword(oldUser.getPassword());
+        if(user.getActivated() == null)
+            user.setActivated(oldUser.getActivated());
         userRepository.updateById(user);
         return user;
     }
