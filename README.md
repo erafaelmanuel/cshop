@@ -1,4 +1,4 @@
-# ecloth
+# CShop
 
 Cloth Shop is a personal project. An ecommerce website for clothings. <br />
 For questions or suggestions please contact me at erafaelmanuel@gmail.com
