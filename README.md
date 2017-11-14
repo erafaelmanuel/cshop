@@ -1,6 +1,6 @@
 # ecloth
 
-Ecloth is a personal project. An ecommerce website for clothings. <br />
+Cloth Shop is a personal project. An ecommerce website for clothings. <br />
 For questions or suggestions please contact me at erafaelmanuel@gmail.com
 
 ## Project Structure
@@ -20,8 +20,13 @@ For questions or suggestions please contact me at erafaelmanuel@gmail.com
     |     ├── entity  
     |     ├── resource
     |     └── pom.xml
+    ├── security
+    |     ├── annotation  
+    |     ├── validator
+    |     └── pom.xml
     ├── web
     |     ├── controller  
+    |     ├── dto  
     |     ├── interceptor
     |     └── pom.xml
     ├── webservice
