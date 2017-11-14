@@ -17,29 +17,35 @@
     <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
 
     <!-- Custom styles for header html -->
-    <link th:href="@{/css/v2/login.css}" rel="stylesheet"/>
+    <link th:href="@{/css/v2/register.css}" rel="stylesheet"/>
 
 </head>
 <body>
     <th:block th:include="v2/header :: header"/>
 
-    <div th:if="${registrationComplete eq null or registrationComplete eq false}" class="login-page" enctype="utf8">
-        <div class="register-error" th:if="${param.error} != null">
-            <p>Invalid email address</p>
-        </div>
-        <div class="login-title" th:if="${param.error} eq null">
-            <h2>Create Your Account</h2>
-            <p>Please fill the following fields with appropriate information to register.</p>
+    <div class="register-wrapper" enctype="utf8">
+        <div class="register-title">
+            <h2 th:text="#{label.regPage.title1}">Title 1</h2>
+            <p th:text="#{label.regPage.title2}">Title 2</p>
         </div>
 
         <div class="form">
-
             <form th:object="${user}" action="/join" method="post" class="register-form">
-                <input th:field="*{name}" placeholder="Name" />
-                <input th:field="*{password}" type="password" placeholder="Password"/>
-                <input th:field="*{email}" placeholder="Email"/>
-                <p th:each="error : ${#fields.errors('email')}"
-                   th:text="${error}">Validation error</p>
+                <div>
+                    <input th:field="*{name}" placeholder="Name" />
+                    <p th:each="error, iterStat : ${#fields.errors('name')}" th:text="${error}"
+                       th:if="${iterStat.first}" class="form-error">Name error</p>
+                </div>
+                <div>
+                    <input th:field="*{password}" type="password" placeholder="Password"/>
+                    <p th:each="error, iterStat : ${#fields.errors('password')}" th:text="${error}"
+                       th:if="${iterStat.first}" class="form-error">Password error</p>
+                </div>
+                <div>
+                    <input th:field="*{email}" placeholder="Email"/>
+                    <p th:each="error, iterStat : ${#fields.errors('email')}" th:text="${error}"
+                       th:if="${iterStat.first}" class="form-error">Email error</p>
+                </div>
                 <button>create</button>
                 <p class="message">Already registered? <a href="/login">Sign In</a></p>
             </form>

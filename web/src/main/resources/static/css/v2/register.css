@@ -1,52 +1,18 @@
 
-.login-page {
+.register-wrapper {
   width: 360px;
-  padding-top: 5%;
+  padding-top: 4%;
   margin: auto;
   padding-bottom: 200px;
 }
 
-.login-title {
+.register-title {
   text-align: center;
 }
 
-.login-title p {
+.register-title p {
   font-weight: 300;
   color: #7f8c8d;
-}
-
-.login-error {
-  display: flex;
-  width: 360px;
-  height: 86px;
-}
-
-.login-error p {
-    flex: 1;
-    color: #c0392b;
-    text-align: center;
-    margin: auto;
-    padding: 8px 16px;
-    border-radius: 3px;
-    background: #f5beba;
-    border: 1px solid #c0392b;
-}
-
-.register-error {
-  display: flex;
-  width: 360px;
-  height: 86px;
-}
-
-.register-error p {
-    flex: 1;
-    color: #c0392b;
-    text-align: center;
-    margin: auto;
-    padding: 8px 16px;
-    border-radius: 3px;
-    background: #f5beba;
-    border: 1px solid #c0392b;
 }
 
 .form {
@@ -65,11 +31,16 @@
   background: #f2f2f2;
   width: 100%;
   border: 0;
-  margin: 0 0 15px;
+  margin-top: 16px;
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
 }
+
+input[name='name'] {
+  margin: 0px;
+}
+
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -77,6 +48,7 @@
   background: #4CAF50;
   width: 100%;
   border: 0;
+  margin-top: 20px;
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
@@ -95,6 +67,14 @@
 .form .message a {
   color: #4CAF50;
   text-decoration: none;
+}
+
+.form p.form-error {
+    color: #c0392b;
+    font-size: 10px;
+    position: absolute;
+    right: 0px;
+    padding: 0 45px;
 }
 
 .registration-message {

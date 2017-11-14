@@ -1,5 +1,6 @@
 package io.ermdev.cshop.webservice.user;
 
+import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.UserService;
@@ -62,7 +63,7 @@ public class UserResource {
             user = userService.add(user);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
-        } catch (UnsatisfiedEntityException | NullPointerException e) {
+        } catch (UnsatisfiedEntityException | EmailExistsException | NullPointerException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }

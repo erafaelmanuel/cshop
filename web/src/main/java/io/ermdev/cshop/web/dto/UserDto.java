@@ -8,14 +8,14 @@ import javax.validation.constraints.NotNull;
 public class UserDto {
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Name is required")
     public String name;
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Password is required")
     private String password;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Email is required")
     @ValidEmail
     private String email;
 

@@ -11,6 +11,9 @@ public interface UserRepository {
     @Select("select * from tbluser where id = #{userId}")
     User findById(@Param("userId") Long userId);
 
+    @Select("select * from tbluser where email = #{email}")
+    User findByEmail(@Param("email") String email);
+
     @Select("select * from tbluser")
     List<User> findAll();
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Ecommerce for clothing"/>
+    <meta name="author" content="Rafael Manuel"/>
+
+    <title>Cloth Shop</title>
+    <!-- Google material fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/register.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<th:block th:include="v2/header :: header"/>
+
+    <div class="alert alert-success registration-message" role="alert">
+        <h4 class="alert-heading">Message</h4>
+        <p>Your account has been created and an activation link has been sent to the email address you entered.
+            Note that you must activate the account by selecting the activation link when you get the email
+            before you can login.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

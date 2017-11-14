@@ -19,6 +19,15 @@ public interface InitMapper {
             "varchar(45), username varchar(45), password varchar(45), activated tinyint(1), primary key(id))")
     void createUserTable();
 
+    @Insert("create table if not exists tblrole(id bigint not null auto_increment, name varchar(45), " +
+            "primary key(id))")
+    void createRoleTable();
+
+    @Insert("create table if not exists tbluser_role(id bigint not null auto_increment, userId bigint not null, " +
+            "roleId bigint not null, primary key(id), foreign key(userId) references tbluser(id) on delete cascade, " +
+            "on update cascade)")
+    void createUserRoleTable();
+
     @Insert("create table if not exists tblcategory(id bigint not null auto_increment, name varchar(45), description " +
             "varchar(200), parentId bigint default null, primary key(id), foreign key(parentId) references " +
             "tblcategory(id) on delete cascade on update cascade)")

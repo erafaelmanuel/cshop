@@ -15,6 +15,7 @@ public class User {
     private String username;
     private String password;
     private Boolean activated;
+    private List<Role> roles = new ArrayList<>();
     private List<Link> links = new ArrayList<>();
 
     public User() {}
@@ -81,6 +82,14 @@ public class User {
 
     public void setLinks(List<Link> links) {
         this.links = links;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

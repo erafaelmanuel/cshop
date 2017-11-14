@@ -1,6 +1,10 @@
 package io.ermdev.cshop.web.controller;
 
+import io.ermdev.cshop.data.exception.EmailExistsException;
+import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.MailService;
+import io.ermdev.cshop.data.service.UserService;
+import io.ermdev.cshop.model.entity.User;
 import io.ermdev.cshop.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +22,11 @@ import javax.validation.Valid;
 public class RegisterController {
 
     private MailService mailService;
+    private UserService userService;
 
     @Autowired
-    public RegisterController(MailService mailService) {
+    public RegisterController(UserService userService, MailService mailService) {
+        this.userService = userService;
         this.mailService = mailService;
     }
 
@@ -30,13 +36,29 @@ public class RegisterController {
         return "v2/register";
     }
 
+    @GetMapping("register-complete")
+    public String showRegisterComplete(){
+        return "v2/register-complete";
+    }
+
     @PostMapping("join")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if(!result.hasErrors()) {
-            return "v2/login";
-        } else {
+            try {
+                User user = new User();
+                user.setName(userDto.getName());
+                user.setPassword(userDto.getPassword());
+                user.setEmail(userDto.getEmail());
+                user.setUsername(userDto.getEmail());
+                userService.add(user);
+            } catch (UnsatisfiedEntityException | EmailExistsException e) {
+                result.rejectValue("email", "message.regError");
+            }
+        }
+        if(result.hasErrors()) {
             result.rejectValue("email","message.regError");
             return showRegister(model, userDto);
         }
+        return "redirect:/register-complete";
     }
 }
