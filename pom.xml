@@ -12,6 +12,7 @@
         <module>data</module>
         <module>web</module>
         <module>web-service</module>
+        <module>security</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -60,6 +61,12 @@
             <dependency>
                 <groupId>io.ermdev</groupId>
                 <artifactId>data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev</groupId>
+                <artifactId>security</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

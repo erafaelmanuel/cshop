@@ -23,7 +23,7 @@
 <body>
     <th:block th:include="v2/header :: header"/>
 
-    <div th:if="${registrationComplete eq null or registrationComplete eq false}" class="login-page">
+    <div th:if="${registrationComplete eq null or registrationComplete eq false}" class="login-page" enctype="utf8">
         <div class="register-error" th:if="${param.error} != null">
             <p>Invalid email address</p>
         </div>
@@ -31,11 +31,15 @@
             <h2>Create Your Account</h2>
             <p>Please fill the following fields with appropriate information to register.</p>
         </div>
+
         <div class="form">
-            <form action="/join" method="post" class="register-form">
-                <input th:value="${name}" type="text" placeholder="Name" name="name"/>
-                <input th:value="${password}" type="password" placeholder="Password" name="password"/>
-                <input th:value="${email}" type="text" placeholder="Email" name="email"/>
+
+            <form th:object="${user}" action="/join" method="post" class="register-form">
+                <input th:field="*{name}" placeholder="Name" />
+                <input th:field="*{password}" type="password" placeholder="Password"/>
+                <input th:field="*{email}" placeholder="Email"/>
+                <p th:each="error : ${#fields.errors('email')}"
+                   th:text="${error}">Validation error</p>
                 <button>create</button>
                 <p class="message">Already registered? <a href="/login">Sign In</a></p>
             </form>
@@ -61,6 +65,5 @@
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/v2/login.js}"></script>
 </body>
 </html>
