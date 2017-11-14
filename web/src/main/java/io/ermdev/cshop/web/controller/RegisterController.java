@@ -30,7 +30,7 @@ public class RegisterController {
         this.mailService = mailService;
     }
 
-    @GetMapping("join")
+    @GetMapping("register")
     public String showRegister(Model model, UserDto userDto) {
         model.addAttribute("user", userDto);
         return "v2/register";
@@ -41,7 +41,7 @@ public class RegisterController {
         return "v2/register-complete";
     }
 
-    @PostMapping("join")
+    @PostMapping("register")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if(!result.hasErrors()) {
             try {

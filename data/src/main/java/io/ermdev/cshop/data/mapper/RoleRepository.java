@@ -11,5 +11,5 @@ import java.util.List;
 public interface RoleRepository {
 
     @Select("select * from tblrole as R left join tbluser_role as UR on R.id=UR.roleId where UR.userId=#{userId}")
-    List<Role> getRolesByUserId(@Param("userId") Long userId);
+    List<Role> findByUserId(@Param("userId") Long userId);
 }

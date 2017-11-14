@@ -16,6 +16,8 @@ public class DatabaseConfiguration implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
         initMapper.createUserTable();
+        initMapper.createRoleTable();
+        initMapper.createUserRoleTable();
         initMapper.createCategoryTable();
         initMapper.createTagTable();
         initMapper.createItemTable();

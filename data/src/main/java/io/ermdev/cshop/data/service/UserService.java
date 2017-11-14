@@ -3,6 +3,7 @@ package io.ermdev.cshop.data.service;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
+import io.ermdev.cshop.data.mapper.RoleRepository;
 import io.ermdev.cshop.data.mapper.UserRepository;
 import io.ermdev.cshop.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,33 +15,38 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public User findById(Long userId) throws EntityNotFoundException {
         User user = userRepository.findById(userId);
-        if(user != null)
+        if(user != null) {
+            user.getRoles().addAll(roleRepository.findByUserId(userId));
             return user;
-        else
+        } else
             throw new EntityNotFoundException("No user found with id " + userId);
     }
 
-    public User findByName(String email) throws EntityNotFoundException {
+    public User findByEmail(String email) throws EntityNotFoundException {
         User user = userRepository.findByEmail(email);
-        if(user != null)
+        if(user != null) {
+            user.getRoles().addAll(roleRepository.findByUserId(user.getId()));
             return user;
-        else
+        } else
             throw new EntityNotFoundException("No user found with email: " + email);
     }
 
     public List<User> findAll() throws EntityNotFoundException{
         List<User> users = userRepository.findAll();
-        if(users != null)
+        if(users != null) {
+            users.parallelStream().forEach(user -> user.getRoles().addAll(roleRepository.findByUserId(user.getId())));
             return users;
-        else
+        } else
             throw new EntityNotFoundException("No user found");
     }
 
@@ -65,6 +71,9 @@ public class UserService {
 
     public User updateById(Long userId, User user) throws EntityNotFoundException {
         final User oldUser = findById(userId);
+        if(oldUser == null)
+            throw new EntityNotFoundException("No user found with id:" + userId);
+        user.getRoles().addAll(roleRepository.findByUserId(userId));
         if(user == null)
             return oldUser;
         user.setId(userId);
@@ -78,13 +87,21 @@ public class UserService {
             user.setPassword(oldUser.getPassword());
         if(user.getActivated() == null)
             user.setActivated(oldUser.getActivated());
+
         userRepository.updateById(user);
+
+        user.getRoles().addAll(roleRepository.findByUserId(userId));
         return user;
     }
 
     public User deleteById(Long userId) throws EntityNotFoundException {
         User user = findById(userId);
+        if(user == null)
+            throw new EntityNotFoundException("No user found with id:" + userId);
+
         userRepository.deleteById(userId);
+
+        user.getRoles().addAll(roleRepository.findByUserId(userId));
         return user;
     }
 }

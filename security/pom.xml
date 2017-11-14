@@ -11,5 +11,12 @@
 
     <artifactId>security</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>

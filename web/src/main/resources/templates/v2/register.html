@@ -30,7 +30,7 @@
         </div>
 
         <div class="form">
-            <form th:object="${user}" action="/join" method="post" class="register-form">
+            <form th:object="${user}" action="/register" method="post" class="register-form">
                 <div>
                     <input th:field="*{name}" placeholder="Name" />
                     <p th:each="error, iterStat : ${#fields.errors('name')}" th:text="${error}"
@@ -50,14 +50,6 @@
                 <p class="message">Already registered? <a href="/login">Sign In</a></p>
             </form>
         </div>
-    </div>
-
-    <div th:if="${registrationComplete} eq true" class="alert alert-success registration-message" role="alert">
-        <h4 class="alert-heading">Message</h4>
-        <p>Your account has been created and an activation link has been sent to the email address you entered.
-            Note that you must activate the account by selecting the activation link when you get the email
-            before you can login.
-        </p>
     </div>
 
     <!-- Footer -->
