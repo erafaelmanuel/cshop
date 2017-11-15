@@ -14,18 +14,18 @@ public class User {
     private String email;
     private String username;
     private String password;
-    private Boolean activated;
+    private Boolean enabled;
     private List<Role> roles = new ArrayList<>();
     private List<Link> links = new ArrayList<>();
 
     public User() {}
 
-    public User(String name, String email, String username, String password, Boolean activated) {
+    public User(String name, String email, String username, String password, Boolean enabled) {
         this.name = name;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.activated = activated;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -68,12 +68,12 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getActivated() {
-        return activated;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setActivated(Boolean activated) {
-        this.activated = activated;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public List<Link> getLinks() {
@@ -100,7 +100,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", activated=" + activated +
+                ", enabled=" + enabled +
                 ", links=" + links +
                 '}';
     }

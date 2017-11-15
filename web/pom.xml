@@ -12,6 +12,10 @@
     <artifactId>web</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>business</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.ermdev</groupId>
@@ -20,12 +24,12 @@
 
         <dependency>
             <groupId>io.ermdev</groupId>
-            <artifactId>web-service</artifactId>
+            <artifactId>security</artifactId>
         </dependency>
 
         <dependency>
             <groupId>io.ermdev</groupId>
-            <artifactId>security</artifactId>
+            <artifactId>web-service</artifactId>
         </dependency>
     </dependencies>
 </project>

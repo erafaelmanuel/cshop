@@ -26,5 +26,6 @@ public class DatabaseConfiguration implements CommandLineRunner{
         initMapper.createAttributeTable();
         initMapper.createItemAttributeTable();
         initMapper.createItemImageTable();
+        initMapper.createVerificationTokenTable();
     }
 }

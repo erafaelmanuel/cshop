@@ -68,4 +68,9 @@ public interface InitMapper {
             "src varchar(200), primary key(id), foreign key(itemId) references tblitem(id) on delete cascade on " +
             "update cascade)")
     void createItemImageTable();
+
+    @Insert("create table if not exists tblverification_token(id bigint not null auto_increment, token varchar(100), " +
+            "expiryDate varchar(45), userId bigint not null, primary key(id), foreign key(userId) references " +
+            "tbluser(id) on delete cascade on update cascade)")
+    void createVerificationTokenTable();
 }

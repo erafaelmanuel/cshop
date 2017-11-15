@@ -1,12 +1,13 @@
 package io.ermdev.cshop.web.controller;
 
+import io.ermdev.cshop.business.event.RegisterEvent;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.service.MailService;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.model.entity.User;
 import io.ermdev.cshop.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,13 +22,13 @@ import javax.validation.Valid;
 @SessionAttributes({"cartItems"})
 public class RegisterController {
 
-    private MailService mailService;
     private UserService userService;
+    private ApplicationEventPublisher publisher;
 
     @Autowired
-    public RegisterController(UserService userService, MailService mailService) {
+    public RegisterController(UserService userService, ApplicationEventPublisher publisher) {
         this.userService = userService;
-        this.mailService = mailService;
+        this.publisher = publisher;
     }
 
     @GetMapping("register")
@@ -51,6 +52,8 @@ public class RegisterController {
                 user.setEmail(userDto.getEmail());
                 user.setUsername(userDto.getEmail());
                 userService.add(user);
+
+                publisher.publishEvent(new RegisterEvent(user, "", null));
             } catch (UnsatisfiedEntityException | EmailExistsException e) {
                 result.rejectValue("email", "message.regError");
             }

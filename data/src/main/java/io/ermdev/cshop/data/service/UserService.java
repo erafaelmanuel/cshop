@@ -63,8 +63,8 @@ public class UserService {
             throw new UnsatisfiedEntityException("Username is required");
         if(user.getPassword() == null || user.getPassword().trim().equals(""))
             throw new UnsatisfiedEntityException("Password is required");
-        if(user.getActivated() == null)
-            user.setActivated(false);
+        if(user.getEnabled() == null)
+            user.setEnabled(false);
         userRepository.add(user);
         return user;
     }
@@ -85,8 +85,8 @@ public class UserService {
             user.setUsername(oldUser.getUsername());
         if(user.getPassword() == null || user.getPassword().trim().equals(""))
             user.setPassword(oldUser.getPassword());
-        if(user.getActivated() == null)
-            user.setActivated(oldUser.getActivated());
+        if(user.getEnabled() == null)
+            user.setEnabled(oldUser.getEnabled());
 
         userRepository.updateById(user);
 
