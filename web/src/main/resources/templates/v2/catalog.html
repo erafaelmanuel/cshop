@@ -89,7 +89,7 @@
       <li class="page-item" th:if="${page} != 1">
         <a class="page-link" href="/catalog?page=1">1</a>
       </li>
-      <li class="page-item" th:if="${page} !=1 and ${page} !=2">
+      <li class="page-item" th:if="${page} != 1 and ${page} !=2">
         <a class="page-link">...</a>
       </li>
       <li th:each="i:${#numbers.sequence(0, pageCount &lt; 3 ? pageCount : 3)}" th:if="${page+i} &lt; ${pageCount}" th:class="${page+i} == ${page} ? 'page-item active':'page-item'">
@@ -126,6 +126,7 @@
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/v2/header.js}"></script>
   <script th:src="@{/js/v2/cart.js}"></script>
   <script th:src="@{/js/v2/catalog.js}"></script>
 </body>

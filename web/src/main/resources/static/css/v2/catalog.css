@@ -13,6 +13,8 @@
 .card-img-top {
   flex: 1;
   height: 100%;
+  max-width: 100%;
+  background-size: contain;
 }
 
 .catalog-item-img {

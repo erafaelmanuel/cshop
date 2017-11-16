@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"cartItems"})
+@SessionAttributes({"cartItems", "hasUser"})
 public class CatalogController {
 
     private final ItemService itemService;

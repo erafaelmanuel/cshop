@@ -36,8 +36,8 @@
         </div>
         <div class="form">
             <form action="/login" method="post" class="login-form">
-                <input type="text" placeholder="Username" name="username" autocomplete="off"/>
-                <input type="password" placeholder="Password" name="password" autocomplete="off"/>
+                <input type="text" placeholder="Username" name="username"/>
+                <input type="password" placeholder="Password" name="password"/>
                 <button>login</button>
                 <p class="message">Not registered? <a href="/register">Create an account</a></p>
             </form>
@@ -54,6 +54,8 @@
 
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/v2/header.js}"></script>
 </body>
 </html>
