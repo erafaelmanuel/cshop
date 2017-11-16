@@ -17,8 +17,8 @@ public interface UserRepository {
     @Select("select * from tbluser")
     List<User> findAll();
 
-    @Insert("insert into tbluser(name, email, username, password, enabled) values(#{name}, #{email}, #{username}," +
-            " #{password}, #{enabled})")
+    @Insert("insert into tbluser(id, name, email, username, password, enabled) values(#{id}, #{name}, #{email}, " +
+            "#{username}, #{password}, #{enabled})")
     void add(User user);
 
     @Update("update tbluser set name=#{name}, email=#{email}, username=#{username}, password=#{password}, " +

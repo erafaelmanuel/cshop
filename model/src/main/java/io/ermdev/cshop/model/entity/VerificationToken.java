@@ -9,6 +9,7 @@ public class VerificationToken {
     private static final int EXPIRATION = 60 * 24;
 
     private Long id;
+    private Long userId;
     private String token;
     private Date expiryDate;
     private User user;
@@ -33,6 +34,14 @@ public class VerificationToken {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getToken() {

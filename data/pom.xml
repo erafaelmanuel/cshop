@@ -16,6 +16,11 @@
             <groupId>io.ermdev</groupId>
             <artifactId>model</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
     </dependencies>
 
 

@@ -37,21 +37,20 @@ public class RegistrationListener implements ApplicationListener<RegisterEvent> 
     }
 
     private void confirmRegistration(RegisterEvent event) throws UnsupportedEncodingException, MessagingException {
-        User user = event.getUser();
-        user.setId(13L);
+        final User user = event.getUser();
         String token = UUID.randomUUID().toString();
-        verificationTokenService.add(new VerificationToken(token, user));
-
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
         String confirmationUrl = event.getApplicationContextUrl() + "/register/confirmation?token=" + token;
-//        String message = messages.getMessage("message.regSucc", null, event.getLocale());
 
+        verificationTokenService.add(new VerificationToken(token, user));
+
+//        String message = messages.getMessage("message.regSucc", null, event.getLocale());
         MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
         mailMessage.setTo(recipientAddress);
         mailMessage.setSubject(subject);
         mailMessage.getMimeMessage().setFrom(new InternetAddress("ermdev.io@gmail.com", "Cloth Shop"));
-        mailMessage.getMimeMessage().setContent("http://localhost:8080" + confirmationUrl, "text/html");
+        mailMessage.getMimeMessage().setContent(confirmationUrl, "text/html");
         mailSender.send(mailMessage.getMimeMessage());
     }
 }

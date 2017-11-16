@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
@@ -51,6 +52,7 @@ public class UserService {
     }
 
     public User add(User user) throws UnsatisfiedEntityException, EmailExistsException {
+        final long id= IdGenerator.randomUUID();
         if(user == null)
             throw new UnsatisfiedEntityException("User is null");
         if(user.getName() == null || user.getName().trim().equals(""))
@@ -65,6 +67,7 @@ public class UserService {
             throw new UnsatisfiedEntityException("Password is required");
         if(user.getEnabled() == null)
             user.setEnabled(false);
+        user.setId(id);
         userRepository.add(user);
         return user;
     }

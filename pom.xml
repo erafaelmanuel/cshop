@@ -8,6 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>business</module>
+        <module>commons</module>
         <module>core</module>
         <module>model</module>
         <module>data</module>
@@ -38,6 +39,12 @@
             <dependency>
                 <groupId>io.ermdev</groupId>
                 <artifactId>business</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev</groupId>
+                <artifactId>commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

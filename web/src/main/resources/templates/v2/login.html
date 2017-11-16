@@ -24,10 +24,13 @@
     <th:block th:include="v2/header :: header"/>
 
     <div class="login-page">
-        <div class="login-error" th:if="${param.error} != null">
-            <p>Incorrect username or password</p>
+        <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
+            <p th:text="#{label.loginPage.activationSuccess}"/>
         </div>
-        <div class="login-title" th:if="${param.error} eq null">
+        <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
+            <p th:text="#{label.loginPage.loginError}"/>
+        </div>
+        <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
             <h2>Welcome Back</h2>
             <p>You can sign in with your email.</p>
         </div>

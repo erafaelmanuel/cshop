@@ -36,8 +36,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
         } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
+
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), grantedAuthorities(user.getRoles()));
+                user.getPassword(), user.getEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked,
+                grantedAuthorities(user.getRoles()));
     }
 
     private static Set<GrantedAuthority> grantedAuthorities(List<Role> roleList) {

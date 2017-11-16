@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Ecommerce for clothing"/>
+    <meta name="author" content="Rafael Manuel"/>
+
+    <title>Cloth Shop</title>
+    <!-- Google material fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
 </head>
 <body>
-$END$
+    <p th:text="${message}"/> <form action="/login"><button>Login</button></form>
 </body>
 </html>
