@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"user", "authenticate", "cartItems"})
+@SessionAttributes({"cartItems"})
 public class LoginController {
 
     private UserService userService;

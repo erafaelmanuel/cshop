@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @RequestMapping
 public class HomeController {
 
-    @Autowired
     private ItemService itemService;
+
+    @Autowired
+    public HomeController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @GetMapping
     public String showHomePage(ModelMap modelMap) {
-        return "home";
+        return "v2/index";
     }
 }

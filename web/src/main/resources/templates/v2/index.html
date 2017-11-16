@@ -18,31 +18,9 @@
 
     <!-- Custom styles for header html -->
     <link th:href="@{/css/v2/login.css}" rel="stylesheet"/>
-
 </head>
 <body>
     <th:block th:include="v2/header :: header"/>
-
-    <div class="login-page">
-        <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
-            <p th:text="#{message.login.activate.success}"/>
-        </div>
-        <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
-            <p th:text="#{message.login.error}"/>
-        </div>
-        <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
-            <h2>Welcome Back</h2>
-            <p>You can sign in with your email.</p>
-        </div>
-        <div class="form">
-            <form action="/login" method="post" class="login-form">
-                <input type="text" placeholder="Username" name="username" autocomplete="off"/>
-                <input type="password" placeholder="Password" name="password" autocomplete="off"/>
-                <button>login</button>
-                <p class="message">Not registered? <a href="/register">Create an account</a></p>
-            </form>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">

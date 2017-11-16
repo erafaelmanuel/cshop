@@ -19,6 +19,12 @@ public class VerificationToken {
     public VerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
+        if(user != null) userId = user.getId();
+    }
+
+    public VerificationToken(String token, Long userId) {
+        this.token = token;
+        this.userId = userId;
     }
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
@@ -58,10 +64,14 @@ public class VerificationToken {
 
     public void setUser(User user) {
         this.user = user;
+        if(user != null) userId = user.getId();
     }
 
     public Date getExpiryDate() {
-        return calculateExpiryDate(EXPIRATION);
+        if(expiryDate == null)
+            return calculateExpiryDate(EXPIRATION);
+        else
+            return expiryDate;
     }
 
     public void setExpiryDate(Date expiryDate) {
