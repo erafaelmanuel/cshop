@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.UUID;
 
 @Controller
 @SessionAttributes({"cartItems"})
@@ -45,25 +46,29 @@ public class RegisterController {
         return "v2/register";
     }
 
-    @GetMapping("register-complete")
-    public String showRegisterComplete(){
+    @PostMapping("register/complete")
+    public String showRegisterComplete(Model model){
         return "v2/register-complete";
     }
 
     @PostMapping("register")
-    public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model)
+            throws UnsatisfiedEntityException, EntityNotFoundException {
         if(!result.hasErrors()) {
-            try {
-                String applicationContextUrl = messageSource.getMessage("application.context.url", null, null);
-                User user = new User();
-                user.setName(userDto.getName());
-                user.setPassword(userDto.getPassword());
-                user.setEmail(userDto.getEmail());
-                user.setUsername(userDto.getEmail());
+            User user = new User();
+            user.setName(userDto.getName());
+            user.setPassword(userDto.getPassword());
+            user.setEmail(userDto.getEmail());
+            user.setUsername(userDto.getEmail().split("@")[0]);
 
-                userService.add(user);
-                publisher.publishEvent(new RegisterEvent(user, applicationContextUrl, null));
-            } catch (UnsatisfiedEntityException | EmailExistsException e) {
+            try {
+                String url = messageSource.getMessage("application.context.url", null, null);
+                String token = UUID.randomUUID().toString();
+                user = userService.add(user);
+
+                publisher.publishEvent(new RegisterEvent(new VerificationToken(token, user), url, null));
+                model.addAttribute("token", token);
+            } catch (EmailExistsException e) {
                 result.rejectValue("email", "message.error");
             }
         }
@@ -71,7 +76,7 @@ public class RegisterController {
             result.rejectValue("email","message.error");
             return showRegister(model, userDto);
         }
-        return "redirect:/register-complete";
+        return showRegisterComplete(model);
     }
 
     @GetMapping("register/confirmation")
@@ -87,10 +92,9 @@ public class RegisterController {
             if (remainingTime <= 0) {
                 throw new TokenException("Token is expired");
             } else {
-                final long userId = verificationToken.getUserId();
                 final long verificationId = verificationToken.getId();
 
-                User user = userService.findById(userId);
+                User user = verificationToken.getUser();
                 user.setEnabled(true);
 
                 userService.updateById(user.getId(), user);
@@ -98,6 +102,27 @@ public class RegisterController {
             }
             model.addAttribute("activation", true);
             return "v2/login";
+        } catch (EntityNotFoundException | TokenException e) {
+            model.addAttribute("message", e.getMessage());
+            return "v2/error";
+        }
+    }
+
+    @GetMapping("register/resend-verification")
+    public String resendVerificationToken(@RequestParam("token") String token, Model model) {
+        try {
+            if (token == null)
+                throw new TokenException("Invalid request.");
+
+            final VerificationToken verificationToken = verificationTokenService.findByToken(token);
+            if (verificationToken.getUser().getEnabled()) {
+                throw new TokenException("Your email already registered");
+            } else {
+                verificationTokenService.deleteById(verificationToken.getId());
+                verificationTokenService.add(verificationToken);
+                model.addAttribute("token", verificationToken.getToken());
+                return "v2/register/complete";
+            }
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "v2/error";

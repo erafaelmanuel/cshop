@@ -1,8 +1,8 @@
 package io.ermdev.cshop.business.listener;
 
 import io.ermdev.cshop.business.event.RegisterEvent;
+import io.ermdev.cshop.business.util.MailConstructor;
 import io.ermdev.cshop.data.service.VerificationTokenService;
-import io.ermdev.cshop.model.entity.User;
 import io.ermdev.cshop.model.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -12,9 +12,8 @@ import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
-import java.util.UUID;
+import java.util.Locale;
 
 @Component
 public class RegistrationListener implements ApplicationListener<RegisterEvent> {
@@ -22,13 +21,15 @@ public class RegistrationListener implements ApplicationListener<RegisterEvent> 
     private VerificationTokenService verificationTokenService;
     private JavaMailSender mailSender;
     private MessageSource messageSource;
+    private MailConstructor mailConstructor;
 
     @Autowired
     public RegistrationListener(VerificationTokenService verificationTokenService, JavaMailSender mailSender,
-                                MessageSource messageSource) {
+                                MessageSource messageSource, MailConstructor mailConstructor) {
         this.verificationTokenService = verificationTokenService;
         this.mailSender = mailSender;
         this.messageSource = messageSource;
+        this.mailConstructor = mailConstructor;
     }
 
     @Override
@@ -41,21 +42,13 @@ public class RegistrationListener implements ApplicationListener<RegisterEvent> 
     }
 
     private void confirmRegistration(RegisterEvent event) throws UnsupportedEncodingException, MessagingException {
-        final User user = event.getUser();
-        String token = UUID.randomUUID().toString();
-        String recipientAddress = user.getEmail();
-        String title = messageSource.getMessage("application.title", null, null);
-        String subject = messageSource.getMessage("message.mail.subject.account.activation",
-                new Object[]{user.getName(), title}, null);
-        String confirmationUrl = event.getApplicationContextUrl() + "/register/confirmation?token=" + token;
+        VerificationToken verificationToken = event.getVerificationToken();
+        String url = event.getUrl();
+        Locale locale = event.getLocale();
 
-        verificationTokenService.add(new VerificationToken(token, user));
+        verificationTokenService.add(verificationToken);
 
-        MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
-        mailMessage.setTo(recipientAddress);
-        mailMessage.setSubject(subject);
-        mailMessage.getMimeMessage().setFrom(new InternetAddress("ermdev.io@gmail.com", title));
-        mailMessage.getMimeMessage().setContent(confirmationUrl, "text/html");
+        MimeMailMessage mailMessage = mailConstructor.constructVerificationMail(verificationToken, url, locale);
         mailSender.send(mailMessage.getMimeMessage());
     }
 }
