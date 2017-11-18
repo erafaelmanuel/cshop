@@ -1,6 +1,8 @@
 package io.ermdev.cshop.web.controller;
 
+import io.ermdev.cshop.business.event.MailEvent;
 import io.ermdev.cshop.business.event.RegisterEvent;
+import io.ermdev.cshop.business.util.MailConstructor;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
@@ -18,7 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -30,14 +34,16 @@ public class RegisterController {
     private VerificationTokenService verificationTokenService;
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
+    private MailConstructor mailConstructor;
 
     @Autowired
     public RegisterController(UserService userService, VerificationTokenService verificationTokenService,
-                              ApplicationEventPublisher publisher, MessageSource messageSource) {
+                              ApplicationEventPublisher publisher, MessageSource messageSource, MailConstructor mailConstructor) {
         this.userService = userService;
         this.verificationTokenService = verificationTokenService;
         this.publisher = publisher;
         this.messageSource = messageSource;
+        this.mailConstructor = mailConstructor;
     }
 
     @GetMapping("register")
@@ -67,7 +73,7 @@ public class RegisterController {
                 user = userService.add(user);
 
                 publisher.publishEvent(new RegisterEvent(new VerificationToken(token, user), url, null));
-                model.addAttribute("token", token);
+                model.addAttribute("userId", user.getId());
             } catch (EmailExistsException e) {
                 result.rejectValue("email", "message.error");
             }
@@ -92,8 +98,7 @@ public class RegisterController {
             if (remainingTime <= 0) {
                 throw new TokenException("Token is expired");
             } else {
-                final long verificationId = verificationToken.getId();
-
+                Long verificationId = verificationToken.getId();
                 User user = verificationToken.getUser();
                 user.setEnabled(true);
 
@@ -108,20 +113,28 @@ public class RegisterController {
         }
     }
 
-    @GetMapping("register/resend-verification")
-    public String resendVerificationToken(@RequestParam("token") String token, Model model) {
+    @PostMapping("register/resend-verification")
+    public String resendVerificationToken(@RequestParam("userId") Long userId, Model model)
+            throws UnsupportedEncodingException, MessagingException {
         try {
-            if (token == null)
-                throw new TokenException("Invalid request.");
+            if (userId == null)
+                return showRegisterComplete(model);
 
-            final VerificationToken verificationToken = verificationTokenService.findByToken(token);
+            final VerificationToken verificationToken = verificationTokenService.findByUserId(userId);
             if (verificationToken.getUser().getEnabled()) {
                 throw new TokenException("Your email already registered");
             } else {
-                verificationTokenService.deleteById(verificationToken.getId());
-                verificationTokenService.add(verificationToken);
-                model.addAttribute("token", verificationToken.getToken());
-                return "v2/register/complete";
+                String newToken = UUID.randomUUID().toString();
+                String url = messageSource.getMessage("application.context.url", null, null);
+
+                verificationToken.setToken(newToken);
+                verificationToken.setExpiryDate(null);
+
+                verificationTokenService.updateById(verificationToken.getId(), verificationToken);
+                publisher.publishEvent(new MailEvent(mailConstructor.constructVerificationMail(verificationToken, url, null)));
+
+                model.addAttribute("userId", verificationToken.getUserId());
+                return showRegisterComplete(model);
             }
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());

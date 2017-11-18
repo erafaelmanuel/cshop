@@ -34,6 +34,8 @@ public class VerificationTokenService {
         VerificationToken verificationToken = verificationTokenRepository.findByUserId(userId);
         if(verificationToken == null)
             throw new EntityNotFoundException("No VerificationToken found with userId:" + userId);
+        User user = userRepository.findById(userId);
+        verificationToken.setUser(user);
         return verificationToken;
     }
 
@@ -43,8 +45,43 @@ public class VerificationTokenService {
         return verificationToken;
     }
 
-    public VerificationToken updateById(Long verificationId, VerificationToken verificationToken) {
-        return null;
+    public VerificationToken updateById(Long verificationTokenId, VerificationToken verificationToken)
+            throws EntityNotFoundException{
+        final VerificationToken oldVerificationToken = verificationTokenRepository.findById(verificationTokenId);
+        if (oldVerificationToken==null)
+            throw new EntityNotFoundException("No verification token found with id:" + verificationTokenId);
+        if(verificationToken.getToken()==null || verificationToken.getToken().equals(""))
+            verificationToken.setToken(oldVerificationToken.getToken());
+        if(verificationToken.getUserId()==null)
+            verificationToken.setUserId(oldVerificationToken.getUserId());
+        if(verificationToken.getExpiryDate()==null)
+            verificationToken.setExpiryDate(oldVerificationToken.getExpiryDate());
+        if(userRepository.findById(verificationToken.getUserId()) == null)
+            throw new EntityNotFoundException("No user found with id:" + verificationToken.getUserId());
+
+        verificationTokenRepository.updateById(verificationTokenId, verificationToken.getToken(),
+                verificationToken.getUserId(), verificationToken.getExpiryDate());
+        return verificationToken;
+    }
+
+    public VerificationToken updateByToken(String token, VerificationToken verificationToken) throws EntityNotFoundException{
+        if(token==null)
+            return verificationToken;
+
+        final VerificationToken oldVerificationToken = verificationTokenRepository.findByToken(token);
+        if (oldVerificationToken==null)
+            throw new EntityNotFoundException("No verification token found with token:" + token);
+        if(verificationToken.getToken()==null || verificationToken.getToken().equals(""))
+            verificationToken.setToken(oldVerificationToken.getToken());
+        if(verificationToken.getUserId()==null)
+            verificationToken.setUserId(oldVerificationToken.getUserId());
+        if(verificationToken.getExpiryDate()==null)
+            verificationToken.setExpiryDate(oldVerificationToken.getExpiryDate());
+        if(userRepository.findById(verificationToken.getUserId()) == null)
+            throw new EntityNotFoundException("No user found with id:" + verificationToken.getUserId());
+
+        verificationTokenRepository.updateByToken(token, verificationToken.getUserId(), verificationToken.getExpiryDate());
+        return verificationToken;
     }
 
     public VerificationToken deleteById(Long verificationTokenId) {

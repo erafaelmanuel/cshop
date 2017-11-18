@@ -24,6 +24,15 @@ public interface VerificationTokenRepository {
     @Insert("insert into tblverification_token(token, expiryDate, userId) values(#{token}, #{expiryDate}, #{userId})")
     void add(@Param("token") String token, @Param("expiryDate") Date expiryDate, @Param("userId") Long userId);
 
+    @Update("update tblverification_token set token=#{token}, userId=#{userId}, expiryDate=#{expiryDate} where " +
+            "id=#{verificationTokenId}")
+    void updateById(@Param("verificationTokenId") Long verificationTokenId, @Param("token") String token,
+                    @Param("userId") Long userId, @Param("expiryDate") Date expiryDate);
+
+    @Update("update tblverification_token set token=#{token}, userId=#{userId}, expiryDate=#{expiryDate} where " +
+            "token=#{token}")
+    void updateByToken(@Param("token") String token, @Param("userId") Long userId, @Param("expiryDate") Date expiryDate);
+
     @Delete("delete from tblverification_token where id=#{verificationTokenId}")
     void deleteById(@Param("verificationTokenId") Long verificationTokenId);
 }

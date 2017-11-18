@@ -27,7 +27,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             if (request.getMethod().equalsIgnoreCase("GET")) {
                 String email = request.getUserPrincipal().getName();
 
-                //Not exist will throw an EntityNotFoundException
+                //if email not exist will throw an EntityNotFoundException
                 userService.findByEmail(email);
 
                 response.sendRedirect("/");
