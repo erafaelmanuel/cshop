@@ -6,6 +6,14 @@ For questions or suggestions please contact me at erafaelmanuel@gmail.com
 ## Project Structure
 ```
     .
+    ├── business
+    |     ├── event  
+    |     ├── listener
+    |     ├── util
+    |     └── pom.xml
+    ├── commons
+    |     ├── util  
+    |     └── pom.xml
     ├── core
     |     ├── configuration  
     |     ├── main.java 
