@@ -69,6 +69,11 @@ success
     "id": 1,
     "username": "kelvindatu",
     "password": "123",
+        {
+            "id": 1,
+            "name": "ROLE_USER"
+        }
+    ],
     "links": [
         {
             "rel": "self",
@@ -102,6 +107,12 @@ success
     "id": 1,
     "username": "kelvindatu",
     "password": "123",
+    "roles": [
+        {
+            "id": 1,
+            "name": "ROLE_USER"
+        }
+    ],
     "links": [
         {
             "rel": "self",
@@ -142,6 +153,11 @@ error
     "id": 2,
     "username": "ralenmandap",
     "password": "123",
+        {
+            "id": 1,
+            "name": "ROLE_USER"
+        }
+    ],
     "links": [
         {
             "rel": "self",
@@ -177,6 +193,11 @@ success
     "id": 1,
     "username": "kelvindatu",
     "password": "456",
+        {
+            "id": 1,
+            "name": "ROLE_USER"
+        }
+    ],
     "links": [
         {
             "rel": "self",
@@ -211,6 +232,11 @@ success
     "id": 1,
     "username": "kelvindatu",
     "password": "123",
+        {
+            "id": 1,
+            "name": "ROLE_USER"
+        }
+    ],
     "links": [
         {
             "rel": "self",
