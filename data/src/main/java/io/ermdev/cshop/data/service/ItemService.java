@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.ImageRepository;
@@ -157,6 +158,7 @@ public class ItemService {
     }
 
     public Item add(Item item, Long categoryId) throws EntityNotFoundException, UnsatisfiedEntityException {
+        final long id = IdGenerator.randomUUID();
         if(item == null)
             throw new UnsatisfiedEntityException("Item is null");
         if(item.getName() == null || item.getName().equals(""))
@@ -173,8 +175,8 @@ public class ItemService {
         final Category category = categoryRepository.findById(categoryId);
         if(category == null)
             throw new EntityNotFoundException("No category found with id " + categoryId);
-        itemRepository.add(item.getName(), item.getDescription(), item.getPrice(), item.getDiscount(), categoryId);
-
+        item.setId(id);
+        itemRepository.add(id, item.getName(), item.getDescription(), item.getPrice(), item.getDiscount(), categoryId);
         item.setCategory(category);
         return item;
     }

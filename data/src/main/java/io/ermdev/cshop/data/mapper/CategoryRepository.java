@@ -21,7 +21,8 @@ public interface CategoryRepository {
     @Select("select * from tblcategory")
     List<Category> findAll();
 
-    @Insert("insert into tblcategory(name, description, parentId) values(#{name}, #{description}, #{parentId})")
+    @Insert("insert into tblcategory(id, name, description, parentId) values(#{id}, #{name}, #{description}, " +
+            "#{parentId})")
     void add(Category category);
 
     @Update("update tblcategory set name=#{name}, description=#{description}, parentId=#{parentId} where id=#{id}")

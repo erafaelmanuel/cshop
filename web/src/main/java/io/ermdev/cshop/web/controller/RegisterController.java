@@ -52,11 +52,6 @@ public class RegisterController {
         return "v2/register";
     }
 
-    @PostMapping("register/complete")
-    public String showRegisterComplete(Model model){
-        return "v2/register-complete";
-    }
-
     @PostMapping("register")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model)
             throws UnsatisfiedEntityException, EntityNotFoundException {
@@ -83,6 +78,11 @@ public class RegisterController {
             return showRegister(model, userDto);
         }
         return showRegisterComplete(model);
+    }
+
+    @PostMapping("register/complete")
+    public String showRegisterComplete(Model model){
+        return "v2/register-complete";
     }
 
     @GetMapping("register/confirmation")

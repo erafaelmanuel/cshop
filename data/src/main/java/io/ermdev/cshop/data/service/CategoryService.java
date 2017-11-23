@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.CategoryRepository;
@@ -40,13 +41,14 @@ public class CategoryService {
     }
 
     public Category add(Category category) throws EntityNotFoundException, UnsatisfiedEntityException {
+        final long id = IdGenerator.randomUUID();
         if(category.getName() == null || category.getName().trim().equals(""))
             throw new UnsatisfiedEntityException("Name is required");
         if(category.getDescription() == null || category.getDescription().trim().equals(""))
             throw new UnsatisfiedEntityException("Description is required");
         if(category.getParentId() != null && categoryRepository.findById(category.getParentId()) == null)
             throw new EntityNotFoundException("No category found with id " + category.getParentId());
-
+        category.setId(id);
         categoryRepository.add(category);
         return category;
     }

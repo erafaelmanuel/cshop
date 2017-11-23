@@ -23,7 +23,7 @@ public interface TagRepository {
             "tblrelated_tag as _RT join tbltag as _T on _RT.relatedTagId=_T.id WHERE _RT.tagId=#{tagId}")
     List<Tag> findRelatedTag(@Param("tagId") Long tagId);
 
-    @Insert("insert into tbltag(title, description, keyword) values(#{title}, #{description}, #{keyword})")
+    @Insert("insert into tbltag(id, title, description, keyword) values(#{id}, #{title}, #{description}, #{keyword})")
     void add(Tag tag);
 
     @Insert("insert into tblrelated_tag(tagId, relatedTagId) values(#{tagId}, #{relatedTagId})")

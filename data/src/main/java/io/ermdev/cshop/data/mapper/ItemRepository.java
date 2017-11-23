@@ -32,10 +32,10 @@ public interface ItemRepository {
     @Select("select * from tblitem")
     List<Item> findAll();
 
-    @Insert("insert into tblitem(name, description, price, discount, categoryId) values(#{name}, #{description}, " +
-            "#{price}, #{discount}, #{categoryId})")
-    void add(@Param("name") String name, @Param("description") String description, @Param("price") Double price,
-             @Param("discount") Double discount, @Param("categoryId") Long categoryId);
+    @Insert("insert into tblitem(id, name, description, price, discount, categoryId) values(#{itemId}, #{name}, " +
+            "#{description}, #{price}, #{discount}, #{categoryId})")
+    void add(@Param("itemId") Long itemId, @Param("name") String name, @Param("description") String description,
+             @Param("price") Double price, @Param("discount") Double discount, @Param("categoryId") Long categoryId);
 
     @Update("update tblitem set name=#{name}, description=#{description}, price=#{price}, discount=#{discount}, " +
             "categoryId=#{categoryId} where id=#{id}")

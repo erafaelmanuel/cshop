@@ -14,7 +14,7 @@ public interface AttributeRepository {
     @Select("select * from tblattribute")
     List<Attribute> findAll();
 
-    @Insert("insert into tblattribute(title, content, description, type) values(#{title}, #{content}, " +
+    @Insert("insert into tblattribute(id, title, content, description, type) values(#{id}, #{title}, #{content}, " +
             "#{description}, #{type})")
     Attribute add(Attribute attribute);
 

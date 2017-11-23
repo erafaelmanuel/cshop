@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.AttributeRepository;
@@ -32,6 +33,7 @@ public class AttributeService {
     }
 
     public Attribute add(Attribute attribute) throws UnsatisfiedEntityException {
+        final long id = IdGenerator.randomUUID();
         if(attribute == null)
             throw new UnsatisfiedEntityException("attribute is null");
         if(attribute.getTitle() == null || attribute.getTitle().trim().equals(""))
@@ -42,6 +44,7 @@ public class AttributeService {
             throw new UnsatisfiedEntityException("Description is required");
         if(attribute.getType() == null || attribute.getType().trim().equals(""))
             throw new UnsatisfiedEntityException("Type is required");
+        attribute.setId(id);
         attributeRepository.add(attribute);
         return attribute;
     }

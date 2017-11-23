@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.TagRepository;
@@ -41,13 +42,14 @@ public class TagService {
     }
 
     public Tag add(Tag tag)throws EntityNotFoundException, UnsatisfiedEntityException {
+        final long id = IdGenerator.randomUUID();
         if(tag.getTitle()==null || tag.getTitle().trim().equals(""))
             throw new UnsatisfiedEntityException("Title is required");
         if(tag.getDescription()==null || tag.getDescription().trim().equals(""))
             throw new UnsatisfiedEntityException("Description is required");
         if(tag.getKeyword()==null || tag.getKeyword().trim().equals(""))
             throw new UnsatisfiedEntityException("Keyword is required");
-
+        tag.setId(id);
         tagRepository.add(tag);
         return tag;
     }
