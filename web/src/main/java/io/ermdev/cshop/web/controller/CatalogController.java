@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"cartItems", "hasUser"})
+@SessionAttributes({"cartItems", "hasUser", "userName"})
 public class CatalogController {
 
     private final ItemService itemService;
@@ -47,8 +47,8 @@ public class CatalogController {
         try {
             final List<Item> items = new ArrayList<>();
             final List<Category> categories = new ArrayList<>();
-            Long itemCount=0L;
-            Integer pageCount=0;
+            long itemCount=0;
+            int pageCount=0;
 
             if(query != null) {
                 items.addAll(itemService.findByName(query));

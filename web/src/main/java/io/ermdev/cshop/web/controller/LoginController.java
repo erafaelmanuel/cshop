@@ -1,7 +1,10 @@
 package io.ermdev.cshop.web.controller;
 
+import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.UserService;
+import io.ermdev.cshop.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"hasUser", "cartItems"})
+@SessionAttributes({"hasUser", "userName", "cartItems"})
 public class LoginController {
 
     private UserService userService;
@@ -25,7 +28,13 @@ public class LoginController {
     }
 
     @PostMapping("login/success")
-    public String redirectAfterLoginSuccess(Model model) {
+    public String redirectAfterLoginSuccess(Authentication authentication, Model model) {
+        try {
+            User user = userService.findByUsername(authentication.getName());
+            model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
+        } catch (EntityNotFoundException e) {
+            System.out.println(authentication.getName());
+        }
         model.addAttribute("hasUser", true);
         return "redirect:/catalog";
     }

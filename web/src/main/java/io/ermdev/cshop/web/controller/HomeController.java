@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"cartItems", "hasUser"})
+@SessionAttributes({"cartItems", "hasUser", "userName"})
 @RequestMapping
 public class HomeController {
 

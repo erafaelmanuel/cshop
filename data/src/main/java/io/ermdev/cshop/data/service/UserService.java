@@ -42,6 +42,15 @@ public class UserService {
             throw new EntityNotFoundException("No user found with email: " + email);
     }
 
+    public User findByUsername(String username) throws EntityNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if(user != null) {
+            user.getRoles().addAll(roleRepository.findByUserId(user.getId()));
+            return user;
+        } else
+            throw new EntityNotFoundException("No user found with username: " + username);
+    }
+
     public List<User> findAll() throws EntityNotFoundException{
         List<User> users = userRepository.findAll();
         if(users != null) {

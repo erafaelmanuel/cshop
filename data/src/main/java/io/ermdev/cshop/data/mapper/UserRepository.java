@@ -14,6 +14,9 @@ public interface UserRepository {
     @Select("select * from tbluser where email = #{email} LIMIT 1")
     User findByEmail(@Param("email") String email);
 
+    @Select("select * from tbluser where username = #{username} LIMIT 1")
+    User findByUsername(@Param("username") String username);
+
     @Select("select * from tbluser")
     List<User> findAll();
 
