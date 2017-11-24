@@ -6,7 +6,7 @@ import io.ermdev.cshop.model.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -24,7 +24,7 @@ public class CartController {
         this.itemService = itemService;
     }
 
-    @GetMapping("cart-add")
+    @PostMapping("cart/add")
     public String addToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
         List<Item> items = new ArrayList<>();
         Object sessionObject = modelMap.get("cartItems");
@@ -42,7 +42,7 @@ public class CartController {
         return "v2/header";
     }
 
-    @GetMapping("cart-remove")
+    @PostMapping("cart/remove")
     public String removeToCart(@RequestParam("itemId") Long itemId, ModelMap modelMap) {
         List<Item> items = new ArrayList<>();
         Object sessionObject = modelMap.get("cartItems");

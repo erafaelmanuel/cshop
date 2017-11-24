@@ -50,11 +50,13 @@
                   </a>
                 </li>
                 <li>
-                  <form action="/cart-add" method="get">
+                  <form action="/cart/add" method="get">
                     <input type="hidden" name="itemId" th:value="${item.id}"/>
-                    <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom" title="Add to cart">
-                      <i class="material-icons">shopping_cart</i>
-                    </a>
+                    <span data-toggle="modal" data-target="#">
+                      <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom" title="Add to cart">
+                        <i class="material-icons">shopping_cart</i>
+                      </a>
+                    </span>
                   </form>
                 </li>
                 <li>
@@ -122,6 +124,25 @@
     </div>
     <!-- /.container -->
   </footer>
+
+  <!-- Modal -->
+  <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><i class="material-icons" style="color:#27ae60;">assignment_turned_in</i>Item successfully added to your cart</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
+          <button type="button" class="btn btn-success">Proceed to checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>

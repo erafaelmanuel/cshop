@@ -53,7 +53,7 @@ ul.catalog-item-option li form {
   display: flex;
 }
 
-ul.catalog-item-option li form a{
+ul.catalog-item-option li form a, ul.catalog-item-option li form span{
   margin: auto;
 }
 

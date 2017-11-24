@@ -9,8 +9,10 @@ import io.ermdev.cshop.model.entity.Category;
 import io.ermdev.cshop.model.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -86,6 +88,17 @@ public class CatalogController {
         }
 
         return "v2/catalog";
+    }
+
+    @PostMapping("catalog/show/modal")
+    public String showCatalogModal(@RequestParam("itemId") Long itemId, Model model) {
+        try {
+            Item item = itemService.findById(itemId);
+            model.addAttribute("item", item);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "v2/modal/cart-modal";
     }
 
 
