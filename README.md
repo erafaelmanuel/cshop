@@ -1,6 +1,6 @@
 # CShop
 
-Cloth Shop is a personal project. An ecommerce website for clothings. <br />
+Cloth Shop is a personal project. An ecommerce website for clothings. (still under development)<br />
 For questions or suggestions please contact me at erafaelmanuel@gmail.com
 
 ## Project Structure
