@@ -1,6 +1,6 @@
 # CShop
 
-Cloth Shop is a personal project. An ecommerce website for clothings. <br />
+Cloth Shop is a personal project. An ecommerce website for clothings. (still under development)<br />
 For questions or suggestions please contact me at erafaelmanuel@gmail.com
 
 ## Project Structure
@@ -45,11 +45,11 @@ For questions or suggestions please contact me at erafaelmanuel@gmail.com
     └── pom.xml
 ```
 ## Available APIs
-    * User
-    * Item
-    * Attribute
-    * Category
-    * Tag
+    [User](#user-getbyid)<br />
+    [Item]()<br />
+    [Attribute]()<br />
+    [Category]()<br />
+    [Tag](#tag-getbyid)<br />
 
 ## User (getById)
 
