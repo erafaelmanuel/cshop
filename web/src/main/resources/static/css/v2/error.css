@@ -1,26 +1,19 @@
+body {
+    display:flex;
+}
 
 .wrapper {
     display: flex;
     flex-direction: column;
-}
-
-.wrapper div:nth-child(1) {
-    width: 360px;
-    height: 220px;
-    margin: auto;
-    margin-top: 150px;
-}
-
-.wrapper div:nth-child(2) {
     margin: auto;
 }
 
-.wrapper div img {
-    background-size: contain;
-    max-width: 100%;
-    height: 100%;
+.wrapper h1 {
+    margin: auto;
+    margin-top: 100px;
 }
 
-.wrapper div:nth-child(2) p {
+.wrapper p {
+    margin: auto;
     display: inline-block;
 }

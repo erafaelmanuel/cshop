@@ -109,7 +109,7 @@ public class RegisterController {
             return "v2/login";
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
-            return "v2/error";
+            return "v2/error/403";
         }
     }
 
@@ -138,7 +138,7 @@ public class RegisterController {
             }
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
-            return "v2/error";
+            return "v2/error/403";
         }
     }
 }

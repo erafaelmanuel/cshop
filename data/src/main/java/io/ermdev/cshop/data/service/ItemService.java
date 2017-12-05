@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.properties.ImageProperties;
 import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
@@ -47,7 +48,7 @@ public class ItemService {
         if(images != null && images.size() > 0)
             item.getImages().addAll(images);
         else
-            item.getImages().add("/images/item/no_image.png");
+            item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
 
         return item;
     }
@@ -68,7 +69,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add("/images/item/no_image.png");
+                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
         });
         return items;
     }
@@ -89,7 +90,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add("/images/item/no_image.png");
+                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
         });
         return items;
     }
@@ -111,7 +112,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add("/images/item/no_image.png");
+                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
         });
         return items;
     }
@@ -131,7 +132,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add("/images/item/no_image.png");
+                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
         });
         return items;
     }
@@ -152,7 +153,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add("/images/item/no_image.png");
+                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
         });
         return items;
     }
