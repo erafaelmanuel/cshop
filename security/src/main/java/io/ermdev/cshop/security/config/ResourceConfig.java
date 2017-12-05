@@ -24,7 +24,7 @@ public class ResourceConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/dashboard/**")
+                .antMatchers("/account/**")
                 .authenticated()
                 .and()
             .formLogin()

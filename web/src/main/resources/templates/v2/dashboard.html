@@ -12,13 +12,21 @@
 
     <!-- Bootstrap core CSS -->
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
 </head>
 <body>
-    <div class="wrapper">
-        <h1>404 Not Found</h1>
-        <div>
-            <p th:text="${message}"/> <a href="/login">Login</a>
-        </div>
-    </div>
+
+    <!-- Navigation -->
+    <th:block th:include="v2/header :: header"/>
+
+    dashboard
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/v2/header.js}"></script>
 </body>
 </html>

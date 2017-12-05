@@ -4,6 +4,7 @@ import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.model.entity.Role;
 import io.ermdev.cshop.model.entity.User;
+import io.ermdev.cshop.security.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,19 +30,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
         final User user;
         try {
-            user = userService.findByEmail(email);
-        } catch (EntityNotFoundException e) {
+            final boolean isEmail = new EmailValidator().validateEmail(emailOrUsername);
+            if(isEmail)
+                user = userService.findByEmail(emailOrUsername);
+            else
+                user = userService.findByUsername(emailOrUsername);
+        }catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
+        boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), user.getEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked,
+                user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,
                 grantedAuthorities(user.getRoles()));
     }
 

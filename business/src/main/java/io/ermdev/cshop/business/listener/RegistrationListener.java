@@ -7,6 +7,7 @@ import io.ermdev.cshop.model.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class RegistrationListener implements ApplicationListener<RegisterEvent> 
     public void onApplicationEvent(RegisterEvent registerEvent) {
         try {
             confirmRegistration(registerEvent);
-        } catch (UnsupportedEncodingException | MessagingException e) {
+        } catch (UnsupportedEncodingException | MessagingException | MailParseException e) {
             e.printStackTrace();
         }
     }
