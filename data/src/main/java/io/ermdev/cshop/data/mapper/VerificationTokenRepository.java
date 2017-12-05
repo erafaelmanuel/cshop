@@ -35,4 +35,7 @@ public interface VerificationTokenRepository {
 
     @Delete("delete from tblverification_token where id=#{verificationTokenId}")
     void deleteById(@Param("verificationTokenId") Long verificationTokenId);
+
+    @Delete("delete from tblverification_token where id=#{userId}")
+    void deleteByUserId(@Param("userId") Long userId);
 }

@@ -89,5 +89,8 @@ public class VerificationTokenService {
         return null;
     }
 
-
+    //TODO
+    public void deleteByUserId(Long userId) {
+        verificationTokenRepository.deleteByUserId(userId);
+    }
 }

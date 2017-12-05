@@ -21,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -132,18 +131,19 @@ public class RegisterController {
         try {
             if (userId == null)
                 return "v2/register";
+            final User user = userService.findById(userId);
+            final VerificationToken verificationToken = new VerificationToken();
 
-            final VerificationToken verificationToken = verificationTokenService.findByUserId(userId);
+            verificationToken.setUser(user);
             if (verificationToken.getUser().getEnabled()) {
+                verificationTokenService.deleteByUserId(userId);
                 throw new TokenException("Your email already registered");
             } else {
                 String newToken = UUID.randomUUID().toString();
                 String url = messageSource.getMessage("application.context.url", null, null);
 
                 verificationToken.setToken(newToken);
-                verificationToken.setExpiryDate(null);
-
-                verificationTokenService.updateById(verificationToken.getId(), verificationToken);
+                verificationTokenService.add(verificationToken);
                 publisher.publishEvent(new MailEvent(mailConstructor.constructVerificationMail(verificationToken, url, null)));
 
                 model.addAttribute("userId", verificationToken.getUserId());
