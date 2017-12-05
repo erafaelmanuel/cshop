@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -85,6 +86,18 @@ public class RegisterController {
         return "v2/register-complete";
     }
 
+    @GetMapping("register/complete")
+    public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId){
+        if(userId==null) {
+            UserDto userDto = new UserDto();
+            model.addAttribute("user", userDto);
+            return "v2/register";
+        } else {
+            model.addAttribute("userId", userId);
+            return "v2/register-complete";
+        }
+    }
+
     @GetMapping("register/confirmation")
     public String registerConfirmation(@RequestParam("token") String token, Model model) {
         try {
@@ -118,7 +131,7 @@ public class RegisterController {
             throws UnsupportedEncodingException, MessagingException {
         try {
             if (userId == null)
-                return showRegisterComplete(model);
+                return "v2/register";
 
             final VerificationToken verificationToken = verificationTokenService.findByUserId(userId);
             if (verificationToken.getUser().getEnabled()) {

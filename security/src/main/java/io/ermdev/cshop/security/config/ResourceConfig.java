@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class ResourceConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private AuthenticationFailureHandlerImpl failureHandler;
     private UserDetailServiceImpl userDetailService;
 
     @Autowired
@@ -32,10 +34,13 @@ public class ResourceConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 .loginPage("/login")
                 .successForwardUrl("/login/success")
+                .failureHandler(failureHandler)
                 .permitAll()
                 .and()
             .csrf()
                 .disable();
 
     }
+
+
 }

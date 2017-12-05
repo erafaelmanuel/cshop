@@ -30,10 +30,10 @@ public class LoginController {
     @PostMapping("login/success")
     public String redirectAfterLoginSuccess(Authentication authentication, Model model) {
         try {
-            System.out.println(authentication.getName());
             User user = userService.findByUsername(authentication.getName());
             model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
         } catch (EntityNotFoundException e) {
+            model.addAttribute("message", e.getMessage());
             return "v2/error/500";
         }
         model.addAttribute("hasUser", true);

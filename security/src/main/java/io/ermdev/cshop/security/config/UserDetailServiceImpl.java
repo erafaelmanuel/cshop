@@ -41,7 +41,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
-        boolean enabled = true;
+
+        boolean enabled = user.getEnabled();
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
