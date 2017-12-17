@@ -12,6 +12,7 @@ import io.ermdev.cshop.model.entity.User;
 import io.ermdev.cshop.model.entity.VerificationToken;
 import io.ermdev.cshop.web.dto.UserDto;
 import io.ermdev.cshop.web.exception.TokenException;
+import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -35,15 +36,18 @@ public class RegisterController {
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
     private MailConstructor mailConstructor;
+    private SimpleMapper mapper;
 
     @Autowired
     public RegisterController(UserService userService, VerificationTokenService verificationTokenService,
-                              ApplicationEventPublisher publisher, MessageSource messageSource, MailConstructor mailConstructor) {
+                              ApplicationEventPublisher publisher, MessageSource messageSource,
+                              MailConstructor mailConstructor, SimpleMapper mapper) {
         this.userService = userService;
         this.verificationTokenService = verificationTokenService;
         this.publisher = publisher;
         this.messageSource = messageSource;
         this.mailConstructor = mailConstructor;
+        this.mapper = mapper;
     }
 
     @GetMapping("register")
@@ -56,10 +60,7 @@ public class RegisterController {
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model)
             throws UnsatisfiedEntityException, EntityNotFoundException {
         if(!result.hasErrors()) {
-            User user = new User();
-            user.setName(userDto.getName());
-            user.setPassword(userDto.getPassword());
-            user.setEmail(userDto.getEmail());
+            User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
 
             try {
