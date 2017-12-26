@@ -62,7 +62,6 @@ public class RegisterController {
         if(!result.hasErrors()) {
             User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
-
             try {
                 String url = messageSource.getMessage("application.context.url", null, null);
                 String token = UUID.randomUUID().toString();
