@@ -19,7 +19,7 @@
 
         <dependency>
             <groupId>io.ermdev</groupId>
-            <artifactId>web-service</artifactId>
+            <artifactId>rest</artifactId>
         </dependency>
 
         <dependency>

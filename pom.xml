@@ -14,7 +14,7 @@
         <module>data</module>
         <module>security</module>
         <module>web</module>
-        <module>web-service</module>
+        <module>rest</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -87,7 +87,7 @@
 
             <dependency>
                 <groupId>io.ermdev</groupId>
-                <artifactId>web-service</artifactId>
+                <artifactId>rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -138,9 +138,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.erafaelmanuel</groupId>
-            <artifactId>mapfierJ</artifactId>
-            <version>v1.0-beta.4.0a</version>
+            <groupId>io.ermdev.mapfierj</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.ermdev.mapfierj</groupId>
+            <artifactId>typeconverter</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
