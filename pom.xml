@@ -138,15 +138,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.ermdev.mapfierj</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.ermdev.mapfierj</groupId>
-            <artifactId>typeconverter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.github.erafaelmanuel</groupId>
+            <artifactId>mapfierJ</artifactId>
+            <version>v1.0-beta.5.0</version>
         </dependency>
     </dependencies>
 </project>

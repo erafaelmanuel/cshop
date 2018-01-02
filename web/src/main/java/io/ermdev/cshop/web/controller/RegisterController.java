@@ -12,7 +12,7 @@ import io.ermdev.cshop.model.entity.User;
 import io.ermdev.cshop.model.entity.VerificationToken;
 import io.ermdev.cshop.web.dto.UserDto;
 import io.ermdev.cshop.web.exception.TokenException;
-import io.ermdev.mapfierj.core.SimpleMapper;
+import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
