@@ -26,7 +26,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p th:text="${item.name}"/>
+                        <p id="cart-item-name" th:text="${item.name}"></p>
+                        <div id="cart-item-price">
+                            <p>Price</p>
+                            <p th:text="'PHP ' + ${#numbers.formatDecimal(item.price,  1, 2)}"></p>
+                        </div>
+                        <img id="cart-item-image" th:src="@{${item.images[0]}}"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
