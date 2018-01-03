@@ -21,6 +21,9 @@
   <!-- Custom styles for this html -->
   <link th:href="@{/css/v2/catalog.css}" rel="stylesheet"/>
 
+  <!-- Custom styles for this html -->
+  <link th:href="@{/css/v2/cart-modal.css}" rel="stylesheet"/>
+
 </head>
 
 <body>
@@ -126,11 +129,14 @@
   </footer>
 
   <!-- Modal -->
-  <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><i class="material-icons" style="color:#27ae60;">assignment_turned_in</i>Item successfully added to your cart</h5>
+          <h5 class="modal-title" id="cart-modal-title">
+            <i class="material-icons">assignment_turned_in</i>
+            Item successfully added to your cart
+          </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

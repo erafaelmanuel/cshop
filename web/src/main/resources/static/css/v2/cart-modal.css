@@ -1,0 +1,9 @@
+#cart-modal-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart-modal-title i {
+    color:#27ae60;
+}
