@@ -8,9 +8,9 @@ import io.ermdev.cshop.data.mapper.ImageRepository;
 import io.ermdev.cshop.data.mapper.CategoryRepository;
 import io.ermdev.cshop.data.mapper.ItemRepository;
 import io.ermdev.cshop.data.mapper.TagRepository;
-import io.ermdev.cshop.model.entity.Category;
-import io.ermdev.cshop.model.entity.Item;
-import io.ermdev.cshop.model.entity.Tag;
+import io.ermdev.cshop.data.entity.Category;
+import io.ermdev.cshop.data.entity.Item;
+import io.ermdev.cshop.data.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

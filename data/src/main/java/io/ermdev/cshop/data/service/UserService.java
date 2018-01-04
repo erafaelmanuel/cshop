@@ -6,7 +6,7 @@ import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.RoleRepository;
 import io.ermdev.cshop.data.mapper.UserRepository;
-import io.ermdev.cshop.model.entity.User;
+import io.ermdev.cshop.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

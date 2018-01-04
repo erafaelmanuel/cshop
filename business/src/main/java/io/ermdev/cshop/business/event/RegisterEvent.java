@@ -1,6 +1,6 @@
 package io.ermdev.cshop.business.event;
 
-import io.ermdev.cshop.model.entity.VerificationToken;
+import io.ermdev.cshop.data.entity.VerificationToken;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;

@@ -2,7 +2,7 @@ package io.ermdev.cshop.web.controller;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.UserService;
-import io.ermdev.cshop.model.entity.User;
+import io.ermdev.cshop.data.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

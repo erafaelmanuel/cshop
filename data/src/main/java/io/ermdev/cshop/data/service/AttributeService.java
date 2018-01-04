@@ -4,7 +4,7 @@ import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.mapper.AttributeRepository;
-import io.ermdev.cshop.model.entity.Attribute;
+import io.ermdev.cshop.data.entity.Attribute;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

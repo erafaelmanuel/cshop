@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.mapper;
 
-import io.ermdev.cshop.model.entity.Category;
+import io.ermdev.cshop.data.entity.Category;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

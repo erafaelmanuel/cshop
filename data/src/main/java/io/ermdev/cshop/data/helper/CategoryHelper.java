@@ -2,7 +2,7 @@ package io.ermdev.cshop.data.helper;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.CategoryService;
-import io.ermdev.cshop.model.entity.Category;
+import io.ermdev.cshop.data.entity.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.mapper;
 
-import io.ermdev.cshop.model.entity.VerificationToken;
+import io.ermdev.cshop.data.entity.VerificationToken;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;

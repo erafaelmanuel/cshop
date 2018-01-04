@@ -4,8 +4,8 @@ import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.UserService;
-import io.ermdev.cshop.model.entity.User;
-import io.ermdev.cshop.model.resource.Error;
+import io.ermdev.cshop.data.entity.User;
+import io.ermdev.cshop.data.model.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.data.mapper.RoleRepository;
-import io.ermdev.cshop.model.entity.Role;
+import io.ermdev.cshop.data.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

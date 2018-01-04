@@ -2,8 +2,8 @@ package io.ermdev.cshop.security.config;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.UserService;
-import io.ermdev.cshop.model.entity.Role;
-import io.ermdev.cshop.model.entity.User;
+import io.ermdev.cshop.data.entity.Role;
+import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.security.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -16,11 +16,6 @@
             <groupId>io.ermdev</groupId>
             <artifactId>data</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>model</artifactId>
-        </dependency>
     </dependencies>
 
 

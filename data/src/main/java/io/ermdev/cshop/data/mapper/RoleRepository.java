@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.mapper;
 
-import io.ermdev.cshop.model.entity.Role;
+import io.ermdev.cshop.data.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

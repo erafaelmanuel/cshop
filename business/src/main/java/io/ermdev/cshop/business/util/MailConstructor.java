@@ -1,7 +1,7 @@
 package io.ermdev.cshop.business.util;
 
-import io.ermdev.cshop.model.entity.User;
-import io.ermdev.cshop.model.entity.VerificationToken;
+import io.ermdev.cshop.data.entity.User;
+import io.ermdev.cshop.data.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;

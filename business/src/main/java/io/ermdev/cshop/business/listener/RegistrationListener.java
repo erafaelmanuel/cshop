@@ -3,7 +3,7 @@ package io.ermdev.cshop.business.listener;
 import io.ermdev.cshop.business.event.RegisterEvent;
 import io.ermdev.cshop.business.util.MailConstructor;
 import io.ermdev.cshop.data.service.VerificationTokenService;
-import io.ermdev.cshop.model.entity.VerificationToken;
+import io.ermdev.cshop.data.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;

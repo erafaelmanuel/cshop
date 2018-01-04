@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.mapper;
 
-import io.ermdev.cshop.model.entity.Tag;
+import io.ermdev.cshop.data.entity.Tag;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

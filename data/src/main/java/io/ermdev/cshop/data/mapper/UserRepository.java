@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.mapper;
 
-import io.ermdev.cshop.model.entity.User;
+import io.ermdev.cshop.data.entity.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
