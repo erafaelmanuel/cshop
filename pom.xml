@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
             <artifactId>mapfierJ</artifactId>
-            <version>v1.0-beta.5.0</version>
+            <version>v1.0-beta.6.0</version>
         </dependency>
     </dependencies>
 </project>
