@@ -1,4 +1,4 @@
-package io.ermdev.cshop.data.mapper;
+package io.ermdev.cshop.data.repository;
 
 import io.ermdev.cshop.data.entity.VerificationToken;
 import org.apache.ibatis.annotations.*;

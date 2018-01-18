@@ -1,6 +1,6 @@
 package io.ermdev.cshop.core.config;
 
-import io.ermdev.cshop.data.mapper.InitMapper;
+import io.ermdev.cshop.data.repository.InitMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,4 +1,4 @@
-package io.ermdev.cshop.data.mapper;
+package io.ermdev.cshop.data.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

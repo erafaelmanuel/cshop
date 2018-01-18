@@ -3,7 +3,7 @@ package io.ermdev.cshop.data.service;
 import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.mapper.CategoryRepository;
+import io.ermdev.cshop.data.repository.CategoryRepository;
 import io.ermdev.cshop.data.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
