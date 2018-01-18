@@ -10,7 +10,6 @@
         <module>business</module>
         <module>commons</module>
         <module>core</module>
-        <module>model</module>
         <module>data</module>
         <module>security</module>
         <module>web</module>
@@ -64,12 +63,6 @@
             <dependency>
                 <groupId>io.ermdev</groupId>
                 <artifactId>data</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>model</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
