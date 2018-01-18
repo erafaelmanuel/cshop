@@ -7,26 +7,24 @@ For questions or suggestions please contact me at erafaelmanuel@gmail.com
 ```
     .
     ├── business
-    |     ├── event  
+    |     ├── event
     |     ├── listener
     |     ├── util
     |     └── pom.xml
     ├── commons
-    |     ├── util  
+    |     ├── util
     |     └── pom.xml
     ├── core
     |     ├── configuration  
     |     ├── main.java 
     |     └── pom.xml
     ├── data
-    |     ├── exception  
-    |     ├── mapper  
+    |     ├── entity
+    |     ├── exception
+    |     ├── mapper
+    |     ├── model
     |     ├── service
     |     ├── helper
-    |     └── pom.xml
-    ├── model
-    |     ├── entity  
-    |     ├── resource
     |     └── pom.xml
     ├── security
     |     ├── annotation  
