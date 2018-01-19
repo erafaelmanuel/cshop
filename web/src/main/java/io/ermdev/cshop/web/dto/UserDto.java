@@ -10,6 +10,7 @@ public class UserDto {
     @NotNull
     @NotEmpty(message = "Name is required")
     public String name;
+
     @NotNull
     @NotEmpty(message = "Password is required")
     private String password;

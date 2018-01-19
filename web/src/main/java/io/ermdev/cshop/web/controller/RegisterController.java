@@ -63,8 +63,8 @@ public class RegisterController {
             User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
             try {
-                String url = messageSource.getMessage("application.context.url", null, null);
-                String token = UUID.randomUUID().toString();
+                final String url = messageSource.getMessage("cshop.url", null, null);
+                final String token = UUID.randomUUID().toString();
 
                 user = userService.add(user);
                 publisher.publishEvent(new RegisterEvent(new VerificationToken(token, user), url, null));
@@ -140,7 +140,7 @@ public class RegisterController {
                 throw new TokenException("Your email already registered");
             } else {
                 String newToken = UUID.randomUUID().toString();
-                String url = messageSource.getMessage("application.context.url", null, null);
+                String url = messageSource.getMessage("cshop.url", null, null);
 
                 verificationToken.setToken(newToken);
                 verificationTokenService.add(verificationToken);

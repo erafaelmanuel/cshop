@@ -1,18 +1,16 @@
-package io.ermdev.cshop.business.event;
+package io.ermdev.cshop.business.register;
 
 import io.ermdev.cshop.data.entity.VerificationToken;
-import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;
 
-public class RegisterEvent extends ApplicationEvent {
+public class RegisterSource {
 
     private VerificationToken verificationToken;
     private String url;
     private Locale locale;
 
-    public RegisterEvent(VerificationToken verificationToken, String url, Locale locale) {
-        super(verificationToken);
+    public RegisterSource(VerificationToken verificationToken, String url, Locale locale) {
         this.verificationToken = verificationToken;
         this.url = url;
         this.locale = locale;
