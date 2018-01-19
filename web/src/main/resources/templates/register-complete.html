@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content="Ecommerce for clothing"/>
-    <meta name="author" content="Rafael Manuel"/>
+    <meta name="description" th:content="#{cshop.description}"/>
+    <meta name="author" th:content="#{cshop.author}"/>
 
     <title>Cloth Shop</title>
     <!-- Google material fonts -->
@@ -25,17 +25,11 @@
 
     <div class="alert alert-success registration-message" role="alert">
         <h4 class="alert-heading">Message</h4>
-        <p>
-            Your account has been created and an activation link has been sent to the email address you entered.
-            Note that you must activate the account by selecting the activation link when you get the email
-            before you can login. You have 24 hours to activate your account.
-        </p>
-        <p>You can resend the verification email if you have not received the messaged.</p>
+        <p th:text="#{register.message.complete}" />
         <form action="/register/resend-verification" method="post">
             <input type="hidden" name="userId" th:value="${userId}"/>
             <button class="btn btn-success">Resend Email</button>
         </form>
-
     </div>
 
     <!-- Footer -->

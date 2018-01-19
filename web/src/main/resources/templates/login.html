@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content="Ecommerce for clothing"/>
-    <meta name="author" content="Rafael Manuel"/>
+    <meta name="description" th:content="#{cshop.description}"/>
+    <meta name="author" th:content="#{cshop.author}"/>
 
     <title>Cloth Shop</title>
     <!-- Google material fonts -->
@@ -25,10 +25,10 @@
 
     <div class="login-page">
         <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
-            <p th:text="#{message.login.activate.success}"/>
+            <p th:text="#{login.message.success}"/>
         </div>
         <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
-            <p th:text="#{message.login.error}"/>
+            <p th:text="#{login.message.error}"/>
         </div>
         <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
             <h2>Welcome Back</h2>
