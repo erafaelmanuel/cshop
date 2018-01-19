@@ -1,6 +1,5 @@
 package io.ermdev.cshop.business.register;
 
-import io.ermdev.cshop.business.event.RegisterEvent;
 import io.ermdev.cshop.business.util.MailConstructor;
 import io.ermdev.cshop.data.entity.VerificationToken;
 import io.ermdev.cshop.data.service.VerificationTokenService;
@@ -34,7 +33,7 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
     }
 
     @Override
-    public void onApplicationEvent(io.ermdev.cshop.business.event.RegisterEvent registerEvent) {
+    public void onApplicationEvent(RegisterEvent registerEvent) {
         try {
             confirmRegistration(registerEvent);
         } catch (UnsupportedEncodingException | MessagingException | MailParseException e) {
@@ -43,9 +42,10 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
     }
 
     private void confirmRegistration(RegisterEvent event) throws UnsupportedEncodingException, MessagingException {
-        VerificationToken verificationToken = event.getVerificationToken();
-        String url = event.getUrl();
-        Locale locale = event.getLocale();
+        final RegisterSource source = (RegisterSource) event.getSource();
+        final VerificationToken verificationToken = source.getVerificationToken();
+        final String url = source.getUrl();
+        final Locale locale = source.getLocale();
 
         verificationTokenService.add(verificationToken);
 

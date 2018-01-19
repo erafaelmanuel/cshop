@@ -1,7 +1,8 @@
 package io.ermdev.cshop.web.controller;
 
 import io.ermdev.cshop.business.event.MailEvent;
-import io.ermdev.cshop.business.event.RegisterEvent;
+import io.ermdev.cshop.business.register.RegisterEvent;
+import io.ermdev.cshop.business.register.RegisterSource;
 import io.ermdev.cshop.business.util.MailConstructor;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
@@ -65,9 +66,13 @@ public class RegisterController {
             try {
                 final String url = messageSource.getMessage("cshop.url", null, null);
                 final String token = UUID.randomUUID().toString();
-
+                final RegisterSource registerSource = new RegisterSource();
                 user = userService.add(user);
-                publisher.publishEvent(new RegisterEvent(new VerificationToken(token, user), url, null));
+
+                registerSource.setVerificationToken(new VerificationToken(token, user));
+                registerSource.setUrl(url);
+
+                publisher.publishEvent(new RegisterEvent(registerSource));
                 model.addAttribute("userId", user.getId());
             } catch (EmailExistsException e) {
                 result.rejectValue("email", "message.error");

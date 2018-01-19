@@ -10,6 +10,8 @@ public class RegisterSource {
     private String url;
     private Locale locale;
 
+    public RegisterSource() {}
+
     public RegisterSource(VerificationToken verificationToken, String url, Locale locale) {
         this.verificationToken = verificationToken;
         this.url = url;
