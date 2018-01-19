@@ -16,7 +16,7 @@ public interface InitMapper {
     void useDatabase();
 
     @Insert("create table if not exists tbluser(id bigint not null auto_increment, name varchar(45), email " +
-            "varchar(45), username varchar(45), password varchar(45), activated tinyint(1), primary key(id))")
+            "varchar(45), username varchar(45), password varchar(45), enabled tinyint(1), primary key(id))")
     void createUserTable();
 
     @Insert("create table if not exists tblrole(id bigint not null auto_increment, name varchar(45), " +
