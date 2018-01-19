@@ -1,4 +1,4 @@
-package io.ermdev.cshop.business.register;
+package io.ermdev.cshop.business.verification;
 
 @FunctionalInterface
 public interface OnVerificationSuccess {

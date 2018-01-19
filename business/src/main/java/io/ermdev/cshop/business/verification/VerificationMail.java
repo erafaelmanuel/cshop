@@ -1,4 +1,4 @@
-package io.ermdev.cshop.business.register;
+package io.ermdev.cshop.business.verification;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

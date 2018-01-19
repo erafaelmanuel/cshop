@@ -1,7 +1,7 @@
 package io.ermdev.cshop.web.controller;
 
-import io.ermdev.cshop.business.register.VerificationEvent;
-import io.ermdev.cshop.business.register.VerificationSource;
+import io.ermdev.cshop.business.verification.VerificationEvent;
+import io.ermdev.cshop.business.verification.VerificationSource;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.entity.VerificationToken;
 import io.ermdev.cshop.data.exception.EmailExistsException;

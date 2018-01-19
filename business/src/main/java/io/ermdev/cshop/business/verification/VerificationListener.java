@@ -1,4 +1,4 @@
-package io.ermdev.cshop.business.register;
+package io.ermdev.cshop.business.verification;
 
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.service.VerificationTokenService;
