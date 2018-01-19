@@ -138,14 +138,14 @@ public class RegisterController {
                 verificationSource.setVerificationToken(new VerificationToken(newToken, user));
                 verificationSource.setUrl(url);
                 if (!user.getEnabled()) {
-
                     publisher.publishEvent(new VerificationEvent(verificationSource));
-                    model.addAttribute("userId", verificationToken.getUserId());
+                    model.addAttribute("userId", userId);
                     return showRegisterComplete(model);
                 }
                 throw new TokenException("Your email already registered");
+            } else {
+                return "register";
             }
-            return "register";
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";

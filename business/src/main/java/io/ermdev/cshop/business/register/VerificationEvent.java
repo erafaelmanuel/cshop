@@ -11,6 +11,10 @@ public class VerificationEvent extends ApplicationEvent {
         super(source);
     }
 
+    public void setSource(VerificationSource source) {
+        super.source = source;
+    }
+
     public void setOnVerificationSuccess(OnVerificationSuccess onSuccess) {
         this.onSuccess = onSuccess;
     }
@@ -21,11 +25,11 @@ public class VerificationEvent extends ApplicationEvent {
 
     public void callSuccess() {
         if(onSuccess != null)
-            onSuccess.call();
+            onSuccess.call((VerificationSource) getSource());
     }
 
     public void callFailure() {
         if(onFailure != null)
-            onFailure.call();
+            onFailure.call((VerificationSource) getSource());
     }
 }

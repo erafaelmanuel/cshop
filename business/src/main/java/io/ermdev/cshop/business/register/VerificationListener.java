@@ -25,17 +25,22 @@ public class VerificationListener implements ApplicationListener<VerificationEve
     }
 
     @Override
-    public void onApplicationEvent(VerificationEvent registerEvent) {
+    public void onApplicationEvent(VerificationEvent event) {
         try {
-            confirmRegistration(registerEvent);
+            removeExistingVerificationToken(event);
+            confirmRegistration(event);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void removeExistingVerificationToken(VerificationEvent event) {
+        final Long userId = ((VerificationSource) event.getSource()).getVerificationToken().getUserId();
+        verificationTokenService.deleteByUserId(userId);
+    }
+
     private void confirmRegistration(VerificationEvent event) throws Exception {
         final VerificationSource source = (VerificationSource) event.getSource();
-
         verificationTokenService.add(source.getVerificationToken());
         mailSender.send(verificationMail.constructVerificationMail(source).getMimeMessage());
     }
