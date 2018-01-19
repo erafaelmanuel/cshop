@@ -1,7 +1,5 @@
-package io.ermdev.cshop.business.util;
+package io.ermdev.cshop.business.register;
 
-import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,29 +12,32 @@ import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 @Component
-public class MailConstructor {
+public class VerificationMail {
 
     private MessageSource messageSource;
     private JavaMailSender mailSender;
 
     @Autowired
-    public MailConstructor(MessageSource messageSource, JavaMailSender mailSender) {
+    public VerificationMail(MessageSource messageSource, JavaMailSender mailSender) {
         this.messageSource = messageSource;
         this.mailSender = mailSender;
     }
 
-    public MimeMailMessage constructVerificationMail(VerificationToken verificationToken, String url, Locale locale)
+    public MimeMailMessage constructVerificationMail(VerificationSource source)
             throws UnsupportedEncodingException, MessagingException {
-        User user = verificationToken.getUser();
-        String recipientAddress = user.getEmail();
-        String title = messageSource.getMessage("application.title", null, null);
-        String subject = messageSource.getMessage("mail.sub.accntActivation", new Object[]{user.getName(), title}, null);
-        String confirmationUrl = url + "/register/confirmation?token=" + verificationToken.getToken();
+
+        final String address = messageSource.getMessage("cshop.email", null, source.getLocale());
+        final String recipientAddress = source.getVerificationToken().getUser().getEmail();
+        final String title = messageSource.getMessage("cshop.author", null, source.getLocale());
+        final String subject = messageSource.getMessage("register.mail.activation",
+                new Object[]{source.getVerificationToken().getUser().getName(), title}, source.getLocale());
+        final String confirmationUrl = String.format(Locale.ENGLISH, "%s/register/confirmation?token=%s",
+                source.getUrl(), source.getVerificationToken().getToken());
 
         MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
         mailMessage.setTo(recipientAddress);
         mailMessage.setSubject(subject);
-        mailMessage.getMimeMessage().setFrom(new InternetAddress("ermdev.io@gmail.com", title));
+        mailMessage.getMimeMessage().setFrom(new InternetAddress(address, title));
         mailMessage.getMimeMessage().setContent(confirmationUrl, "text/html");
         return mailMessage;
     }

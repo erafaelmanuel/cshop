@@ -1,16 +1,14 @@
 package io.ermdev.cshop.web.controller;
 
-import io.ermdev.cshop.business.event.MailEvent;
-import io.ermdev.cshop.business.register.RegisterEvent;
-import io.ermdev.cshop.business.register.RegisterSource;
-import io.ermdev.cshop.business.util.MailConstructor;
+import io.ermdev.cshop.business.register.VerificationEvent;
+import io.ermdev.cshop.business.register.VerificationSource;
+import io.ermdev.cshop.data.entity.User;
+import io.ermdev.cshop.data.entity.VerificationToken;
 import io.ermdev.cshop.data.exception.EmailExistsException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.service.VerificationTokenService;
-import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.entity.VerificationToken;
 import io.ermdev.cshop.web.dto.UserDto;
 import io.ermdev.cshop.web.exception.TokenException;
 import io.ermdev.mapfierj.SimpleMapper;
@@ -36,18 +34,15 @@ public class RegisterController {
     private VerificationTokenService verificationTokenService;
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
-    private MailConstructor mailConstructor;
     private SimpleMapper mapper;
 
     @Autowired
     public RegisterController(UserService userService, VerificationTokenService verificationTokenService,
-                              ApplicationEventPublisher publisher, MessageSource messageSource,
-                              MailConstructor mailConstructor, SimpleMapper mapper) {
+                              ApplicationEventPublisher publisher, MessageSource messageSource, SimpleMapper mapper) {
         this.userService = userService;
         this.verificationTokenService = verificationTokenService;
         this.publisher = publisher;
         this.messageSource = messageSource;
-        this.mailConstructor = mailConstructor;
         this.mapper = mapper;
     }
 
@@ -64,15 +59,15 @@ public class RegisterController {
             User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
             try {
+                user = userService.add(user);
                 final String url = messageSource.getMessage("cshop.url", null, null);
                 final String token = UUID.randomUUID().toString();
-                final RegisterSource registerSource = new RegisterSource();
-                user = userService.add(user);
+                final VerificationSource verificationSource = new VerificationSource();
 
-                registerSource.setVerificationToken(new VerificationToken(token, user));
-                registerSource.setUrl(url);
+                verificationSource.setVerificationToken(new VerificationToken(token, user));
+                verificationSource.setUrl(url);
 
-                publisher.publishEvent(new RegisterEvent(registerSource));
+                publisher.publishEvent(new VerificationEvent(verificationSource));
                 model.addAttribute("userId", user.getId());
             } catch (EmailExistsException e) {
                 result.rejectValue("email", "message.error");
@@ -134,26 +129,35 @@ public class RegisterController {
     public String resendVerificationToken(@RequestParam("userId") Long userId, Model model)
             throws UnsupportedEncodingException, MessagingException {
         try {
-            if (userId == null)
-                return "register";
-            final User user = userService.findById(userId);
-            final VerificationToken verificationToken = new VerificationToken();
+            if(userId != null) {
+                final User user = userService.findById(userId);
+                final VerificationToken verificationToken = new VerificationToken();
 
-            verificationToken.setUser(user);
-            if (verificationToken.getUser().getEnabled()) {
-                verificationTokenService.deleteByUserId(userId);
-                throw new TokenException("Your email already registered");
-            } else {
-                String newToken = UUID.randomUUID().toString();
-                String url = messageSource.getMessage("cshop.url", null, null);
+                if (user.getEnabled()) {
+                    verificationTokenService.deleteByUserId(userId);
+                    throw new TokenException("Your email already registered");
+                } else {
+                    String newToken = UUID.randomUUID().toString();
+                    String url = messageSource.getMessage("cshop.url", null, null);
 
-                verificationToken.setToken(newToken);
-                verificationTokenService.add(verificationToken);
-                publisher.publishEvent(new MailEvent(mailConstructor.constructVerificationMail(verificationToken, url, null)));
+                    verificationToken.setUser(user);
+                    verificationToken.setToken(newToken);
 
-                model.addAttribute("userId", verificationToken.getUserId());
-                return showRegisterComplete(model);
+                    verificationTokenService.deleteByUserId(userId);
+                    verificationTokenService.add(verificationToken);
+
+                    final VerificationSource verificationSource = new VerificationSource();
+
+                    verificationSource.setVerificationToken(new VerificationToken(newToken, user));
+                    verificationSource.setUrl(url);
+
+                    publisher.publishEvent(new VerificationEvent(verificationSource));
+
+                    model.addAttribute("userId", verificationToken.getUserId());
+                    return showRegisterComplete(model);
+                }
             }
+            return "register";
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";

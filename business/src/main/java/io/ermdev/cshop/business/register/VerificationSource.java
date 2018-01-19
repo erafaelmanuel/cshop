@@ -4,15 +4,15 @@ import io.ermdev.cshop.data.entity.VerificationToken;
 
 import java.util.Locale;
 
-public class RegisterSource {
+public class VerificationSource {
 
     private VerificationToken verificationToken;
     private String url;
     private Locale locale;
 
-    public RegisterSource() {}
+    public VerificationSource() {}
 
-    public RegisterSource(VerificationToken verificationToken, String url, Locale locale) {
+    public VerificationSource(VerificationToken verificationToken, String url, Locale locale) {
         this.verificationToken = verificationToken;
         this.url = url;
         this.locale = locale;

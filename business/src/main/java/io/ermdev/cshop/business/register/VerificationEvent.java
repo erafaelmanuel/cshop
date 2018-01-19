@@ -2,9 +2,9 @@ package io.ermdev.cshop.business.register;
 
 import org.springframework.context.ApplicationEvent;
 
-public class RegisterEvent extends ApplicationEvent {
+public class VerificationEvent extends ApplicationEvent {
 
-    public RegisterEvent(RegisterSource source) {
+    public VerificationEvent(VerificationSource source) {
         super(source);
     }
 }
