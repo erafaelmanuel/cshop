@@ -131,31 +131,19 @@ public class RegisterController {
         try {
             if(userId != null) {
                 final User user = userService.findById(userId);
-                final VerificationToken verificationToken = new VerificationToken();
+                final String newToken = UUID.randomUUID().toString();
+                final String url = messageSource.getMessage("cshop.url", null, null);
+                final VerificationSource verificationSource = new VerificationSource();
 
-                if (user.getEnabled()) {
-                    verificationTokenService.deleteByUserId(userId);
-                    throw new TokenException("Your email already registered");
-                } else {
-                    String newToken = UUID.randomUUID().toString();
-                    String url = messageSource.getMessage("cshop.url", null, null);
-
-                    verificationToken.setUser(user);
-                    verificationToken.setToken(newToken);
-
-                    verificationTokenService.deleteByUserId(userId);
-                    verificationTokenService.add(verificationToken);
-
-                    final VerificationSource verificationSource = new VerificationSource();
-
-                    verificationSource.setVerificationToken(new VerificationToken(newToken, user));
-                    verificationSource.setUrl(url);
+                verificationSource.setVerificationToken(new VerificationToken(newToken, user));
+                verificationSource.setUrl(url);
+                if (!user.getEnabled()) {
 
                     publisher.publishEvent(new VerificationEvent(verificationSource));
-
                     model.addAttribute("userId", verificationToken.getUserId());
                     return showRegisterComplete(model);
                 }
+                throw new TokenException("Your email already registered");
             }
             return "register";
         } catch (EntityNotFoundException | TokenException e) {
