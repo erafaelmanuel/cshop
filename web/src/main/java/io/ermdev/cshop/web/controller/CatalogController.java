@@ -87,7 +87,7 @@ public class CatalogController {
             e.printStackTrace();
         }
 
-        return "v2/catalog";
+        return "catalog";
     }
 
     @PostMapping("catalog/show/modal")
@@ -98,7 +98,7 @@ public class CatalogController {
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
-        return "v2/modal/cart-modal";
+        return "modal/cart-modal";
     }
 
 

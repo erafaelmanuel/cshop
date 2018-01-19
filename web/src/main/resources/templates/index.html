@@ -14,13 +14,13 @@
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
 
     <!-- Custom styles for header html -->
-    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
 
     <!-- Custom styles for header html -->
-    <link th:href="@{/css/v2/login.css}" rel="stylesheet"/>
+    <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
-    <th:block th:include="v2/header :: header"/>
+    <th:block th:include="header :: header"/>
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">
@@ -33,6 +33,6 @@
     <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/v2/header.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
 </body>
 </html>

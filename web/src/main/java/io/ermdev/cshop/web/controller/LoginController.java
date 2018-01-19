@@ -24,7 +24,7 @@ public class LoginController {
 
     @GetMapping("login")
     public String showLogin() {
-        return "v2/login";
+        return "login";
     }
 
     @PostMapping("login/success")
@@ -34,7 +34,7 @@ public class LoginController {
             model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
         } catch (EntityNotFoundException e) {
             model.addAttribute("message", e.getMessage());
-            return "v2/error/500";
+            return "error/500";
         }
         model.addAttribute("hasUser", true);
         return "redirect:/catalog";

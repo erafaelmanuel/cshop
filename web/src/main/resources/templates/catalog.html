@@ -16,20 +16,20 @@
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
 
   <!-- Custom styles for header html -->
-  <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+  <link th:href="@{/css/header.css}" rel="stylesheet"/>
 
   <!-- Custom styles for this html -->
-  <link th:href="@{/css/v2/catalog.css}" rel="stylesheet"/>
+  <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
 
   <!-- Custom styles for this html -->
-  <link th:href="@{/css/v2/cart-modal.css}" rel="stylesheet"/>
+  <link th:href="@{/css/cart-modal.css}" rel="stylesheet"/>
 
 </head>
 
 <body>
 
   <!-- Navigation -->
-  <th:block th:include="v2/header :: header"/>
+  <th:block th:include="header :: header"/>
 
   <!-- Page Content -->
   <div class="container">
@@ -154,9 +154,9 @@
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-  <script th:src="@{/js/v2/header.js}"></script>
-  <script th:src="@{/js/v2/cart.js}"></script>
-  <script th:src="@{/js/v2/catalog.js}"></script>
+  <script th:src="@{/js/header.js}"></script>
+  <script th:src="@{/js/cart.js}"></script>
+  <script th:src="@{/js/catalog.js}"></script>
 </body>
 
 </html>

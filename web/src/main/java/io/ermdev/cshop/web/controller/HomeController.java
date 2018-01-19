@@ -22,6 +22,6 @@ public class HomeController {
 
     @GetMapping
     public String showHomePage(ModelMap modelMap) {
-        return "v2/index";
+        return "index";
     }
 }

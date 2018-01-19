@@ -1,64 +1,39 @@
-(function() {
-    document.getElementById("form-login").onsubmit = function(){
-        var username = document.getElementById("username");
-        var password = document.getElementById("password");
-        if(!validate(username, password)) return false;
-    };
+(function(){
+    $(document).on("submit",".login-form", function(){
+        return validateLogin();
+    });
 
-    (function() {
-        var elements = document.getElementsByClassName("form-control");
-        for (e of elements) {
-            e.addEventListener("focusout", function(){
-                changeState(this);
-            })
-            changeState(e);
-        }
-        document.querySelector("#username").addEventListener("focusin", function() {
-            document.querySelector("#username + label").style.color="#16a085";
-            document.querySelector("#username + label").style.opacity=1;
-            document.querySelector("#username + label").innerHTML="Username";
-        });
-
-        document.querySelector("#password").addEventListener("focusin", function() {
-            document.querySelector("#password + label").style.color="#16a085";
-            document.querySelector("#password + label").style.opacity=1;
-            document.querySelector("#password + label").innerHTML="Password";
-        });
-
-        document.querySelector("#username").addEventListener("focusout", function() {
-            document.querySelector("#username + label").style.color="#000";
-            document.querySelector("#username + label").style.opacity=0.6;
-        });
-        document.querySelector("#password").addEventListener("focusout", function() {
-            document.querySelector("#password + label").style.color="#000";
-            document.querySelector("#password + label").style.opacity=0.6;
-        });
-
-        
-    })();
-
-    function validate(username, password) {
+    function validateLogin() {
         var isValid = true;
-
-        if(username.value.trim() === "") {
-            document.querySelector("#username + label").style.color="#c0392b";
-            document.querySelector("#username + label").innerHTML="Please enter a username";
+        if($("input[name='username']").val().trim() === "") {
+            $("input[name='username']").css("border","1px solid #e74c3c");
             isValid = false;
         }
-        if(password.value.trim() === "") {
-            document.querySelector("#password + label").style.color="#c0392b";
-            document.querySelector("#password + label").innerHTML="Please enter a password";
+        if($("input[name='password']").val().trim() === "") {
+            $("input[name='password']").css("border","1px solid #e74c3c");
             isValid = false;
         }
         return isValid;
     }
 
-    function changeState(formControl){
-        if(formControl.value.length > 0){
-        formControl.className += " has-value";
-      }
-      else{
-        formControl.className = "form-control";
-      }  
+    $(document).on("submit",".register-form", function(){
+         return validateRegister();
+     });
+
+    function validateRegister() {
+        var isValid = true;
+        if($("input[name='name']").val().trim() === "") {
+            $("input[name='name']").css("border","1px solid #e74c3c");
+            isValid = false;
+        }
+        if($("input[name='password']").val().trim() === "") {
+            $("input[name='password']").css("border","1px solid #e74c3c");
+            isValid = false;
+        }
+        if($("input[name='email']").val().trim() === "") {
+            $("input[name='email']").css("border","1px solid #e74c3c");
+            isValid = false;
+        }
+        return isValid;
     }
 })();

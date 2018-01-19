@@ -1,102 +1,129 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
 
-body {
-  font-family:Roboto, sans-serif;
-  font-size:14px;
-  color:rgba(0, 0, 0, 0.22);
-  background: #ecf0f1;
+.login-page {
+  width: 360px;
+  padding-top: 5%;
+  margin: auto;
+  padding-bottom: 200px;
 }
 
-#message-error {
-    width: 300px;
-    color: #c0392b;
+.login-title {
+  text-align: center;
+}
+
+.login-title p {
+  font-weight: 300;
+  color: #7f8c8d;
+}
+
+.login-error {
+  display: flex;
+  width: 360px;
+  height: 86px;
+}
+
+.login-error p {
+    flex: 1;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     padding: 8px 16px;
     border-radius: 3px;
-    background: #f5beba;
-    border: 1px solid #c0392b;
 }
 
-#wrapper {
-    height: 280px;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 3px;
-    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.3);
-    background: #fff;
+.activation-message {
+    display: flex;
+    width: 360px;
+    height: 86px;
 }
 
-#header {
-    background:#7f8c8d;
-    overflow: hidden;
-    height: 30px;
+.activation-message p {
+    flex: 1;
     text-align: center;
-    color: #fff;
-    vertical-align: middle;
-    line-height: 5px;
+    margin: auto;
+    padding: 8px 16px;
+    border-radius: 3px;
 }
 
-#form-login {
-    padding: 2.0em;
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  -webkit-box-shadow: 0 2px 10px 0 rgba(135,152,164,0.8);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+  background: #43A047;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+.form .message a {
+  color: #4CAF50;
+  text-decoration: none;
 }
 
-.input-group{
-  position:relative;
-  margin:26px auto;
+.registration-message {
+    width: 80%;
+    margin: 8% auto;
+    margin-bottom: 400px;
 }
 
+@media (max-width:360px) {
 
-.form-control{
-  position:relative;
-  z-index:1;
-  width:100%;
-  height:35px;
-  font-size:12px;
-  border:none;
-  border-bottom:1px solid rgba(0, 0, 0, 0.85);
-  background-color:transparent;
-}
-  
-.form-control + label{
-    position:absolute;
-    top:10px;
-    left:3px;
-    font-size:12px;
-    color:rgba(0, 0, 0, 0.6);
-    transition: all .2s ease-out;
-}
+  .login-page {
+    width: 90%;
+    padding-bottom: 80px;
+  }
 
-.form-control:focus{
-    height:34px;
-    outline: none;
-    border-width:2px;
-    border-color:#16a085;
-    transition: all .2s ease-out;
-}
+  .login-error {
+    width: 100%;
+  }
 
-.form-control:focus + label,
-.form-control.has-value + label
-{
-    top:-15px;
-    color:#16a085;
-    font-size:11px;
-}
-.form-control.has-value:not(:focus) + label{
-    color:rgba(0, 0, 0, 0.6);
-}
+  .register-error {
+      width: 100%;
+    }
 
-.button{
-    background-color:#16a085;
-    color:white;
-    font-size:12px;
-    text-transform:uppercase;
-    font-weight:500;
-    border:1px solid #16a085;
-    height:28px;
-    padding:0 26px;
-    border-radius:2px;
-    box-shadow:0 4px 2px rgba(0, 0, 0, 0.1);
+  .form {
+    width: 100%;
+    padding: 45px 8px;
+  }
+
+  .form input {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .form button {
+    padding: 10px;
+    font-size: 12px;
+  }
 }

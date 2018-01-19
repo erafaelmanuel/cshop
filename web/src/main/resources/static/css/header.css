@@ -1,69 +1,115 @@
-
-.navbar {
-  padding: 0px 250px;
-}
-
-#search-item {
-    width: 450px;
-}
-
-.dropdown-menu {
-  border-top: 2px solid #c0392b;
-  height: 310px;
-  overflow-y: hidden;
-}
-
-#dropdown-cart {
-  list-style: none;
-  width: 300px;
-  overflow-y: scroll;
-  height: 250px;
-  padding: 0px;
-  margin: 0px;
-}
-
-.form-remove-to-cart {
-    float: right;
-    padding: 15px 0px;
-    margin-right: 10px;
-}
-
-.cart-item-image {
-  width: 40px;
-  height: 50px;
-  border: 1px solid #ecf0f1;
-  margin-left: 5px;
-}
-
-.cart-item-title {
-  display: inline;
-  font-weight: bold;
-}
-
-.dropdown-footer {
+body {
+  padding-top: 54px;
   background: #ecf0f1;
-  width: 100%;
-  height: 60px;
-  padding: 20px 0px 5px 120px
 }
 
-.button{
-    color:white;
-    font-size:10px;;
-    text-transform:uppercase;
-    font-weight:200;
-    height:24px;
-    border-radius:2px;
-    box-shadow:0 4px 2px rgba(0, 0, 0, 0.1);
-    width: 80px;
+.nav-item {
+    position:relative;
+    display:flex;
 }
 
-.dropdown-footer button:nth-child(1) {
-  border:1px solid #16a085;
-  background-color:#16a085;
+.nav-item .icon {
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
 }
 
-.dropdown-footer button:nth-child(2) {
-  border:1px solid #c0392b;
-  background-color:#c0392b;
+.nav-item .item {
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.nav-item .icon a{
+  margin-top: 5px;
+}
+
+.nav-item a i{
+  color: #fff;
+  font-size: 20px;
+}
+
+.account-item .dropdown {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.account-item .dropdown .dropdown-menu {
+    margin-top: 17px;
+    -webkit-box-shadow: 0 2px 10px 0 rgba(135,152,164,0.4);
+}
+
+.account-item .dropdown .dropdown-menu a {
+    text-align: left;
+    padding-left: 8px;
+}
+
+.account-item .dropdown .dropdown-menu .dropdown-item{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.account-item .dropdown .dropdown-menu a i{
+    color: #2c3e50;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.account-item .dropdown .dropdown-menu a span{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.badge {
+    position: absolute;
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    border-radius: 2px;
+    min-width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    padding: 0 3px;
+    top: 7px;
+    right: 2px;
+}
+
+#myAccount-button {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    font-size: 12px;
+}
+
+#myAccount-button:hover {
+    color: #fff;
+}
+
+#myAccount-button::after {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: .500em
+}
+
+#myAccount-button span {
+    padding: 1px 6px;
+    border-radius: 2px;
+    border: 1px solid #fff;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 5px;
+    font-weight: 450;
+    font-size: 10px;
+    background: #95a5a6;
+}
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
 }

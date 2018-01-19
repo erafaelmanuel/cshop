@@ -10,7 +10,7 @@ public class AccountController {
 
     @GetMapping("account/dashboard")
     public String showDashboard() {
-        return "v2/dashboard";
+        return "dashboard";
     }
 
     @GetMapping("logout")

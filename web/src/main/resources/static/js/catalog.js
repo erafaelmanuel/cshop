@@ -1,49 +1,25 @@
 (function(){
-    var xmlhttp = new XMLHttpRequest();
 
-    $(document).on("submit", ".form-add-to-cart", function() {
-        var url = $(this).attr("action") + "?" + $(this).serialize();
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                 $("#dropdown-cart").empty();
-                 $("#dropdown-cart").append($(xmlhttp.responseText).find("#dropdown-cart").html());
-            }
-        }
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
-        return false;
-    });
+  $(document).on("show.bs.tooltip", '[data-toggle="tooltip"]', function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 
-    $(document).ready(function(){
-        var url = "/api/category";
-        var categories;
+  $(document).on("hide.bs.tooltip", '[data-toggle="tooltip"]', function() {
+      $('[data-toggle="tooltip"]').tooltip();
+  });
 
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-               categories = JSON.parse(xmlhttp.responseText);
-               $('#tree').treeview({
-                    data: loadAndStartWithParentId(null),
-                    enableLinks: true,
-                    showBorder: false,
-                    highlightSelected: false
-               });
-            }
-        }
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
+  $(".catalog-item-img").mouseover(function(){
+    $(this).find(".card-img-overlay").css("display","block");
+  });
 
-        function loadAndStartWithParentId(parentId) {
-            var _cat = [];
-            for(var c of categories) {
-                if(c.parentId == parentId) {
-                    c.text = c.name;
-                    c.href="/catalog?c=" + c.id;
-                    c.nodes = loadAndStartWithParentId(c.id);
-                    _cat.push(c);
-                }
-            }
-            return _cat;
-        }
-    });
+   $(".card-img-overlay").mouseleave(function(){
+     $(this).css("display","none");
+   });
+   $(".card").mouseleave(function(){
+        $(this).find(".card-img-overlay").css("display","none");
+   });
 })();
