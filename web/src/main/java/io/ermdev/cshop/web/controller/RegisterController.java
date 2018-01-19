@@ -53,7 +53,7 @@ public class RegisterController {
     @GetMapping("register")
     public String showRegister(Model model, UserDto userDto) {
         model.addAttribute("user", userDto);
-        return "v2/register";
+        return "register";
     }
 
     @PostMapping("register")
@@ -65,8 +65,8 @@ public class RegisterController {
             try {
                 String url = messageSource.getMessage("application.context.url", null, null);
                 String token = UUID.randomUUID().toString();
-                user = userService.add(user);
 
+                user = userService.add(user);
                 publisher.publishEvent(new RegisterEvent(new VerificationToken(token, user), url, null));
                 model.addAttribute("userId", user.getId());
             } catch (EmailExistsException e) {
@@ -82,7 +82,7 @@ public class RegisterController {
 
     @PostMapping("register/complete")
     public String showRegisterComplete(Model model){
-        return "v2/register-complete";
+        return "register-complete";
     }
 
     @GetMapping("register/complete")
@@ -90,10 +90,10 @@ public class RegisterController {
         if(userId==null) {
             UserDto userDto = new UserDto();
             model.addAttribute("user", userDto);
-            return "v2/register";
+            return "register";
         } else {
             model.addAttribute("userId", userId);
-            return "v2/register-complete";
+            return "register-complete";
         }
     }
 
@@ -118,10 +118,10 @@ public class RegisterController {
                 verificationTokenService.deleteById(verificationId);
             }
             model.addAttribute("activation", true);
-            return "v2/login";
+            return "login";
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
-            return "v2/error/403";
+            return "error/403";
         }
     }
 
@@ -130,7 +130,7 @@ public class RegisterController {
             throws UnsupportedEncodingException, MessagingException {
         try {
             if (userId == null)
-                return "v2/register";
+                return "register";
             final User user = userService.findById(userId);
             final VerificationToken verificationToken = new VerificationToken();
 
@@ -151,7 +151,7 @@ public class RegisterController {
             }
         } catch (EntityNotFoundException | TokenException e) {
             model.addAttribute("message", e.getMessage());
-            return "v2/error/403";
+            return "error/403";
         }
     }
 }

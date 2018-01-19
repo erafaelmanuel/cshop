@@ -1,32 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}" href="/css/login.css" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Ecommerce for clothing"/>
+    <meta name="author" content="Rafael Manuel"/>
+
+    <title>Cloth Shop</title>
+    <!-- Google material fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/header.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/v2/login.css}" rel="stylesheet"/>
+
 </head>
 <body>
-    <th:block th:include="header :: header"/>
-    <br />
-    <br />
-    <br />
-    <p id="message-error" th:if="${param.error} != null and ${param.error[0]}">Incorrect username or password</p>
-    <div id="wrapper">
-        <div id="header">
-            <p>Login</p>
+    <th:block th:include="v2/header :: header"/>
+
+    <div class="login-page">
+        <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
+            <p th:text="#{message.login.activate.success}"/>
         </div>
-        <form id="form-login" method="post" action="login">
-            <div class="input-group">
-                <input id="username" class="form-control" name="username" autocomplete="off"/>
-                <label for="username">Username</label>
-            </div>
-            <div class="input-group">
-                <input id="password" class="form-control" name="password" type="password" autocomplete="off"/>
-                <label for="password">Password</label>
-            </div>    
-            <button class="button">Login</button>
-        </form>
+        <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
+            <p th:text="#{message.login.error}"/>
+        </div>
+        <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
+            <h2>Welcome Back</h2>
+            <p>You can sign in with your email.</p>
+        </div>
+        <div class="form">
+            <form action="/login" method="post" class="login-form">
+                <input type="text" placeholder="Username" name="username"/>
+                <input type="password" placeholder="Password" name="password"/>
+                <button>login</button>
+                <p class="message">Not registered? <a href="/register">Create an account</a></p>
+            </form>
+        </div>
     </div>
-    <script th:src="@{/js/login.js}" src="/js/login.js"></script>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/v2/header.js}"></script>
 </body>
 </html>
