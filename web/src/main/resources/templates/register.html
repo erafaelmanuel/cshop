@@ -7,22 +7,14 @@
     <meta name="author" th:content="#{cshop.author}"/>
 
     <title>Cloth Shop</title>
-    <!-- Google material fonts -->
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-
-    <!-- Bootstrap core CSS -->
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-
-    <!-- Custom styles for header html -->
     <link th:href="@{/css/header.css}" rel="stylesheet"/>
-
-    <!-- Custom styles for header html -->
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
-
 </head>
 <body>
     <th:block th:include="header :: header"/>
-
     <div class="register-wrapper" enctype="utf8">
         <div class="register-title">
             <h2 th:text="#{register.title}"/>
@@ -50,16 +42,11 @@
             </form>
         </div>
     </div>
-
-    <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
         </div>
-        <!-- /.container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/header.js}"></script>

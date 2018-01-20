@@ -8,158 +8,126 @@
     <meta name="author" th:content="#{cshop.author}"/>
 
     <title>Cloth Shop</title>
-    <!-- Google material fonts -->
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-
-    <!-- Bootstrap core CSS -->
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-
-    <!-- Custom styles for header html -->
     <link th:href="@{/css/header.css}" rel="stylesheet"/>
-
-    <!-- Custom styles for this html -->
     <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
-
-    <!-- Custom styles for this html -->
     <link th:href="@{/css/cart-modal.css}" rel="stylesheet"/>
-
 </head>
-
 <body>
-
-<!-- Navigation -->
-<th:block th:include="header :: header"/>
-
-<!-- Page Content -->
-<div class="container">
-
-    <!-- Page Heading -->
-    <div class="my-4">
-        <h2>Result for "All"</h2>
-        <big th:text="'('+ ${itemCount} + ' Items found)'"/>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 catalog-item" th:each="item : ${items}">
-            <div class="card h-100">
-                <div class="catalog-item-img">
-                    <img class="card-img-top" th:src="@{${item.images[0]}}" alt=""/>
-                    <div href="#" class="card-img-overlay text-center">
-                        <ul class="catalog-item-option">
-                            <li>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to view">
-                                    <i class="material-icons">pageview</i>
-                                </a>
-                            </li>
-                            <li>
-                                <form action="/cart/add" method="get">
-                                    <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                    <span data-toggle="modal" data-target="#">
-                      <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom"
-                         title="Add to cart">
-                        <i class="material-icons">shopping_cart</i>
-                      </a>
-                    </span>
-                                </form>
-                            </li>
-                            <li>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Add to favorite">
-                                    <i class="material-icons">favorite</i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-block">
-                        <h6 class="card-title">
-                            <a href="#"><span th:text="${item.name}"/></a>
-                        </h6>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra
-                            euismod odio, gravida pellentesque urna varius vitae.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-
-    <!-- Pagination -->
-    <ul class="pagination justify-content-center">
-        <li th:class="${page} == 1 ? 'page-item disabled':'page-item'">
-            <a class="page-link" th:href="'/catalog?page=' + ${page-1}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-        <li class="page-item" th:if="${page} != 1">
-            <a class="page-link" href="/catalog?page=1">1</a>
-        </li>
-        <li class="page-item" th:if="${page} != 1 and ${page} !=2">
-            <a class="page-link">...</a>
-        </li>
-        <li th:each="i:${#numbers.sequence(0, pageCount &lt; 3 ? pageCount : 3)}" th:if="${page+i} &lt; ${pageCount}"
-            th:class="${page+i} == ${page} ? 'page-item active':'page-item'">
-            <a class="page-link" th:href="'/catalog?page=' + ${page+i}" th:text="${page+i}"/>
-        </li>
-
-        <li class="page-item" th:if="${page+4} &lt; ${pageCount}">
-            <a class="page-link">...</a>
-        </li>
-        <li th:class="${page} == ${pageCount} ? 'page-item active':'page-item'">
-            <a class="page-link" th:href="'/catalog?page=' + ${pageCount}" th:text="${pageCount}"></a>
-        </li>
-
-
-        <li th:class="${page} == ${pageCount} ? 'page-item disabled':'page-item'">
-            <a class="page-link" th:href="'/catalog?page=' + ${page+1}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    </ul>
-
-</div>
-<!-- /.container -->
-
-<!-- Footer -->
-<footer class="py-5 bg-dark">
+    <th:block th:include="header :: header"/>
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
-    </div>
-    <!-- /.container -->
-</footer>
-
-<!-- Modal -->
-<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cart-modal-title">
-                    <i class="material-icons">assignment_turned_in</i>
-                    Item successfully added to your cart
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="my-4">
+            <h2>Result for "All"</h2>
+            <big th:text="'('+ ${itemCount} + ' Items found)'"/>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 catalog-item" th:each="item : ${items}">
+                <div class="card h-100">
+                    <div class="catalog-item-img">
+                        <img class="card-img-top" th:src="@{${item.images[0]}}" alt=""/>
+                        <div href="#" class="card-img-overlay text-center">
+                            <ul class="catalog-item-option">
+                                <li>
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to view">
+                                        <i class="material-icons">pageview</i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="/cart/add" method="get">
+                                        <input type="hidden" name="itemId" th:value="${item.id}"/>
+                                        <span data-toggle="modal" data-target="#">
+                                            <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom" title="Add to cart">
+                                                <i class="material-icons">shopping_cart</i>
+                                            </a>
+                                        </span>
+                                    </form>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Add to favorite">
+                                        <i class="material-icons">favorite</i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <h6 class="card-title">
+                                <a href="#"><span th:text="${item.name}"/></a>
+                            </h6>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra
+                                euismod odio, gravida pellentesque urna varius vitae.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
-                <button type="button" class="btn btn-success">Proceed to checkout</button>
+        </div>
+        <ul class="pagination justify-content-center">
+            <li th:class="${page} == 1 ? 'page-item disabled':'page-item'">
+                <a class="page-link" th:href="'/catalog?page=' + ${page-1}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item" th:if="${page} != 1">
+                <a class="page-link" href="/catalog?page=1">1</a>
+            </li>
+            <li class="page-item" th:if="${page} != 1 and ${page} !=2">
+                <a class="page-link">...</a>
+            </li>
+            <li th:each="i:${#numbers.sequence(0, pageCount &lt; 3 ? pageCount : 3)}" th:if="${page+i} &lt; ${pageCount}"
+                th:class="${page+i} == ${page} ? 'page-item active':'page-item'">
+                <a class="page-link" th:href="'/catalog?page=' + ${page+i}" th:text="${page+i}"/>
+            </li>
+            <li class="page-item" th:if="${page+4} &lt; ${pageCount}">
+                <a class="page-link">...</a>
+            </li>
+            <li th:class="${page} == ${pageCount} ? 'page-item active':'page-item'">
+                <a class="page-link" th:href="'/catalog?page=' + ${pageCount}" th:text="${pageCount}"></a>
+            </li>
+            <li th:class="${page} == ${pageCount} ? 'page-item disabled':'page-item'">
+                <a class="page-link" th:href="'/catalog?page=' + ${page+1}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
+        </div>
+    </footer>
+    <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cart-modal-title">
+                        <i class="material-icons">assignment_turned_in</i>
+                        Item successfully added to your cart
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Shopping</button>
+                    <button type="button" class="btn btn-success">Proceed to checkout</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Bootstrap core JavaScript -->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/pooper/pooper.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/cart.js}"></script>
-<script th:src="@{/js/catalog.js}"></script>
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/cart.js}"></script>
+    <script th:src="@{/js/catalog.js}"></script>
 </body>
 
 </html>

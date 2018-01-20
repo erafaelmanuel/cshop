@@ -55,7 +55,7 @@ public class RegisterController {
     @PostMapping("register")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model)
             throws UnsatisfiedEntityException, EntityNotFoundException {
-        if(!result.hasErrors()) {
+        if (!result.hasErrors()) {
             User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
             try {
@@ -73,21 +73,21 @@ public class RegisterController {
                 result.rejectValue("email", "message.error");
             }
         }
-        if(result.hasErrors()) {
-            result.rejectValue("email","message.error");
+        if (result.hasErrors()) {
+            result.rejectValue("email", "message.error");
             return showRegister(model, userDto);
         }
         return showRegisterComplete(model);
     }
 
     @PostMapping("register/complete")
-    public String showRegisterComplete(Model model){
+    public String showRegisterComplete(Model model) {
         return "register-complete";
     }
 
     @GetMapping("register/complete")
-    public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId){
-        if(userId==null) {
+    public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId) {
+        if (userId == null) {
             UserDto userDto = new UserDto();
             model.addAttribute("user", userDto);
             return "register";
@@ -105,7 +105,7 @@ public class RegisterController {
 
             final VerificationToken verificationToken = verificationTokenService.findByToken(token);
             final Calendar calendar = Calendar.getInstance();
-            final long remainingTime=verificationToken.getExpiryDate().getTime() - calendar.getTime().getTime();
+            final long remainingTime = verificationToken.getExpiryDate().getTime() - calendar.getTime().getTime();
 
             if (remainingTime <= 0) {
                 throw new TokenException("Token is expired");
@@ -129,7 +129,7 @@ public class RegisterController {
     public String resendVerificationToken(@RequestParam("userId") Long userId, Model model)
             throws UnsupportedEncodingException, MessagingException {
         try {
-            if(userId != null) {
+            if (userId != null) {
                 final User user = userService.findById(userId);
                 final String newToken = UUID.randomUUID().toString();
                 final String url = messageSource.getMessage("cshop.url", null, null);
