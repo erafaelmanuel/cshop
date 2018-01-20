@@ -1,8 +1,5 @@
 package io.ermdev.cshop.web.interceptor;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -13,28 +10,19 @@ import javax.servlet.http.HttpSession;
 @Component
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    private UserService userService;
-
-    @Autowired
-    public LoginInterceptor(UserService userService) {
-        this.userService = userService;
-    }
-
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         try {
             final HttpSession session = request.getSession();
             if (request.getMethod().equalsIgnoreCase("GET")) {
-                String email = request.getUserPrincipal().getName();
-
-                //if email not exist will throw an EntityNotFoundException
-                userService.findByEmail(email);
-
-                response.sendRedirect("/");
-                return false;
+                final Boolean hasUser = (Boolean) session.getAttribute("hasUser");
+                if(hasUser != null && hasUser) {
+                    response.sendRedirect("/");
+                    return false;
+                }
             }
-            return true;
-        } catch (EntityNotFoundException | NullPointerException e) {
+            throw new Exception();
+        } catch (Exception e) {
             return true;
         }
     }
