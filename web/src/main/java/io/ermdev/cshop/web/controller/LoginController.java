@@ -28,7 +28,7 @@ public class LoginController {
     }
 
     @PostMapping("login/success")
-    public String redirectAfterLoginSuccess(Authentication authentication, Model model) {
+    public String onLoginSuccess(Authentication authentication, Model model) {
         try {
             User user = userService.findByUsername(authentication.getName());
             model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
