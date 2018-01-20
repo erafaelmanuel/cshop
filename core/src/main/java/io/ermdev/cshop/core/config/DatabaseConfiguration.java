@@ -1,15 +1,15 @@
 package io.ermdev.cshop.core.config;
 
-import io.ermdev.cshop.data.repository.InitMapper;
+import io.ermdev.cshop.core.bean.DatabaseMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DatabaseConfiguration implements CommandLineRunner{
 
-    private InitMapper initMapper;
+    private DatabaseMapper initMapper;
 
-    public DatabaseConfiguration(InitMapper initMapper) {
+    public DatabaseConfiguration(DatabaseMapper initMapper) {
         this.initMapper = initMapper;
     }
 
