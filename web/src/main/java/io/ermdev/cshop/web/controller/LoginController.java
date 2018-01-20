@@ -37,7 +37,6 @@ public class LoginController {
             return "error/500";
         }
         model.addAttribute("hasUser", true);
-        //return "redirect:/catalog";
-        return "login";
+        return "redirect:/catalog";
     }
 }
