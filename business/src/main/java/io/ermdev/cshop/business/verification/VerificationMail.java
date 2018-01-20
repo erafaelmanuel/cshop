@@ -28,7 +28,7 @@ public class VerificationMail {
 
         final String address = messageSource.getMessage("cshop.email", null, source.getLocale());
         final String recipientAddress = source.getVerificationToken().getUser().getEmail();
-        final String title = messageSource.getMessage("cshop.author", null, source.getLocale());
+        final String title = messageSource.getMessage("cshop.title", null, source.getLocale());
         final String subject = messageSource.getMessage("register.mail.activation",
                 new Object[]{source.getVerificationToken().getUser().getName(), title}, source.getLocale());
         final String confirmationUrl = String.format(Locale.ENGLISH, "%s/register/confirmation?token=%s",
