@@ -28,7 +28,8 @@ public class CatalogController {
     @GetMapping("catalog")
     public String showCatalog(ModelMap modelMap, @RequestParam(required = false, value = "page") Integer page) {
         try {
-
+            page = 1;
+            modelMap.addAttribute("page", page);
         } catch (Exception e) {
             e.printStackTrace();
         }
