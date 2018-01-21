@@ -30,6 +30,7 @@ public class CatalogController {
         try {
             page = 1;
             modelMap.addAttribute("page", page);
+            modelMap.addAttribute("items", itemService.findAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,6 +47,4 @@ public class CatalogController {
         }
         return "modal/cart-modal";
     }
-
-
 }
