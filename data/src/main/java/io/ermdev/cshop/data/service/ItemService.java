@@ -37,127 +37,146 @@ public class ItemService {
 
     public Item findById(Long itemId) throws EntityNotFoundException {
         final Item item = itemRepository.findById(itemId);
-        if(item == null)
+        if(item != null) {
+            final Category category = categoryRepository.findByItemId(itemId);
+            final List<Tag> tags = tagRepository.findByItemId(itemId);
+            final List<String> images = imageRepository.findByItemId(itemId);
+
+            item.setCategory(category);
+            if (tags != null && tags.size() > 0) {
+                item.getTags().addAll(tags);
+            }
+            if (images != null && images.size() > 0) {
+                item.getImages().addAll(images);
+            } else {
+                item.getImages().add(properties.getDefaultImage());
+            }
+            return item;
+        } else {
             throw new EntityNotFoundException("No item found with id " + itemId);
-
-        final Category category = categoryRepository.findByItemId(itemId);
-        final List<Tag> tags = tagRepository.findByItemId(itemId);
-        final List<String> images = imageRepository.findByItemId(itemId);
-
-        item.setCategory(category);
-        if(tags != null && tags.size() > 0)
-            item.getTags().addAll(tags);
-        if(images != null && images.size() > 0)
-            item.getImages().addAll(images);
-        else
-            item.getImages().add(properties.getDefaultImage());
-
-        return item;
+        }
     }
 
     public List<Item> findByCategory(Long categoryId) throws EntityNotFoundException {
         final List<Item> items = itemRepository.findByCategory(categoryId);
-        if(items == null)
+        if(items != null) {
+            items.forEach(item -> {
+                final Category category = categoryRepository.findByItemId(item.getId());
+                final List<Tag> tags = tagRepository.findByItemId(item.getId());
+                final List<String> images = imageRepository.findByItemId(item.getId());
+
+                item.setCategory(category);
+                if (tags != null && tags.size() > 0) {
+                    item.getTags().addAll(tags);
+                }
+                if (images != null && images.size() > 0) {
+                    item.getImages().addAll(images);
+                } else {
+                    item.getImages().add(properties.getDefaultImage());
+                }
+            });
+            return items;
+        } else {
             throw new EntityNotFoundException("No item found");
-
-        items.forEach(item -> {
-            final Category category = categoryRepository.findByItemId(item.getId());
-            final List<Tag> tags = tagRepository.findByItemId(item.getId());
-            final List<String> images = imageRepository.findByItemId(item.getId());
-
-            item.setCategory(category);
-            if(tags != null && tags.size() > 0)
-                item.getTags().addAll(tags);
-            if(images != null && images.size() > 0)
-                item.getImages().addAll(images);
-            else
-                item.getImages().add(properties.getDefaultImage());
-        });
-        return items;
+        }
     }
 
     public List<Item> findByName(String name) throws EntityNotFoundException {
         final List<Item> items = itemRepository.findByName("%" + name + "%");
-        if(items == null)
+        if(items != null) {
+            items.forEach(item -> {
+                final Category category = categoryRepository.findByItemId(item.getId());
+                final List<Tag> tags = tagRepository.findByItemId(item.getId());
+                final List<String> images = imageRepository.findByItemId(item.getId());
+
+                item.setCategory(category);
+                if (tags != null && tags.size() > 0) {
+                    item.getTags().addAll(tags);
+                }
+                if (images != null && images.size() > 0) {
+                    item.getImages().addAll(images);
+                } else {
+                    item.getImages().add(properties.getDefaultImage());
+                }
+            });
+            return items;
+        } else {
             throw new EntityNotFoundException("No item found");
-
-        items.forEach(item -> {
-            final Category category = categoryRepository.findByItemId(item.getId());
-            final List<Tag> tags = tagRepository.findByItemId(item.getId());
-            final List<String> images = imageRepository.findByItemId(item.getId());
-
-            item.setCategory(category);
-            if(tags != null && tags.size() > 0)
-                item.getTags().addAll(tags);
-            if(images != null && images.size() > 0)
-                item.getImages().addAll(images);
-            else
-                item.getImages().add(properties.getDefaultImage());
-        });
-        return items;
+        }
     }
 
     public List<Item> findByName(String name, Long offset, Long size) throws EntityNotFoundException {
         final List<Item> items = itemRepository
                 .findByNameFilter(name, offset< 1 ? 0 : (long) offset-1, size < 1 ? itemRepository.countAll() : (long) size);
-        if(items == null)
+        if(items != null) {
+            items.forEach(item -> {
+                final Category category = categoryRepository.findByItemId(item.getId());
+                final List<Tag> tags = tagRepository.findByItemId(item.getId());
+                final List<String> images = imageRepository.findByItemId(item.getId());
+
+                item.setCategory(category);
+                if (tags != null && tags.size() > 0) {
+                    item.getTags().addAll(tags);
+                }
+                if (images != null && images.size() > 0) {
+                    item.getImages().addAll(images);
+                } else {
+                    item.getImages().add(properties.getDefaultImage());
+                }
+            });
+            return items;
+        } else {
             throw new EntityNotFoundException("No item found");
-
-        items.forEach(item -> {
-            final Category category = categoryRepository.findByItemId(item.getId());
-            final List<Tag> tags = tagRepository.findByItemId(item.getId());
-            final List<String> images = imageRepository.findByItemId(item.getId());
-
-            item.setCategory(category);
-            if(tags != null && tags.size() > 0)
-                item.getTags().addAll(tags);
-            if(images != null && images.size() > 0)
-                item.getImages().addAll(images);
-            else
-                item.getImages().add(properties.getDefaultImage());
-        });
-        return items;
+        }
     }
 
     public List<Item> findAll() throws EntityNotFoundException {
         final List<Item> items = itemRepository.findAll();
-        if(items == null)
-            throw new EntityNotFoundException("No item found");
-        items.forEach(item -> {
-            final Category category = categoryRepository.findByItemId(item.getId());
-            final List<Tag> tags = tagRepository.findByItemId(item.getId());
-            final List<String> images = imageRepository.findByItemId(item.getId());
+        if(items != null) {
+            items.forEach(item -> {
+                final Category category = categoryRepository.findByItemId(item.getId());
+                final List<Tag> tags = tagRepository.findByItemId(item.getId());
+                final List<String> images = imageRepository.findByItemId(item.getId());
 
-            item.setCategory(category);
-            if(tags != null && tags.size() > 0)
-                item.getTags().addAll(tags);
-            if(images != null && images.size() > 0)
-                item.getImages().addAll(images);
-            else
-                item.getImages().add(properties.getDefaultImage());
-        });
-        return items;
+                item.setCategory(category);
+                if (tags != null && tags.size() > 0) {
+                    item.getTags().addAll(tags);
+                }
+                if (images != null && images.size() > 0) {
+                    item.getImages().addAll(images);
+                } else {
+                    item.getImages().add(properties.getDefaultImage());
+                }
+            });
+            return items;
+        } else {
+            throw new EntityNotFoundException("No item found");
+        }
     }
 
     public List<Item> findAll(Integer offset, Integer size) throws EntityNotFoundException {
         final List<Item> items = itemRepository
                 .findAllFilter(offset< 1 ? 0 : (long) offset-1, size < 1 ? itemRepository.countAll() : (long) size);
-        if(items == null)
-            throw new EntityNotFoundException("No item found");
-        items.forEach(item -> {
-            final Category category = categoryRepository.findByItemId(item.getId());
-            final List<Tag> tags = tagRepository.findByItemId(item.getId());
-            final List<String> images = imageRepository.findByItemId(item.getId());
+        if(items != null) {
+            items.forEach(item -> {
+                final Category category = categoryRepository.findByItemId(item.getId());
+                final List<Tag> tags = tagRepository.findByItemId(item.getId());
+                final List<String> images = imageRepository.findByItemId(item.getId());
 
-            item.setCategory(category);
-            if(tags != null && tags.size() > 0)
-                item.getTags().addAll(tags);
-            if(images != null && images.size() > 0)
-                item.getImages().addAll(images);
-            else
-                item.getImages().add(properties.getDefaultImage());
-        });
-        return items;
+                item.setCategory(category);
+                if (tags != null && tags.size() > 0) {
+                    item.getTags().addAll(tags);
+                }
+                if (images != null && images.size() > 0) {
+                    item.getImages().addAll(images);
+                } else {
+                    item.getImages().add(properties.getDefaultImage());
+                }
+            });
+            return items;
+        } else {
+            throw new EntityNotFoundException("No item found");
+        }
     }
 
     public Item add(Item item, Long categoryId) throws EntityNotFoundException, UnsatisfiedEntityException {
