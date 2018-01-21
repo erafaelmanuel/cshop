@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.service;
 
-import io.ermdev.cshop.commons.properties.ImageProperties;
+import io.ermdev.cshop.commons.properties.CShopProperties;
 import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
@@ -23,14 +23,16 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
     private final ImageRepository imageRepository;
+    private CShopProperties properties;
 
     @Autowired
     public ItemService(ItemRepository itemRepository, CategoryRepository categoryRepository, TagRepository
-            tagRepository, ImageRepository imageRepository) {
+            tagRepository, ImageRepository imageRepository, CShopProperties properties) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.imageRepository = imageRepository;
+        this.properties = properties;
     }
 
     public Item findById(Long itemId) throws EntityNotFoundException {
@@ -48,7 +50,7 @@ public class ItemService {
         if(images != null && images.size() > 0)
             item.getImages().addAll(images);
         else
-            item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+            item.getImages().add(properties.getDefaultImage());
 
         return item;
     }
@@ -69,7 +71,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+                item.getImages().add(properties.getDefaultImage());
         });
         return items;
     }
@@ -90,7 +92,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+                item.getImages().add(properties.getDefaultImage());
         });
         return items;
     }
@@ -112,7 +114,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+                item.getImages().add(properties.getDefaultImage());
         });
         return items;
     }
@@ -132,7 +134,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+                item.getImages().add(properties.getDefaultImage());
         });
         return items;
     }
@@ -153,7 +155,7 @@ public class ItemService {
             if(images != null && images.size() > 0)
                 item.getImages().addAll(images);
             else
-                item.getImages().add(ImageProperties.ITEM_NO_IMAGE);
+                item.getImages().add(properties.getDefaultImage());
         });
         return items;
     }
