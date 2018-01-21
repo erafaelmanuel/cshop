@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CShopProperties {
 
     @Value("${default.item.image}")
-    private String defaultImage;
+    String defaultImage;
 
     public String getDefaultImage() {
         return defaultImage;
