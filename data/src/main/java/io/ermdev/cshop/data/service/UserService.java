@@ -4,8 +4,8 @@ import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.exception.EntityException;
-import io.ermdev.cshop.data.repository.RoleRepository;
 import io.ermdev.cshop.data.repository.UserRepository;
+import io.ermdev.cshop.data.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +15,18 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     public User findById(Long userId) throws EntityException {
         final User user = userRepository.findById(userId);
         if(user != null) {
-            List<Role> roles = roleRepository.findByUserId(userId);
+            List<Role> roles = userRoleRepository.findRoleByUserId(userId);
             user.setRoles(roles);
             return user;
         } else {
@@ -37,7 +37,7 @@ public class UserService {
     public User findByEmail(String email) throws EntityException {
         final User user = userRepository.findByEmail(email);
         if(user != null) {
-            List<Role> roles = roleRepository.findByUserId(user.getId());
+            List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
             user.setRoles(roles);
             return user;
         } else {
@@ -46,9 +46,9 @@ public class UserService {
     }
 
     public User findByUsername(String username) throws EntityException {
-        final User user = userRepository.findByEmail(username);
+        final User user = userRepository.findByUsername(username);
         if(user != null) {
-            List<Role> roles = roleRepository.findByUserId(user.getId());
+            List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
             user.setRoles(roles);
             return user;
         } else {
@@ -60,7 +60,7 @@ public class UserService {
         final List<User> users = userRepository.findAll();
         if(users != null) {
             users.parallelStream().forEach(user -> {
-                List<Role> roles = roleRepository.findByUserId(user.getId());
+                List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
                 user.setRoles(roles);
             });
             return users;
@@ -120,7 +120,7 @@ public class UserService {
     public User delete(Long userId) {
         try {
             final User user = findById(userId);
-            final List<Role> roles = roleRepository.findByUserId(userId);
+            final List<Role> roles = userRoleRepository.findRoleByUserId(userId);
             userRepository.delete(user);
             user.setRoles(roles);
             return user;

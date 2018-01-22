@@ -1,21 +1,15 @@
-package io.ermdev.cshop.data.dto;
+package io.ermdev.cshop.webservice.user;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class UserDto {
 
-    private Long id;
     private String name;
     private String email;
     private String username;
     private String password;
     private Boolean enabled;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

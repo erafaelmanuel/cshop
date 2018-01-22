@@ -5,10 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {"io.ermdev.cshop"})
-@MapperScan({"io.ermdev.cshop.core.bean", "io.ermdev.cshop.data.repository"})
+@MapperScan({"io.ermdev.cshop.data.repository"})
 public class CShopApplication {
 
     public static void main(String args[]) {
         SpringApplication.run(CShopApplication.class, args);
     }
+
 }

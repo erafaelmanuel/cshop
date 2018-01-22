@@ -1,9 +1,9 @@
 package io.ermdev.cshop.security.config;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.entity.User;
+import io.ermdev.cshop.data.exception.EntityException;
+import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.security.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,33 +23,34 @@ import java.util.Set;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     private UserService userService;
+    private EmailValidator emailValidator;
 
     @Autowired
-    public UserDetailServiceImpl(UserService userService) {
+    public UserDetailServiceImpl(UserService userService, EmailValidator emailValidator) {
         this.userService = userService;
+        this.emailValidator = emailValidator;
     }
 
     @Override
     public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
         final User user;
         try {
-            final boolean isEmail = new EmailValidator().validateEmail(emailOrUsername);
-            if(isEmail)
+            final boolean isEmail = emailValidator.validateEmail(emailOrUsername);
+            if(isEmail) {
                 user = userService.findByEmail(emailOrUsername);
-            else
+            } else {
                 user = userService.findByUsername(emailOrUsername);
-        }catch (EntityNotFoundException e) {
+            }
+        }catch (EntityException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
-
         boolean enabled = user.getEnabled();
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,
-                grantedAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities(user
+                .getRoles()));
     }
 
     private static Set<GrantedAuthority> grantedAuthorities(List<Role> roleList) {

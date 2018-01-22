@@ -18,6 +18,7 @@ public class RoleService {
     }
 
     public List<Role> findByUserId(Long userId) {
-        return roleRepository.findByUserId(userId);
+       // return roleRepository.findByUserId(userId);
+        return null;
     }
 }

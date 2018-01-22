@@ -20,13 +20,13 @@ public class ItemHelper {
 
     public List<Item> searchFromCategories(List<Category> categories) {
         List<Item> items = new ArrayList<>();
-        categories.parallelStream().forEach(category -> {
-            try {
-                items.addAll(itemService.findByCategory(category.getId()));
-            } catch (EntityNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+//        categories.parallelStream().forEach(category -> {
+//            try {
+//                items.addAll(itemService.findByCategory(category.getId()));
+//            } catch (EntityNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        });
         return items;
     }
 

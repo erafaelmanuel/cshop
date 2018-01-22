@@ -4,7 +4,7 @@ import io.ermdev.cshop.business.verification.VerificationEvent;
 import io.ermdev.cshop.business.verification.VerificationSource;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.entity.VerificationToken;
-import io.ermdev.cshop.data.exception.EmailExistsException;
+import io.ermdev.cshop.data.exception.EntityException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.UserService;
@@ -53,13 +53,12 @@ public class RegisterController {
     }
 
     @PostMapping("register")
-    public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model)
-            throws UnsatisfiedEntityException, EntityNotFoundException {
+    public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
             User user = mapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
             try {
-                user = userService.add(user);
+                user = userService.save(user);
                 final String url = messageSource.getMessage("cshop.url", null, null);
                 final String token = UUID.randomUUID().toString();
                 final VerificationSource verificationSource = new VerificationSource();
@@ -69,7 +68,7 @@ public class RegisterController {
 
                 publisher.publishEvent(new VerificationEvent(verificationSource));
                 model.addAttribute("userId", user.getId());
-            } catch (EmailExistsException e) {
+            } catch (EntityException e) {
                 result.rejectValue("email", "message.error");
             }
         }
@@ -114,20 +113,19 @@ public class RegisterController {
                 User user = verificationToken.getUser();
                 user.setEnabled(true);
 
-                userService.updateById(user.getId(), user);
+                userService.save(user);
                 verificationTokenService.deleteById(verificationId);
             }
             model.addAttribute("activation", true);
             return "login";
-        } catch (EntityNotFoundException | TokenException e) {
+        } catch (EntityNotFoundException | EntityException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }
     }
 
     @PostMapping("register/resend-verification")
-    public String resendVerificationToken(@RequestParam("userId") Long userId, Model model)
-            throws UnsupportedEncodingException, MessagingException {
+    public String resendVerificationToken(@RequestParam("userId") Long userId, Model model) {
         try {
             if (userId != null) {
                 final User user = userService.findById(userId);
@@ -146,7 +144,7 @@ public class RegisterController {
             } else {
                 return "register";
             }
-        } catch (EntityNotFoundException | TokenException e) {
+        } catch (EntityException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }

@@ -1,11 +1,10 @@
 package io.ermdev.cshop.webservice.user;
 
-import io.ermdev.cshop.data.exception.EmailExistsException;
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.entity.User;
+import io.ermdev.cshop.data.exception.EntityException;
 import io.ermdev.cshop.data.model.Error;
+import io.ermdev.cshop.data.service.UserService;
+import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,28 +23,30 @@ public class UserResource {
 
     @Context
     private UriInfo uriInfo;
-
     private UserService userService;
+    private SimpleMapper mapper;
 
     @Autowired
-    public UserResource(UserService userService) {
+    public UserResource(UserService userService, SimpleMapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
-    @Path("{userId}")
     @GET
+    @Path("{userId}")
     public Response getById(@PathParam("userId") long userId) {
         try {
             User user = userService.findById(userId);
             user.getLinks().add(UserLinks.self(userId, uriInfo));
             return Response.status(Response.Status.FOUND).entity(user).build();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
     @GET
+    @Path("all")
     public Response getAll() {
         try {
             List<User> userList = userService.findAll();
@@ -58,38 +59,40 @@ public class UserResource {
     }
 
     @POST
-    public Response add(User user) {
+    public Response add(UserDto userDto) {
         try {
-            user = userService.add(user);
+            User user = mapper.set(userDto).mapTo(User.class);
+            user = userService.save(user);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
-        } catch (UnsatisfiedEntityException | EmailExistsException | NullPointerException e) {
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
-    @Path("{userId}")
     @PUT
-    public Response updateById(@PathParam("userId") Long userId, User user) {
+    @Path("{userId}")
+    public Response update(@PathParam("userId") Long userId, UserDto userDto) {
         try {
-            user = userService.updateById(userId, user);
+            User user = mapper.set(userDto).mapTo(User.class);
+            user = userService.save(user);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
-        } catch (EntityNotFoundException e) {
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
     }
 
-    @Path("{userId}")
     @DELETE
-    public Response deleteById(@PathParam("userId") final Long userId) {
+    @Path("{userId}")
+    public Response delete(@PathParam("userId") final Long userId) {
         try {
-            User user = userService.deleteById(userId);
+            User user = userService.delete(userId);
             user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
             return Response.status(Response.Status.OK).entity(user).build();
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }

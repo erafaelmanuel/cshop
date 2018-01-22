@@ -1,9 +1,8 @@
 package io.ermdev.cshop.web.controller;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.ermdev.cshop.data.exception.EntityException;
+import io.ermdev.cshop.data.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +16,8 @@ public class LoginController {
 
     private UserService userService;
 
-    @Autowired
     private LoginController(UserService userService) {
-        this.userService=userService;
+        this.userService = userService;
     }
 
     @GetMapping("login")
@@ -32,7 +30,7 @@ public class LoginController {
         try {
             User user = userService.findByUsername(authentication.getName());
             model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityException e) {
             model.addAttribute("message", e.getMessage());
             return "error/500";
         }
