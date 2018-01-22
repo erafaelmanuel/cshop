@@ -8,26 +8,33 @@ import java.util.List;
 @Mapper
 public interface UserRepository {
 
-    @Select("select * from tbluser where id = #{userId}")
+    @Insert("CREATE TABLE IF NOT EXISTS tbluser(id BIGINIT NOT NULL AUTO_INCREMENT, name VARCHAR(45)," +
+            "email VARCHAR(45), username VARCHAR(45), password VARCHAR(45), enabled TINYINT(1), PRIMARY KEY(id))")
+    void createTable();
+
+    @Select("SELECT * FROM tbluser WHERE id=#{userId}")
     User findById(@Param("userId") Long userId);
 
-    @Select("select * from tbluser where email = #{email} LIMIT 1")
+    @Select("SELECT * FROM tbluser WHERE email=#{email}")
     User findByEmail(@Param("email") String email);
 
-    @Select("select * from tbluser where username = #{username} LIMIT 1")
+    @Select("SELECT * FROM tbluser WHERE username=#{username}")
     User findByUsername(@Param("username") String username);
 
-    @Select("select * from tbluser")
+    @Select("SELECT * FROM tbluser")
     List<User> findAll();
 
-    @Insert("insert into tbluser(id, name, email, username, password, enabled) values(#{id}, #{name}, #{email}, " +
+    @Insert("INSERT INTO tbluser(id, name, email, username, password, enabled) VALUES(#{id}, #{name}, #{email}," +
             "#{username}, #{password}, #{enabled})")
     void add(User user);
 
-    @Update("update tbluser set name=#{name}, email=#{email}, username=#{username}, password=#{password}, " +
-            "enabled=#{enabled} where id=#{id}")
-    void updateById(User user);
+    @Update("UPDATE tbluser SET name=#{name}, email=#{email}, username=#{username}, password=#{password}," +
+            "enabled=#{enabled} WHERE id=#{id}")
+    void update(User user);
 
-    @Delete("delete from tbluser where id=#{userId}")
-    void deleteById(Long userId);
+    @Delete("DELETE FROM tbluser WHERE id=#{userId}")
+    void delete(@Param("userId") Long userId);
+
+    @Delete("DELETE FROM tbluser WHERE id=#{id}")
+    void delete(User user);
 }
