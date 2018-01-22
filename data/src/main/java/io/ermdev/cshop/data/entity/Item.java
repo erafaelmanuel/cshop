@@ -17,7 +17,8 @@ public class Item {
     private List<Attribute> attributes = new ArrayList<>();
     private List<Tag> tags = new ArrayList<>();
 
-    public Item() {}
+    public Item() {
+    }
 
     public Item(String name, String description, Double price, Double discount) {
         this.name = name;

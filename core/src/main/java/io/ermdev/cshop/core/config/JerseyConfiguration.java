@@ -19,5 +19,4 @@ public class JerseyConfiguration extends ResourceConfig {
         register(CategoryResource.class);
         register(TagResource.class);
     }
-
 }
