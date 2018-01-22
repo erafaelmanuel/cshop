@@ -1,8 +1,5 @@
 package io.ermdev.cshop.webservice.user;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class UserDto {
 
     private String name;

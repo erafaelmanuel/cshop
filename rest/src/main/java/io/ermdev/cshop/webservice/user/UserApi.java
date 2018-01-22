@@ -19,7 +19,7 @@ import java.util.List;
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Path("user")
-public class UserResource {
+public class UserApi {
 
     @Context
     private UriInfo uriInfo;
@@ -27,7 +27,7 @@ public class UserResource {
     private SimpleMapper mapper;
 
     @Autowired
-    public UserResource(UserService userService, SimpleMapper mapper) {
+    public UserApi(UserService userService, SimpleMapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
     }
