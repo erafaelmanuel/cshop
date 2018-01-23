@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("roles")
+@Path("role")
 public class UserRoleResource {
 
     private UserRoleService userRoleService;
@@ -24,6 +24,7 @@ public class UserRoleResource {
     }
 
     @GET
+    @Path("all")
     public Response getAll(@PathParam("userId") Long userId) {
         try {
             List<Role> roles = userRoleService.findRoleByUserId(userId);

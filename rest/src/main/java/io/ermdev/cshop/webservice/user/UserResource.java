@@ -21,9 +21,6 @@ import java.util.List;
 @Path("user")
 public class UserResource {
 
-    @Context
-    private UriInfo uriInfo;
-
     private UserService userService;
     private UserRoleResource userRoleResource;
 
@@ -38,10 +35,11 @@ public class UserResource {
 
     @GET
     @Path("{userId}")
-    public Response getById(@PathParam("userId") long userId) {
+    public Response getById(@PathParam("userId") long userId, @Context UriInfo uriInfo) {
+        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             UserDto userDto = mapper.set(userService.findById(userId)).mapTo(UserDto.class);
-            userDto.getLinks().add(UserLinks.self(userId, uriInfo));
+            userDto.getLinks().add(userResourceLinks.getSelf(userId));
             return Response.status(Response.Status.FOUND).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -51,10 +49,11 @@ public class UserResource {
 
     @GET
     @Path("all")
-    public Response getAll() {
+    public Response getAll(@Context UriInfo uriInfo) {
+        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             List<UserDto> userDtos = mapper.set(userService.findAll()).mapToList(UserDto.class);
-            userDtos.stream().forEach(userDto -> userDto.getLinks().add(UserLinks.self(userDto.getId(), uriInfo)));
+            userDtos.stream().forEach(userDto -> userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId())));
             return Response.status(Response.Status.FOUND).entity(userDtos).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
@@ -63,11 +62,12 @@ public class UserResource {
     }
 
     @POST
-    public Response add(UserDto userDto) {
+    public Response add(UserDto userDto, @Context UriInfo uriInfo) {
+        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             final User user = userService.save(mapper.set(userDto).mapTo(User.class));
             userDto.setId(user.getId());
-            userDto.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -77,11 +77,12 @@ public class UserResource {
 
     @PUT
     @Path("{userId}")
-    public Response update(@PathParam("userId") Long userId, UserDto userDto) {
+    public Response update(@PathParam("userId") Long userId, UserDto userDto, @Context UriInfo uriInfo) {
+        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             final User user = userService.save(mapper.set(userDto).mapTo(User.class));
             userDto = mapper.set(user).mapTo(UserDto.class);
-            userDto.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -91,10 +92,11 @@ public class UserResource {
 
     @DELETE
     @Path("{userId}")
-    public Response delete(@PathParam("userId") final Long userId) {
+    public Response delete(@PathParam("userId") final Long userId, @Context UriInfo uriInfo) {
+        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             UserDto userDto = mapper.set(userService.delete(userId)).mapTo(UserDto.class);
-            userDto.getLinks().add(UserLinks.self(userDto.getId(), uriInfo));
+            userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
@@ -102,7 +104,7 @@ public class UserResource {
         }
     }
 
-    @Path("{userId}/roles")
+    @Path("{userId}/role")
     public UserRoleResource usersRoleResource() {
         return userRoleResource;
     }
