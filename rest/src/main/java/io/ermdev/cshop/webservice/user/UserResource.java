@@ -7,6 +7,7 @@ import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -23,12 +24,16 @@ public class UserResource {
 
     @Context
     private UriInfo uriInfo;
+
     private UserService userService;
+    private UsersRoleResource usersRoleResource;
+
     private SimpleMapper mapper;
 
     @Autowired
-    public UserResource(UserService userService, SimpleMapper mapper) {
+    public UserResource(UserService userService, UsersRoleResource usersRoleResource, SimpleMapper mapper) {
         this.userService = userService;
+        this.usersRoleResource = usersRoleResource;
         this.mapper = mapper;
     }
 
@@ -96,5 +101,10 @@ public class UserResource {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
+    }
+
+    @Path("{userId}/roles")
+    public UsersRoleResource usersRoleResource() {
+        return usersRoleResource;
     }
 }
