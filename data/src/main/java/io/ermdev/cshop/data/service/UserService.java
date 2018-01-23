@@ -64,8 +64,9 @@ public class UserService {
                 user.setRoles(roles);
             });
             return users;
-        } else
+        } else {
             throw new EntityException("No user found");
+        }
     }
 
     public User save(User user) throws EntityException {
@@ -89,10 +90,7 @@ public class UserService {
                 return user;
             } else {
                 User o = userRepository.findById(user.getId());
-                if(o == null) {
-                    user.setId(null);
-                    return save(user);
-                } else {
+                if(o != null) {
                     if(user.getName() == null || user.getName().trim().isEmpty()) {
                         user.setName(o.getName());
                     }
@@ -110,6 +108,9 @@ public class UserService {
                     }
                     userRepository.update(user);
                     return user;
+                } else {
+                    user.setId(null);
+                    return save(user);
                 }
             }
         } else {
@@ -117,15 +118,27 @@ public class UserService {
         }
     }
 
-    public User delete(Long userId) {
-        try {
-            final User user = findById(userId);
+    public User delete(Long userId) throws EntityException {
+        User user = userRepository.findById(userId);
+        if(user != null) {
             final List<Role> roles = userRoleRepository.findRoleByUserId(userId);
             userRepository.delete(user);
             user.setRoles(roles);
             return user;
-        } catch (EntityException e) {
-            return null;
+        } else {
+            throw new EntityException("No user found");
+        }
+    }
+
+    public User delete(User user) throws EntityException {
+        User o = userRepository.findById(user.getId());
+        if(user != null) {
+            final List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
+            o.setRoles(roles);
+            userRepository.delete(user);
+            return o;
+        } else {
+            throw new EntityException("No user found");
         }
     }
 }
