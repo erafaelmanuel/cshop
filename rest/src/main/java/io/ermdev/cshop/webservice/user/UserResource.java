@@ -19,7 +19,7 @@ import java.util.List;
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Path("user")
-public class UserApi {
+public class UserResource {
 
     @Context
     private UriInfo uriInfo;
@@ -27,7 +27,7 @@ public class UserApi {
     private SimpleMapper mapper;
 
     @Autowired
-    public UserApi(UserService userService, SimpleMapper mapper) {
+    public UserResource(UserService userService, SimpleMapper mapper) {
         this.userService = userService;
         this.mapper = mapper;
     }
@@ -36,9 +36,9 @@ public class UserApi {
     @Path("{userId}")
     public Response getById(@PathParam("userId") long userId) {
         try {
-            User user = userService.findById(userId);
-            user.getLinks().add(UserLinks.self(userId, uriInfo));
-            return Response.status(Response.Status.FOUND).entity(user).build();
+            UserDto userDto = mapper.set(userService.findById(userId)).mapTo(UserDto.class);
+            userDto.getLinks().add(UserLinks.self(userId, uriInfo));
+            return Response.status(Response.Status.FOUND).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -49,9 +49,9 @@ public class UserApi {
     @Path("all")
     public Response getAll() {
         try {
-            List<User> userList = userService.findAll();
-            userList.forEach(user -> user.getLinks().add(UserLinks.self(user.getId(), uriInfo)));
-            return Response.status(Response.Status.FOUND).entity(userList).build();
+            List<UserDto> userDtos = mapper.set(userService.findAll()).mapToList(UserDto.class);
+            userDtos.stream().forEach(userDto -> userDto.getLinks().add(UserLinks.self(userDto.getId(), uriInfo)));
+            return Response.status(Response.Status.FOUND).entity(userDtos).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -61,10 +61,10 @@ public class UserApi {
     @POST
     public Response add(UserDto userDto) {
         try {
-            User user = mapper.set(userDto).mapTo(User.class);
-            user = userService.save(user);
-            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
-            return Response.status(Response.Status.OK).entity(user).build();
+            final User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            userDto.setId(user.getId());
+            userDto.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
@@ -75,10 +75,10 @@ public class UserApi {
     @Path("{userId}")
     public Response update(@PathParam("userId") Long userId, UserDto userDto) {
         try {
-            User user = mapper.set(userDto).mapTo(User.class);
-            user = userService.save(user);
-            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
-            return Response.status(Response.Status.OK).entity(user).build();
+            final User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            userDto = mapper.set(user).mapTo(UserDto.class);
+            userDto.getLinks().add(UserLinks.self(user.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -89,9 +89,9 @@ public class UserApi {
     @Path("{userId}")
     public Response delete(@PathParam("userId") final Long userId) {
         try {
-            User user = userService.delete(userId);
-            user.getLinks().add(UserLinks.self(user.getId(), uriInfo));
-            return Response.status(Response.Status.OK).entity(user).build();
+            UserDto userDto = mapper.set(userService.delete(userId)).mapTo(UserDto.class);
+            userDto.getLinks().add(UserLinks.self(userDto.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();

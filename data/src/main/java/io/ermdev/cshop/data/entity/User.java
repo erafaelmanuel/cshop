@@ -1,7 +1,5 @@
 package io.ermdev.cshop.data.entity;
 
-import io.ermdev.cshop.data.model.Link;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +12,8 @@ public class User {
     private String password;
     private Boolean enabled;
     private List<Role> roles = new ArrayList<>();
-    private List<Link> links = new ArrayList<>();
 
     public User() {}
-
-    public User(String name, String email, String username, String password, Boolean enabled) {
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-    }
 
     public Long getId() {
         return id;
@@ -72,14 +61,6 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 
     public List<Role> getRoles() {

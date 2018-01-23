@@ -14,7 +14,7 @@ public class UserLinks {
         if(uriInfo == null)
             throw new NullPointerException("UriInfo is null");
         String rel = "self";
-        String href = uriInfo.getBaseUriBuilder().path(UserApi.class).path(userId.toString()).build().toString();
+        String href = uriInfo.getBaseUriBuilder().path(UserResource.class).path(userId.toString()).build().toString();
         return new Link(rel, href);
     }
 }
