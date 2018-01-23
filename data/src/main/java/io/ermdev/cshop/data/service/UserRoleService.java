@@ -16,7 +16,7 @@ public class UserRoleService {
         this.userRoleRepository = userRoleRepository;
     }
 
-    List<Role> findRoleByUserId(Long userId) throws EntityException {
+    public List<Role> findRoleByUserId(Long userId) throws EntityException {
         List<Role> roles = userRoleRepository.findRoleByUserId(userId);
         if(roles != null) {
             return roles;
