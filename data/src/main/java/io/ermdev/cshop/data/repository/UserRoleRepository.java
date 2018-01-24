@@ -17,6 +17,10 @@ public interface UserRoleRepository {
     void createTable();
 
     @Select("SELECT * FROM tbl_role AS A LEFT JOIN tbl_user_role AS B ON A.id = B.roleId " +
+            "WHERE B.userId=#{userId} AND B.roleId=#{roleId}")
+    Role findUserRoleById(@Param("userId") Long userId, @Param("roleId") Long roleId);
+
+    @Select("SELECT * FROM tbl_role AS A LEFT JOIN tbl_user_role AS B ON A.id = B.roleId " +
             "WHERE B.userId=#{userId}")
-    List<Role> findRoleByUserId(@Param("userId") Long userId);
+    List<Role> findRolesByUserId(@Param("userId") Long userId);
 }

@@ -26,7 +26,7 @@ public class UserService {
     public User findById(Long userId) throws EntityException {
         final User user = userRepository.findById(userId);
         if(user != null) {
-            List<Role> roles = userRoleRepository.findRoleByUserId(userId);
+            List<Role> roles = userRoleRepository.findRolesByUserId(userId);
             user.setRoles(roles);
             return user;
         } else {
@@ -37,7 +37,7 @@ public class UserService {
     public User findByEmail(String email) throws EntityException {
         final User user = userRepository.findByEmail(email);
         if(user != null) {
-            List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
+            List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             user.setRoles(roles);
             return user;
         } else {
@@ -48,7 +48,7 @@ public class UserService {
     public User findByUsername(String username) throws EntityException {
         final User user = userRepository.findByUsername(username);
         if(user != null) {
-            List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
+            List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             user.setRoles(roles);
             return user;
         } else {
@@ -60,7 +60,7 @@ public class UserService {
         final List<User> users = userRepository.findAll();
         if(users != null) {
             users.parallelStream().forEach(user -> {
-                List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
+                List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
                 user.setRoles(roles);
             });
             return users;
@@ -121,7 +121,7 @@ public class UserService {
     public User delete(Long userId) throws EntityException {
         User user = userRepository.findById(userId);
         if(user != null) {
-            final List<Role> roles = userRoleRepository.findRoleByUserId(userId);
+            final List<Role> roles = userRoleRepository.findRolesByUserId(userId);
             userRepository.delete(user);
             user.setRoles(roles);
             return user;
@@ -133,7 +133,7 @@ public class UserService {
     public User delete(User user) throws EntityException {
         User o = userRepository.findById(user.getId());
         if(user != null) {
-            final List<Role> roles = userRoleRepository.findRoleByUserId(user.getId());
+            final List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             o.setRoles(roles);
             userRepository.delete(user);
             return o;

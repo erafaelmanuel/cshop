@@ -16,10 +16,19 @@ public class UserRoleService {
         this.userRoleRepository = userRoleRepository;
     }
 
-    public List<Role> findRoleByUserId(Long userId) throws EntityException {
-        List<Role> roles = userRoleRepository.findRoleByUserId(userId);
+    public List<Role> findRolesByUserId(Long userId) throws EntityException {
+        List<Role> roles = userRoleRepository.findRolesByUserId(userId);
         if(roles != null) {
             return roles;
+        } else {
+            throw new EntityException("No role found");
+        }
+    }
+
+    public Role findUserRoleById(Long userId, Long roleId) throws EntityException {
+        Role role = userRoleRepository.findUserRoleById(userId, roleId);
+        if(role != null) {
+            return role;
         } else {
             throw new EntityException("No role found");
         }

@@ -7,8 +7,10 @@ import io.ermdev.cshop.data.service.UserRoleService;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
@@ -24,10 +26,22 @@ public class UserRoleResource {
     }
 
     @GET
+    @Path("{roleId}")
+    public Response getById(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId, @Context UriInfo info) {
+        try {
+            Role role = userRoleService.findUserRoleById(userId, roleId);
+            return Response.status(Response.Status.FOUND).entity(role).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @GET
     @Path("all")
     public Response getAll(@PathParam("userId") Long userId) {
         try {
-            List<Role> roles = userRoleService.findRoleByUserId(userId);
+            List<Role> roles = userRoleService.findRolesByUserId(userId);
             return Response.status(Response.Status.FOUND).entity(roles).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
