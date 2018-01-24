@@ -83,6 +83,7 @@ public class UserResource {
     @Path("{userId}")
     public Response update(@PathParam("userId") Long userId, UserDto userDto, @Context UriInfo uriInfo) {
         try {
+            userDto.setId(userId);
             User user = userService.save(mapper.set(userDto).mapTo(User.class));
             UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto = mapper.set(user).mapTo(UserDto.class);
