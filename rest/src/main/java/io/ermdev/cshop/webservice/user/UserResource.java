@@ -23,7 +23,6 @@ public class UserResource {
 
     private UserService userService;
     private UserRoleResource userRoleResource;
-
     private SimpleMapper mapper;
 
     @Autowired
@@ -112,7 +111,9 @@ public class UserResource {
     }
 
     @Path("{userId}/role")
-    public UserRoleResource usersRoleResource() {
+    public UserRoleResource usersRoleResource(@QueryParam("roleIds") List<Long> roleIds, @Context UriInfo uriInfo) {
+        userRoleResource.setRoleIds(roleIds);
+        userRoleResource.setUriInfo(uriInfo);
         return userRoleResource;
     }
 }
