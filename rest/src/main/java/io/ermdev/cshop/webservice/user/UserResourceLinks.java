@@ -21,4 +21,16 @@ public class UserResourceLinks {
                 .toString();
         return new Link(rel, href);
     }
+
+    public Link getRoles(Long userId) {
+        final String rel = "roles";
+        final String href = uriInfo.getBaseUriBuilder()
+                .path(UserResource.class)
+                .path(userId.toString())
+                .path(UserRoleResource.class)
+                .path("all")
+                .build()
+                .toString();
+        return new Link(rel, href);
+    }
 }

@@ -40,6 +40,7 @@ public class UserResource {
         try {
             UserDto userDto = mapper.set(userService.findById(userId)).mapTo(UserDto.class);
             userDto.getLinks().add(userResourceLinks.getSelf(userId));
+            userDto.getLinks().add(userResourceLinks.getRoles(userId));
             return Response.status(Response.Status.FOUND).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -53,7 +54,10 @@ public class UserResource {
         final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             List<UserDto> userDtos = mapper.set(userService.findAll()).mapToList(UserDto.class);
-            userDtos.stream().forEach(userDto -> userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId())));
+            userDtos.stream().forEach(userDto -> {
+                userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
+                userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
+            });
             return Response.status(Response.Status.FOUND).entity(userDtos).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
@@ -68,6 +72,7 @@ public class UserResource {
             final User user = userService.save(mapper.set(userDto).mapTo(User.class));
             userDto.setId(user.getId());
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
+            userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -83,6 +88,7 @@ public class UserResource {
             final User user = userService.save(mapper.set(userDto).mapTo(User.class));
             userDto = mapper.set(user).mapTo(UserDto.class);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
+            userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -97,6 +103,7 @@ public class UserResource {
         try {
             UserDto userDto = mapper.set(userService.delete(userId)).mapTo(UserDto.class);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
+            userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();
         } catch (Exception e) {
             Error error = new Error(e.getMessage());
