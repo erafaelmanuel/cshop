@@ -7,7 +7,7 @@ public class IdGenerator {
     public static long randomUUID() {
         final Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
-        final String base = "999999999999";
+        final String base = "99999";
         final StringBuilder stringBuilder = new StringBuilder();
         for(char c : base.toCharArray()) {
             int temp = (int)((Integer.parseInt(String.valueOf(c))) * Math.random());
