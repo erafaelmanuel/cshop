@@ -1,8 +1,8 @@
 package io.ermdev.cshop.security.config;
 
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.exception.EntityException;
 import io.ermdev.cshop.data.service.UserService;
+import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.security.validator.EmailValidator;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
