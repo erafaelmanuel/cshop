@@ -1,11 +1,11 @@
 package io.ermdev.cshop.webservice.user;
 
-import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.model.Error;
 import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.webservice.role.RoleDto;
+import io.ermdev.cshop.webservice.role.RoleResourceLinks;
 import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,8 +47,10 @@ public class UserRoleResource {
     @Path("{roleId}")
     public Response getById(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
-            Role role = userRoleService.findUserRoleById(userId, roleId);
-            return Response.status(Response.Status.FOUND).entity(role).build();
+            RoleDto roleDto = mapper.set(userRoleService.findUserRoleById(userId, roleId)).mapTo(RoleDto.class);
+            RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+            roleDto.getLinks().add(roleResourceLinks.getSelf(roleId));
+            return Response.status(Response.Status.FOUND).entity(roleDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -59,8 +61,12 @@ public class UserRoleResource {
     @Path("all")
     public Response getAll(@PathParam("userId") Long userId) {
         try {
-            List<Role> roles = userRoleService.findRolesByUserId(userId);
-            return Response.status(Response.Status.FOUND).entity(roles).build();
+            List<RoleDto> roleDtos = mapper.set(userRoleService.findRolesByUserId(userId)).mapToList(RoleDto.class);
+            roleDtos.parallelStream().forEach(roleDto -> {
+                RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+                roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+            });
+            return Response.status(Response.Status.FOUND).entity(roleDtos).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -70,16 +76,18 @@ public class UserRoleResource {
     @POST
     public Response addRole(@PathParam("userId") Long userId) {
         try {
-            List<RoleDto> roles = new ArrayList<>();
+            List<RoleDto> roleDtos = new ArrayList<>();
             if (roleIds != null && roleIds.size() >= 1) {
                 for (Long roleId : roleIds) {
-                    Role role = userRoleService.addRoleToUser(userId, roleId);
-                    roles.add(mapper.set(role).mapTo(RoleDto.class));
+                    RoleDto roleDto = mapper.set(userRoleService.addRoleToUser(userId, roleId)).mapTo(RoleDto.class);
+                    RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+                    roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+                    roleDtos.add(roleDto);
                 }
-                if (roles.size() == 1) {
-                    return Response.status(Response.Status.FOUND).entity(roles.get(0)).build();
+                if (roleDtos.size() == 1) {
+                    return Response.status(Response.Status.FOUND).entity(roleDtos.get(0)).build();
                 } else {
-                    return Response.status(Response.Status.FOUND).entity(roles).build();
+                    return Response.status(Response.Status.FOUND).entity(roleDtos).build();
                 }
             } else {
                 throw new ResourceException("roleId is required");
@@ -93,16 +101,18 @@ public class UserRoleResource {
     @DELETE
     public Response deleteRole(@PathParam("userId") Long userId) {
         try {
-            List<RoleDto> roles = new ArrayList<>();
+            List<RoleDto> roleDtos = new ArrayList<>();
             if (roleIds != null && roleIds.size() >= 1) {
                 for (Long roleId : roleIds) {
-                    Role role = userRoleService.deleteRoleFromUser(userId, roleId);
-                    roles.add(mapper.set(role).mapTo(RoleDto.class));
+                    RoleDto roleDto = mapper.set(userRoleService.addRoleToUser(userId, roleId)).mapTo(RoleDto.class);
+                    RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+                    roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+                    roleDtos.add(roleDto);
                 }
-                if (roles.size() == 1) {
-                    return Response.status(Response.Status.FOUND).entity(roles.get(0)).build();
+                if (roleDtos.size() == 1) {
+                    return Response.status(Response.Status.FOUND).entity(roleDtos.get(0)).build();
                 } else {
-                    return Response.status(Response.Status.FOUND).entity(roles).build();
+                    return Response.status(Response.Status.FOUND).entity(roleDtos).build();
                 }
             } else {
                 throw new ResourceException("roleId is required");
