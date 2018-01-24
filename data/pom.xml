@@ -16,5 +16,10 @@
             <groupId>io.ermdev</groupId>
             <artifactId>commons</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>exception</artifactId>
+        </dependency>
     </dependencies>
 </project>

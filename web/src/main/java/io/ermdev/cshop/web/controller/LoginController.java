@@ -1,7 +1,7 @@
 package io.ermdev.cshop.web.controller;
 
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.exception.EntityException;
+import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.data.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

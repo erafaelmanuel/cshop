@@ -1,7 +1,7 @@
 package io.ermdev.cshop.webservice.user;
 
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.exception.EntityException;
+import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.data.model.Error;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.mapfierj.SimpleMapper;

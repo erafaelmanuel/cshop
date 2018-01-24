@@ -2,8 +2,8 @@ package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.commons.util.IdGenerator;
 import io.ermdev.cshop.data.entity.Role;
-import io.ermdev.cshop.data.exception.EntityException;
 import io.ermdev.cshop.data.repository.RoleRepository;
+import io.ermdev.cshop.exception.EntityException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -4,9 +4,8 @@ import io.ermdev.cshop.business.verification.VerificationEvent;
 import io.ermdev.cshop.business.verification.VerificationSource;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.entity.VerificationToken;
-import io.ermdev.cshop.data.exception.EntityException;
+import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.data.service.VerificationTokenService;
 import io.ermdev.cshop.web.dto.UserDto;
@@ -20,9 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.UUID;
 

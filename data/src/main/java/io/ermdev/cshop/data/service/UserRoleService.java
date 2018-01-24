@@ -2,10 +2,10 @@ package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.exception.EntityException;
 import io.ermdev.cshop.data.repository.RoleRepository;
 import io.ermdev.cshop.data.repository.UserRepository;
 import io.ermdev.cshop.data.repository.UserRoleRepository;
+import io.ermdev.cshop.exception.EntityException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class UserRoleService {
         if (user == null) {
             throw new EntityException("No user found");
         }
-        if(role == null) {
+        if (role == null) {
             throw new EntityException("No role found");
         }
         userRoleRepository.addRoleToUser(userId, roleId);
@@ -61,7 +61,7 @@ public class UserRoleService {
         if (user == null) {
             throw new EntityException("No user found");
         }
-        if(role == null) {
+        if (role == null) {
             throw new EntityException("No role found");
         }
         userRoleRepository.deleteRoleFromUser(userId, roleId);
