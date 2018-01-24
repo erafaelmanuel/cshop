@@ -11,9 +11,10 @@
         <module>commons</module>
         <module>core</module>
         <module>data</module>
+        <module>exception</module>
+        <module>rest</module>
         <module>security</module>
         <module>web</module>
-        <module>rest</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -68,6 +69,18 @@
 
             <dependency>
                 <groupId>io.ermdev</groupId>
+                <artifactId>exception</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev</groupId>
+                <artifactId>rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev</groupId>
                 <artifactId>security</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -75,12 +88,6 @@
             <dependency>
                 <groupId>io.ermdev</groupId>
                 <artifactId>web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
