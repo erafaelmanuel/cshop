@@ -23,4 +23,10 @@ public interface UserRoleRepository {
     @Select("SELECT * FROM tbl_role AS A LEFT JOIN tbl_user_role AS B ON A.id = B.roleId " +
             "WHERE B.userId=#{userId}")
     List<Role> findRolesByUserId(@Param("userId") Long userId);
+
+    @Insert("INSERT INTO tbl_user_role(userId, roleId) VALUES(#{userId, #{roleId})")
+    void addRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
+
+    @Insert("DELETE FROM tbl_user_role WHERE userId=#{userId} AND roleId=#{roleId}")
+    void deleteRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
 }
