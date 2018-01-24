@@ -1,9 +1,9 @@
 package io.ermdev.cshop.core.config;
 
-import io.ermdev.cshop.webservice.item.CategoryResource;
-import io.ermdev.cshop.webservice.item.ItemResource;
-import io.ermdev.cshop.webservice.item.TagResource;
-import io.ermdev.cshop.webservice.user.UserResource;
+import io.ermdev.cshop.rest.item.CategoryResource;
+import io.ermdev.cshop.rest.item.ItemResource;
+import io.ermdev.cshop.rest.item.TagResource;
+import io.ermdev.cshop.rest.user.UserResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 

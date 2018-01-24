@@ -1,4 +1,4 @@
-package io.ermdev.cshop.webservice.item;
+package io.ermdev.cshop.rest.item;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;

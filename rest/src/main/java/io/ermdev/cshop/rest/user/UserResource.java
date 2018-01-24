@@ -1,4 +1,4 @@
-package io.ermdev.cshop.webservice.user;
+package io.ermdev.cshop.rest.user;
 
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.exception.EntityException;
@@ -35,9 +35,9 @@ public class UserResource {
     @GET
     @Path("{userId}")
     public Response getById(@PathParam("userId") long userId, @Context UriInfo uriInfo) {
-        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             UserDto userDto = mapper.set(userService.findById(userId)).mapTo(UserDto.class);
+            UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto.getLinks().add(userResourceLinks.getSelf(userId));
             userDto.getLinks().add(userResourceLinks.getRoles(userId));
             return Response.status(Response.Status.FOUND).entity(userDto).build();
@@ -50,10 +50,10 @@ public class UserResource {
     @GET
     @Path("all")
     public Response getAll(@Context UriInfo uriInfo) {
-        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             List<UserDto> userDtos = mapper.set(userService.findAll()).mapToList(UserDto.class);
-            userDtos.stream().forEach(userDto -> {
+            userDtos.parallelStream().forEach(userDto -> {
+                UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
                 userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
                 userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
             });
@@ -66,9 +66,9 @@ public class UserResource {
 
     @POST
     public Response add(UserDto userDto, @Context UriInfo uriInfo) {
-        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
-            final User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto.setId(user.getId());
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
@@ -82,9 +82,9 @@ public class UserResource {
     @PUT
     @Path("{userId}")
     public Response update(@PathParam("userId") Long userId, UserDto userDto, @Context UriInfo uriInfo) {
-        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
-            final User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            User user = userService.save(mapper.set(userDto).mapTo(User.class));
+            UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto = mapper.set(user).mapTo(UserDto.class);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
@@ -98,9 +98,9 @@ public class UserResource {
     @DELETE
     @Path("{userId}")
     public Response delete(@PathParam("userId") final Long userId, @Context UriInfo uriInfo) {
-        final UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
         try {
             UserDto userDto = mapper.set(userService.delete(userId)).mapTo(UserDto.class);
+            UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
             return Response.status(Response.Status.OK).entity(userDto).build();

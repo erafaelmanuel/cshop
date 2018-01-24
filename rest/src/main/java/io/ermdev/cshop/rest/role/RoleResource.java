@@ -1,4 +1,4 @@
-package io.ermdev.cshop.webservice.role;
+package io.ermdev.cshop.rest.role;
 
 import org.springframework.stereotype.Component;
 

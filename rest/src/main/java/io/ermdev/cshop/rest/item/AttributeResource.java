@@ -1,10 +1,11 @@
-package io.ermdev.cshop.webservice.item;
+package io.ermdev.cshop.rest.item;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.service.CategoryService;
-import io.ermdev.cshop.data.entity.Category;
+import io.ermdev.cshop.data.service.AttributeService;
+import io.ermdev.cshop.data.entity.Attribute;
 import io.ermdev.cshop.data.model.Error;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -12,34 +13,31 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("category")
-public class CategoryResource {
+@Path("attribute")
+public class AttributeResource {
 
     @Context
     private UriInfo uriInfo;
 
-    @QueryParam("parentId")
-    private Long parentId;
+    private AttributeService attributeService;
 
-    private CategoryService categoryService;
-
-    public CategoryResource(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    @Autowired
+    public AttributeResource(AttributeService attributeService) {
+        this.attributeService = attributeService;
     }
 
-    @Path("{categoryId}")
+    @Path("{attributeId}")
     @GET
-    public Response getById(@PathParam("categoryId") Long categoryId) {
+    public Response getById(@PathParam("attributeId") Long attributeId) {
         try {
-            Category category = categoryService.findById(categoryId);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
+            Attribute attribute = attributeService.findById(attributeId);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
+            return Response.status(Response.Status.FOUND).entity(attribute).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -52,17 +50,9 @@ public class CategoryResource {
     @GET
     public Response getAll() {
         try {
-            final List<Category> categories = new ArrayList<>();
-
-            if(parentId == null) {
-                categories.addAll(categoryService.findAll());
-            } else {
-                categories.addAll(categoryService.findByParent(parentId));
-            }
-            categories.forEach(category -> {
-                category.getLinks().add(CategoryLinks.self(category.getId(), uriInfo));
-            });
-            return Response.status(Response.Status.OK).entity(categories).build();
+            List<Attribute> attributes = attributeService.findAll();
+            attributes.forEach(attribute -> attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo)));
+            return Response.status(Response.Status.FOUND).entity(attributes).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -73,30 +63,27 @@ public class CategoryResource {
     }
 
     @POST
-    public Response add(Category category) {
+    public Response add(Attribute attribute) {
         try {
-            category = categoryService.add(category);
-            category.getLinks().add(CategoryLinks.self(category.getId(), uriInfo));
-            return Response.status(Response.Status.CREATED).entity(category).build();
-        } catch (EntityNotFoundException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+            attribute = attributeService.add(attribute);
+            attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo));
+            return Response.status(Response.Status.OK).entity(attribute).build();
         } catch (UnsatisfiedEntityException e) {
             Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         } catch (NullPointerException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
-    @Path("{categoryId}")
-    @PUT
-    public Response updateById(@PathParam("categoryId") Long categoryId, Category category) {
+    @Path("{attributeId}")
+    @POST
+    public Response updateById(@PathParam("attributeId") Long attributeId, Attribute attribute) {
         try {
-            category = categoryService.updateById(categoryId, category);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
+            attribute = attributeService.updateById(attributeId, attribute);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
+            return Response.status(Response.Status.OK).entity(attribute).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -106,13 +93,13 @@ public class CategoryResource {
         }
     }
 
-    @Path("{categoryId}")
-    @DELETE
-    public Response deleteById(@PathParam("categoryId") Long categoryId) {
+    @Path("{attributeId}")
+    @POST
+    public Response deleteById(@PathParam("attributeId") Long attributeId) {
         try {
-            final Category category = categoryService.deleteById(categoryId);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
+            Attribute attribute = attributeService.findById(attributeId);
+            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
+            return Response.status(Response.Status.OK).entity(attribute).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();

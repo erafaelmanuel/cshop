@@ -1,9 +1,9 @@
-package io.ermdev.cshop.webservice.item;
+package io.ermdev.cshop.rest.item;
 
 import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.service.AttributeService;
-import io.ermdev.cshop.data.entity.Attribute;
+import io.ermdev.cshop.data.service.TagService;
+import io.ermdev.cshop.data.entity.Tag;
 import io.ermdev.cshop.data.model.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,26 +18,27 @@ import java.util.List;
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("attribute")
-public class AttributeResource {
+@Path("tag")
+public class TagResource {
 
     @Context
     private UriInfo uriInfo;
 
-    private AttributeService attributeService;
+    private TagService tagService;
 
     @Autowired
-    public AttributeResource(AttributeService attributeService) {
-        this.attributeService = attributeService;
+    public TagResource(TagService tagService) {
+        this.tagService = tagService;
     }
 
-    @Path("{attributeId}")
+    @Path("{tagId}")
     @GET
-    public Response getById(@PathParam("attributeId") Long attributeId) {
+    public Response getById(@PathParam("tagId") Long tagId) {
         try {
-            Attribute attribute = attributeService.findById(attributeId);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.FOUND).entity(attribute).build();
+            Tag tag = tagService.findById(tagId);
+            tag.getLinks().add(TagLinks.self(tagId, uriInfo));
+            tag.getLinks().add(TagLinks.related(tagId, uriInfo));
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -50,9 +51,12 @@ public class AttributeResource {
     @GET
     public Response getAll() {
         try {
-            List<Attribute> attributes = attributeService.findAll();
-            attributes.forEach(attribute -> attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo)));
-            return Response.status(Response.Status.FOUND).entity(attributes).build();
+            List<Tag> tags = tagService.findAll();
+            tags.forEach(tag -> {
+                tag.getLinks().add(TagLinks.self(tag.getId(), uriInfo));
+                tag.getLinks().add(TagLinks.related(tag.getId(), uriInfo));
+            });
+            return Response.status(Response.Status.FOUND).entity(tags).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -63,27 +67,32 @@ public class AttributeResource {
     }
 
     @POST
-    public Response add(Attribute attribute) {
+    public Response add(Tag tag) {
         try {
-            attribute = attributeService.add(attribute);
-            attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
+            tag = tagService.add(tag);
+            tag.getLinks().add(TagLinks.self(tag.getId(), uriInfo));
+            tag.getLinks().add(TagLinks.related(tag.getId(), uriInfo));
+            return Response.status(Response.Status.CREATED).entity(tag).build();
+        } catch (EntityNotFoundException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         } catch (UnsatisfiedEntityException e) {
             Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         } catch (NullPointerException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
-    @Path("{attributeId}")
-    @POST
-    public Response updateById(@PathParam("attributeId") Long attributeId, Attribute attribute) {
+    @Path("{tagId}")
+    @PUT
+    public Response updateById(@PathParam("tagId") Long tagId, Tag tag) {
         try {
-            attribute = attributeService.updateById(attributeId, attribute);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
+            tag = tagService.updateById(tagId, tag);
+            tag.getLinks().add(TagLinks.self(tagId, uriInfo));
+            tag.getLinks().add(TagLinks.related(tagId, uriInfo));
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -93,13 +102,14 @@ public class AttributeResource {
         }
     }
 
-    @Path("{attributeId}")
-    @POST
-    public Response deleteById(@PathParam("attributeId") Long attributeId) {
+    @Path("{tagId}")
+    @DELETE
+    public Response deleteById(@PathParam("tagId") Long tagId) {
         try {
-            Attribute attribute = attributeService.findById(attributeId);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
+            final Tag tag = tagService.deleteById(tagId);
+            tag.getLinks().add(TagLinks.self(tagId, uriInfo));
+            tag.getLinks().add(TagLinks.related(tagId, uriInfo));
+            return Response.status(Response.Status.OK).entity(tag).build();
         } catch (EntityNotFoundException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -107,5 +117,10 @@ public class AttributeResource {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
+    }
+
+    @Path("{tagId}/related")
+    public RelatedTagResource relatedTagResource() {
+        return new RelatedTagResource(tagService, uriInfo);
     }
 }

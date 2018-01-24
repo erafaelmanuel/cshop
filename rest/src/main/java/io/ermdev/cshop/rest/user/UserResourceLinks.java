@@ -1,4 +1,4 @@
-package io.ermdev.cshop.webservice.user;
+package io.ermdev.cshop.rest.user;
 
 import io.ermdev.cshop.data.model.Link;
 

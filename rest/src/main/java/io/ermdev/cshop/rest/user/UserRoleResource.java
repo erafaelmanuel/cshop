@@ -1,11 +1,11 @@
-package io.ermdev.cshop.webservice.user;
+package io.ermdev.cshop.rest.user;
 
 import io.ermdev.cshop.data.model.Error;
 import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.exception.ResourceException;
-import io.ermdev.cshop.webservice.role.RoleDto;
-import io.ermdev.cshop.webservice.role.RoleResourceLinks;
+import io.ermdev.cshop.rest.role.RoleDto;
+import io.ermdev.cshop.rest.role.RoleResourceLinks;
 import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
