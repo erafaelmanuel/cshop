@@ -15,16 +15,16 @@ public interface TokenRepository {
     void createTable();
 
     @Select("SELECT * FROM tbl_token WHERE id=#{tokenId}")
-    Token findById(@Param("tokenId") Long tokenId);
+    TokenDto findById(@Param("tokenId") Long tokenId);
 
     @Select("SELECT * FROM tbl_token")
-    List<Token> findAll();
+    List<TokenDto> findAll();
 
     @Select("SELECT * FROM tbl_token WHERE key=#{key}")
-    Token findByKey(@Param("key") String key);
+    TokenDto findByKey(@Param("key") String key);
 
     @Select("SELECT * FROM tbl_token WHERE userId=#{userId} LIMIT 1")
-    Token findByUserId(@Param("userId") Long userId);
+    TokenDto findByUserId(@Param("userId") Long userId);
 
     @Insert("INSERT INTO tbl_token(id, _key, expiryDate, userId) VALUES(#{id}, #{key}, #{expiryDate}, #{userId})")
     void add(TokenDto token);
@@ -33,5 +33,5 @@ public interface TokenRepository {
     void update(TokenDto token);
 
     @Delete("DELETE FROM tbl_token WHERE id=#{id} OR _key=#{key}")
-    void delete(Token token);
+    void delete(TokenDto token);
 }

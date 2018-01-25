@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 @Mapper
 public interface VerificationTokenRepository {
 

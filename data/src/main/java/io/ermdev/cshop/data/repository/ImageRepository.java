@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@Deprecated
 @Mapper
 public interface ImageRepository {
 
