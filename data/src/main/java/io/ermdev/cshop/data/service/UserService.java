@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.service;
 
-import io.ermdev.cshop.commons.util.IdGenerator;
+import io.ermdev.cshop.commons.IdGenerator;
 import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.repository.UserRepository;

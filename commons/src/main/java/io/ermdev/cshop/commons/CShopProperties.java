@@ -1,4 +1,4 @@
-package io.ermdev.cshop.commons.properties;
+package io.ermdev.cshop.commons;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

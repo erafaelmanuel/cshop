@@ -1,4 +1,4 @@
-package io.ermdev.cshop.commons.util;
+package io.ermdev.cshop.commons;
 
 import java.util.Calendar;
 
