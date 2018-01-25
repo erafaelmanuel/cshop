@@ -1,19 +1,17 @@
 package io.ermdev.cshop.data.repository;
 
+import io.ermdev.cshop.data.dto.TokenDto;
 import io.ermdev.cshop.data.entity.Token;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface TokenRepository {
 
-    @Insert("CREATE TABLE IF NOT EXISTS tbl_token(id BIGINT NOT NULL AUTO_INCREMENT, key VARCHAR(100), expiryDate " +
-            "VARCHAR(45), userId BIGINT, PRIMARY KEY(id), FOREIGN KEY(userId) REFERENCES tbl_user(id) ON DELETE " +
-            "CASCADE ON UPDATE CASCADE)")
+    @Insert("CREATE TABLE IF NOT EXISTS tbl_token(id BIGINT NOT NULL AUTO_INCREMENT, _key VARCHAR(100), expiryDate " +
+            "VARCHAR(45), userId BIGINT NOT NULL, PRIMARY KEY(id), FOREIGN KEY(userId) REFERENCES tbl_user(id) " +
+            "ON DELETE CASCADE ON UPDATE CASCADE)")
     void createTable();
 
     @Select("SELECT * FROM tbl_token WHERE id=#{tokenId}")
@@ -27,4 +25,13 @@ public interface TokenRepository {
 
     @Select("SELECT * FROM tbl_token WHERE userId=#{userId} LIMIT 1")
     Token findByUserId(@Param("userId") Long userId);
+
+    @Insert("INSERT INTO tbl_token(id, _key, expiryDate, userId) VALUES(#{id}, #{key}, #{expiryDate}, #{userId})")
+    void add(TokenDto token);
+
+    @Update("UPDATE FROM tbl_token SET _key=#{key}, expiryDate=#{expiryDate}, userId=#{userId} WHERE id=#{id}")
+    void update(TokenDto token);
+
+    @Delete("DELETE FROM tbl_token WHERE id=#{id} OR _key=#{key}")
+    void delete(Token token);
 }
