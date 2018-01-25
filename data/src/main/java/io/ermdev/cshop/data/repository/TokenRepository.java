@@ -1,7 +1,6 @@
 package io.ermdev.cshop.data.repository;
 
 import io.ermdev.cshop.data.dto.TokenDto;
-import io.ermdev.cshop.data.entity.Token;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -17,14 +16,14 @@ public interface TokenRepository {
     @Select("SELECT * FROM tbl_token WHERE id=#{tokenId}")
     TokenDto findById(@Param("tokenId") Long tokenId);
 
-    @Select("SELECT * FROM tbl_token")
-    List<TokenDto> findAll();
-
     @Select("SELECT * FROM tbl_token WHERE key=#{key}")
     TokenDto findByKey(@Param("key") String key);
 
     @Select("SELECT * FROM tbl_token WHERE userId=#{userId} LIMIT 1")
     TokenDto findByUserId(@Param("userId") Long userId);
+
+    @Select("SELECT * FROM tbl_token")
+    List<TokenDto> findAll();
 
     @Insert("INSERT INTO tbl_token(id, _key, expiryDate, userId) VALUES(#{id}, #{key}, #{expiryDate}, #{userId})")
     void add(TokenDto token);

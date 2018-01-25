@@ -35,4 +35,33 @@ public class TokenService {
             throw new EntityException("No token found");
         }
     }
+
+    Token findByKey(String key) throws EntityException {
+        final TokenDto tokenDto = tokenRepository.findByKey(key);
+        if(tokenDto != null) {
+            User user = userRepository.findById(tokenDto.getUserId());
+            Token token = mapper.set(tokenDto).mapTo(Token.class);
+            token.setUser(user);
+            return token;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
+    Token findByUserId(Long userId) throws EntityException {
+        final TokenDto tokenDto = tokenRepository.findByUserId(userId);
+        if(tokenDto != null) {
+            User user = userRepository.findById(userId);
+            Token token = mapper.set(tokenDto).mapTo(Token.class);
+            token.setUser(user);
+            return token;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
+    /**TODO**/
+    Token save(Token token) {
+        return null;
+    }
 }
