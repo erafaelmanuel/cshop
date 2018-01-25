@@ -1,6 +1,6 @@
 package io.ermdev.cshop.rest.user;
 
-import io.ermdev.cshop.data.model.Link;
+import io.ermdev.cshop.commons.Link;
 
 import javax.ws.rs.core.UriInfo;
 

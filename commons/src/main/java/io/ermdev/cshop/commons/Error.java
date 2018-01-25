@@ -1,4 +1,4 @@
-package io.ermdev.cshop.data.model;
+package io.ermdev.cshop.commons;
 
 public class Error {
 

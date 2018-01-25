@@ -1,6 +1,6 @@
 package io.ermdev.cshop.data.entity;
 
-import io.ermdev.cshop.data.model.Link;
+import io.ermdev.cshop.commons.Link;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;

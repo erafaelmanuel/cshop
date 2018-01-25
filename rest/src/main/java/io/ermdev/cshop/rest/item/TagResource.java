@@ -4,7 +4,7 @@ import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.TagService;
 import io.ermdev.cshop.data.entity.Tag;
-import io.ermdev.cshop.data.model.Error;
+import io.ermdev.cshop.commons.Error;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

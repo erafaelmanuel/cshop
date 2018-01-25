@@ -1,6 +1,6 @@
 package io.ermdev.cshop.rest.user;
 
-import io.ermdev.cshop.data.model.Error;
+import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.exception.ResourceException;
