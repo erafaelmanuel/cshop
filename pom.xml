@@ -14,6 +14,7 @@
         <module>exception</module>
         <module>rest</module>
         <module>security</module>
+        <module>type-converter</module>
         <module>web</module>
     </modules>
     <packaging>pom</packaging>
@@ -82,6 +83,12 @@
             <dependency>
                 <groupId>io.ermdev</groupId>
                 <artifactId>security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.ermdev</groupId>
+                <artifactId>type-converter</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
