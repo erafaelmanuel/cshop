@@ -28,7 +28,6 @@ public class UserResourceLinks {
                 .path(UserResource.class)
                 .path(userId.toString())
                 .path(UserRoleResource.class)
-                .path("all")
                 .build()
                 .toString();
         return new Link(rel, href);
