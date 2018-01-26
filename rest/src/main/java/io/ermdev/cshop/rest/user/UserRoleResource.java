@@ -4,7 +4,6 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Role;
 import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
-import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.rest.role.RoleDto;
 import io.ermdev.cshop.rest.role.RoleResourceLinks;
 import io.ermdev.mapfierj.SimpleMapper;
