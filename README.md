@@ -1,51 +1,10 @@
 # CShop
 
-Cloth Shop is a personal project. An ecommerce website for clothings. (still under development)<br />
-For questions or suggestions please contact me at erafaelmanuel@gmail.com
+Open source cloth web application that written in java and spring framework (still under development)
 
-## Project Structure
-```
-    .
-    ├── business
-    |     ├── event
-    |     ├── listener
-    |     ├── util
-    |     └── pom.xml
-    ├── commons
-    |     ├── util
-    |     └── pom.xml
-    ├── core
-    |     ├── configuration  
-    |     ├── main.java 
-    |     └── pom.xml
-    ├── data
-    |     ├── entity
-    |     ├── exception
-    |     ├── mapper
-    |     ├── model
-    |     ├── service
-    |     ├── helper
-    |     └── pom.xml
-    ├── security
-    |     ├── annotation  
-    |     ├── validator
-    |     └── pom.xml
-    ├── web
-    |     ├── controller  
-    |     ├── dto  
-    |     ├── interceptor
-    |     └── pom.xml
-    ├── webservice
-    |     ├── item  
-    |     ├── user
-    |     └── pom.xml
-    ├── README.md
-    └── pom.xml
-```
 ## Available APIs
     [User](#user-getbyid)<br />
     [Tag](#tag-getbyid)<br />
-
 ## User (getById)
 
 <b>Request</b>
