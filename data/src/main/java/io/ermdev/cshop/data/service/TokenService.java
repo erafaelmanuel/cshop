@@ -16,19 +16,19 @@ public class TokenService {
 
     private TokenRepository tokenRepository;
     private UserRepository userRepository;
-    private ModelMapper mapper;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public TokenService(TokenRepository tokenRepository, UserRepository userRepository, ModelMapper mapper) {
+    public TokenService(TokenRepository tokenRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.tokenRepository = tokenRepository;
         this.userRepository = userRepository;
-        this.mapper = mapper;
+        this.modelMapper = modelMapper;
     }
 
     public Token findById(Long tokenId) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findById(tokenId);
         if (tokenDto != null) {
-            return mapper.set(tokenDto)
+            return modelMapper.set(tokenDto)
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
@@ -40,7 +40,7 @@ public class TokenService {
     public Token findByKey(String key) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findByKey(key);
         if (tokenDto != null) {
-            return mapper.set(tokenDto)
+            return modelMapper.set(tokenDto)
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
@@ -52,7 +52,7 @@ public class TokenService {
     public Token findByUserId(Long userId) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findByUserId(userId);
         if (tokenDto != null) {
-            return mapper.set(tokenDto)
+            return modelMapper.set(tokenDto)
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
@@ -64,7 +64,7 @@ public class TokenService {
     Token save(Token token) throws EntityException {
         if (token != null) {
             if (token.getId() == null) {
-                final TokenDto tokenDto = mapper.set(token).getTransaction().mapTo(TokenDto.class);
+                final TokenDto tokenDto = modelMapper.set(token).getTransaction().mapTo(TokenDto.class);
                 final Long generatedId = IdGenerator.randomUUID();
                 if (token.getKey() == null || token.getKey().trim().isEmpty()) {
                     throw new EntityException("Key is required");
@@ -124,7 +124,7 @@ public class TokenService {
         final TokenDto tokenDto = tokenRepository.findById(tokenId);
         if (tokenDto != null) {
             tokenRepository.delete(tokenDto);
-            return mapper.set(tokenDto)
+            return modelMapper.set(tokenDto)
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
@@ -137,7 +137,7 @@ public class TokenService {
         final TokenDto tokenDto = tokenRepository.findById(token.getId());
         if (tokenDto != null) {
             tokenRepository.delete(tokenDto);
-            return mapper.set(tokenDto)
+            return modelMapper.set(tokenDto)
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
