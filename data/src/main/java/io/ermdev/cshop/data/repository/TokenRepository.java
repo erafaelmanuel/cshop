@@ -9,8 +9,8 @@ import java.util.List;
 public interface TokenRepository {
 
     @Insert("CREATE TABLE IF NOT EXISTS tbl_token(id BIGINT NOT NULL AUTO_INCREMENT, _key VARCHAR(100), expiryDate " +
-            "VARCHAR(45), userId BIGINT NOT NULL, PRIMARY KEY(id), FOREIGN KEY(userId) REFERENCES tbl_user(id) " +
-            "ON DELETE CASCADE ON UPDATE CASCADE)")
+            "VARCHAR(45), userId BIGINT NOT NULL UNIQUE, PRIMARY KEY(id), FOREIGN KEY(userId) REFERENCES " +
+            "tbl_user(id) ON DELETE CASCADE ON UPDATE CASCADE)")
     void createTable();
 
     @Select("SELECT * FROM tbl_token WHERE id=#{tokenId}")
@@ -19,7 +19,7 @@ public interface TokenRepository {
     @Select("SELECT * FROM tbl_token WHERE key=#{key}")
     TokenDto findByKey(@Param("key") String key);
 
-    @Select("SELECT * FROM tbl_token WHERE userId=#{userId} LIMIT 1")
+    @Select("SELECT * FROM tbl_token WHERE userId=#{userId}")
     TokenDto findByUserId(@Param("userId") Long userId);
 
     @Select("SELECT * FROM tbl_token")
