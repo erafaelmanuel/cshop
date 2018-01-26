@@ -4,6 +4,7 @@ import io.ermdev.cshop.data.repository.RoleRepository;
 import io.ermdev.cshop.data.repository.TokenRepository;
 import io.ermdev.cshop.data.repository.UserRepository;
 import io.ermdev.cshop.data.repository.UserRoleRepository;
+import io.ermdev.cshop.data.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +15,15 @@ public class DatabaseInitConfiguration implements CommandLineRunner {
     private UserRepository userRepo;
     private RoleRepository roleRepo;
     private UserRoleRepository userRoleRepo;
-    private TokenRepository tokenRepository;
+    private TokenRepository tokenRepo;
 
     @Autowired
     public DatabaseInitConfiguration(UserRepository userRepo, RoleRepository roleRepo, UserRoleRepository userRoleRepo,
-                                     TokenRepository tokenRepository) {
+                                     TokenRepository tokenRepo) {
         this.userRepo = userRepo;
         this.roleRepo = roleRepo;
         this.userRoleRepo = userRoleRepo;
-        this.tokenRepository = tokenRepository;
+        this.tokenRepo = tokenRepo;
     }
 
     @Override
@@ -30,6 +31,6 @@ public class DatabaseInitConfiguration implements CommandLineRunner {
         userRepo.createTable();
         roleRepo.createTable();
         userRoleRepo.createTable();
-        tokenRepository.createTable();
+        tokenRepo.createTable();
     }
 }
