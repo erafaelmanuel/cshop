@@ -111,8 +111,7 @@ public class UserResource {
     }
 
     @Path("{userId}/roles")
-    public UserRoleResource usersRoleResource(@QueryParam("roleIds") List<Long> roleIds, @Context UriInfo uriInfo) {
-        userRoleResource.setRoleIds(roleIds);
+    public UserRoleResource usersRoleResource(@Context UriInfo uriInfo) {
         userRoleResource.setUriInfo(uriInfo);
         return userRoleResource;
     }
