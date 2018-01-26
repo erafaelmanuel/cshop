@@ -28,8 +28,8 @@ public class TokenService {
     Token findById(Long tokenId) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findById(tokenId);
         if (tokenDto != null) {
-            User user = userRepository.findById(tokenDto.getUserId());
             Token token = mapper.set(tokenDto).mapTo(Token.class);
+            User user = userRepository.findById(tokenDto.getUserId());
             token.setUser(user);
             return token;
         } else {
@@ -40,8 +40,8 @@ public class TokenService {
     Token findByKey(String key) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findByKey(key);
         if (tokenDto != null) {
-            User user = userRepository.findById(tokenDto.getUserId());
             Token token = mapper.set(tokenDto).mapTo(Token.class);
+            User user = userRepository.findById(tokenDto.getUserId());
             token.setUser(user);
             return token;
         } else {
@@ -52,8 +52,8 @@ public class TokenService {
     Token findByUserId(Long userId) throws EntityException {
         final TokenDto tokenDto = tokenRepository.findByUserId(userId);
         if (tokenDto != null) {
-            User user = userRepository.findById(userId);
             Token token = mapper.set(tokenDto).mapTo(Token.class);
+            User user = userRepository.findById(userId);
             token.setUser(user);
             return token;
         } else {
@@ -66,7 +66,6 @@ public class TokenService {
             if (token.getId() == null) {
                 final TokenDto tokenDto = mapper.set(token).mapTo(TokenDto.class);
                 final Long generatedId = IdGenerator.randomUUID();
-
                 if (token.getKey() == null || token.getKey().trim().isEmpty()) {
                     throw new EntityException("Key is required");
                 }
@@ -118,6 +117,32 @@ public class TokenService {
             }
         } else {
             return null;
+        }
+    }
+
+    public Token delete(Long tokenId) throws EntityException {
+        final TokenDto tokenDto = tokenRepository.findById(tokenId);
+        if (tokenDto != null) {
+            Token token = mapper.set(tokenDto).mapTo(Token.class);
+            User user = userRepository.findById(tokenDto.getUserId());
+            token.setUser(user);
+            tokenRepository.delete(tokenDto);
+            return token;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
+    public Token delete(Token token) throws EntityException {
+        final TokenDto tokenDto = tokenRepository.findById(token.getId());
+        if (tokenDto != null) {
+            token = mapper.set(tokenDto).mapTo(Token.class);
+            User user = userRepository.findById(tokenDto.getUserId());
+            token.setUser(user);
+            tokenRepository.delete(tokenDto);
+            return token;
+        } else {
+            throw new EntityException("No token found");
         }
     }
 }
