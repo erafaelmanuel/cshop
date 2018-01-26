@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MapfierJMapper {
+public class MapfierJMapperBean {
 
     private UserConverter userConverter;
 
     @Autowired
-    public MapfierJMapper(UserConverter userConverter) {
+    public void setUserConverter(UserConverter userConverter) {
         this.userConverter = userConverter;
     }
 
