@@ -1,12 +1,21 @@
 package io.ermdev.cshop.core.bean;
 
+import io.ermdev.cshop.typeconverter.UserConverter;
 import io.ermdev.mapfierj.ModelMapper;
 import io.ermdev.mapfierj.SimpleMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MapfierJMapper {
+
+    private UserConverter userConverter;
+
+    @Autowired
+    public MapfierJMapper(UserConverter userConverter) {
+        this.userConverter = userConverter;
+    }
 
     @Bean
     public SimpleMapper simpleMapper() {
@@ -15,6 +24,8 @@ public class MapfierJMapper {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConverter().register(userConverter);
+        return modelMapper;
     }
 }

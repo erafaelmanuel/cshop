@@ -10,4 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>type-converter</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.ermdev</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
+    </dependencies>
 </project>
