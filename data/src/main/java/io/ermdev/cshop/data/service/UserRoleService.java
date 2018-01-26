@@ -24,19 +24,19 @@ public class UserRoleService {
         this.roleRepository = roleRepository;
     }
 
-    public List<Role> findRolesByUserId(Long userId) throws EntityException {
-        List<Role> roles = userRoleRepository.findRolesByUserId(userId);
-        if (roles != null) {
-            return roles;
+    public Role findRoleByUserIdAndRoleId(Long userId, Long roleId) throws EntityException {
+        Role role = userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId);
+        if (role != null) {
+            return role;
         } else {
             throw new EntityException("No role found");
         }
     }
 
-    public Role findUserRoleById(Long userId, Long roleId) throws EntityException {
-        Role role = userRoleRepository.findUserRoleById(userId, roleId);
-        if (role != null) {
-            return role;
+    public List<Role> findRolesByUserId(Long userId) throws EntityException {
+        List<Role> roles = userRoleRepository.findRolesByUserId(userId);
+        if (roles != null) {
+            return roles;
         } else {
             throw new EntityException("No role found");
         }
@@ -48,19 +48,18 @@ public class UserRoleService {
         if (user == null) {
             throw new EntityException("No user found");
         }
-        if (role == null) {
+        if(role == null) {
             throw new EntityException("No role found");
+        }
+        if(userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId) != null) {
+            throw new EntityException("The role already exists");
         }
         userRoleRepository.addRoleToUser(userId, roleId);
         return role;
     }
 
     public Role deleteRoleFromUser(Long userId, Long roleId) throws EntityException {
-        final User user = userRepository.findById(userId);
-        final Role role = roleRepository.findById(roleId);
-        if (user == null) {
-            throw new EntityException("No user found");
-        }
+        final Role role = userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId);
         if (role == null) {
             throw new EntityException("No role found");
         }

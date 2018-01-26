@@ -42,7 +42,7 @@ public class UserRoleResource {
     @Path("{roleId}")
     public Response getById(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
-            Role role = userRoleService.findUserRoleById(userId, roleId);
+            Role role = userRoleService.findRoleByUserIdAndRoleId(userId, roleId);
             RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
             RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
             roleDto.getLinks().add(roleResourceLinks.getSelf(roleId));
@@ -73,16 +73,12 @@ public class UserRoleResource {
     @Path("{roleId}")
     public Response addRole(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
-            if (roleId != null) {
-                Role role = userRoleService.addRoleToUser(userId, roleId);
-                RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
-                RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
-                roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
-                return Response.status(Response.Status.FOUND).entity(roleDto).build();
-            } else {
-                throw new ResourceException("roleId is required");
-            }
-        } catch (EntityException | ResourceException e) {
+            Role role = userRoleService.addRoleToUser(userId, roleId);
+            RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
+            RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+            roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+            return Response.status(Response.Status.FOUND).entity(roleDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
@@ -92,16 +88,12 @@ public class UserRoleResource {
     @Path("{roleId}")
     public Response deleteRole(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
-            if (roleId != null) {
-                Role role = userRoleService.addRoleToUser(userId, roleId);
-                RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
-                RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
-                roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
-                return Response.status(Response.Status.FOUND).entity(roleDto).build();
-            } else {
-                throw new ResourceException("roleId is required");
-            }
-        } catch (EntityException | ResourceException e) {
+            Role role = userRoleService.deleteRoleFromUser(userId, roleId);
+            RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
+            RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
+            roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+            return Response.status(Response.Status.FOUND).entity(roleDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }

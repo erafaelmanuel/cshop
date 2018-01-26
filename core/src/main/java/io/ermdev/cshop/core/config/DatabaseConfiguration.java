@@ -22,7 +22,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
         userRepository.createTable();
         roleRepository.createTable();
         userRoleRepository.createTable();
-        tokenRepository.createTable();
+        //tokenRepository.createTable();
     }
 
     @Autowired
