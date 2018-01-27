@@ -20,7 +20,7 @@ import javax.ws.rs.core.UriInfo;
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("token")
+@Path("tokens")
 public class TokenResource {
 
     private TokenService tokenService;
@@ -37,7 +37,7 @@ public class TokenResource {
     public Response getById(@PathParam("tokenId") Long tokenId, @Context UriInfo uriInfo) {
         try {
             TokenDto tokenDto = simpleMapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
-            return null;
+            return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();

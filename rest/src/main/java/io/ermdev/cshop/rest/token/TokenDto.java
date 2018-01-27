@@ -11,7 +11,6 @@ public class TokenDto {
     private Long id;
     private String key;
     private Date expiryDate;
-    private Long userId;
     private List<Link> links = new ArrayList<>();
 
     public Long getId() {
@@ -36,14 +35,6 @@ public class TokenDto {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public List<Link> getLinks() {
