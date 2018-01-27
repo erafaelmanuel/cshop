@@ -11,6 +11,9 @@ import io.ermdev.mapfierj.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class TokenService {
 
@@ -56,6 +59,23 @@ public class TokenService {
                     .field("userId", "user")
                     .convertFieldToType("user", User.class)
                     .getTransaction().mapTo(Token.class);
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
+    public List<Token> findAll() throws EntityException {
+        final List<TokenDto> tokenDtos = tokenRepository.findAll();
+        if (tokenDtos != null) {
+            List<Token> tokens = new ArrayList<>();
+            tokenDtos.parallelStream().forEach(tokenDto -> {
+                final Token token = modelMapper.set(tokenDto)
+                        .field("userId", "user")
+                        .convertFieldToType("user", User.class)
+                        .getTransaction().mapTo(Token.class);
+                tokens.add(token);
+            });
+            return tokens;
         } else {
             throw new EntityException("No token found");
         }
