@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @XmlRootElement
 public class Item {
 

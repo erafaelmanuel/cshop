@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.entity;
 
+@Deprecated
 public class Customer {
 
     private Long id;
