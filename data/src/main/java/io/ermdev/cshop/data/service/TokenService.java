@@ -2,10 +2,10 @@ package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.commons.IdGenerator;
 import io.ermdev.cshop.data.entity.Token;
+import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.repository.TokenRepository;
-import io.ermdev.cshop.data.repository.UserRepository;
+import io.ermdev.cshop.data.repository.TokenUserRepository;
 import io.ermdev.cshop.exception.EntityException;
-import io.ermdev.mapfierj.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +15,19 @@ import java.util.List;
 public class TokenService {
 
     private TokenRepository tokenRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private TokenUserRepository tokenUserRepository;
 
     @Autowired
-    public TokenService(TokenRepository tokenRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public TokenService(TokenRepository tokenRepository, TokenUserRepository tokenUserRepository) {
         this.tokenRepository = tokenRepository;
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
+        this.tokenUserRepository = tokenUserRepository;
     }
 
     public Token findById(Long tokenId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         if (token != null) {
+            final User user = tokenUserRepository.findUserByTokenId(tokenId);
+            token.setUser(user);
             return token;
         } else {
             throw new EntityException("No token found");
@@ -37,6 +37,8 @@ public class TokenService {
     public Token findByKey(String key) throws EntityException {
         final Token token = tokenRepository.findByKey(key);
         if (token != null) {
+            final User user = tokenUserRepository.findUserByTokenId(token.getId());
+            token.setUser(user);
             return token;
         } else {
             throw new EntityException("No token found");
@@ -46,6 +48,10 @@ public class TokenService {
     public List<Token> findAll() throws EntityException {
         final List<Token> tokens = tokenRepository.findAll();
         if (tokens != null) {
+            tokens.parallelStream().forEach(token -> {
+                final User user = tokenUserRepository.findUserByTokenId(token.getId());
+                token.setUser(user);
+            });
             return tokens;
         } else {
             throw new EntityException("No token found");
@@ -89,7 +95,9 @@ public class TokenService {
     public Token delete(Long tokenId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         if (token != null) {
+            final User user = tokenUserRepository.findUserByTokenId(token.getId());
             tokenRepository.delete(token);
+            token.setUser(user);
             return token;
         } else {
             throw new EntityException("No token found");
@@ -99,7 +107,9 @@ public class TokenService {
     public Token delete(Token token) throws EntityException {
         final Token o = tokenRepository.findById(token.getId());
         if (o != null) {
+            final User user = tokenUserRepository.findUserByTokenId(token.getId());
             tokenRepository.delete(o);
+            token.setUser(user);
             return o;
         } else {
             throw new EntityException("No token found");
