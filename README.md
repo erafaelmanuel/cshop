@@ -4,17 +4,13 @@ Open source cloth web application that written in java and spring framework (sti
 
 ## Available APIs
     [User](#user-getbyid)<br />
-    [Tag](#tag-getbyid)<br />
+    [Role](#tag-getbyid)<br />
 ## User (getById)
-
-<b>Request</b>
-* Required: none
-* Method : GET
-* URI : /api/user/[USER_ID]
+GET /api/user/{id}
 
 <b>Response</b>
 * Status: 200
-* Content-Type : xml, json
+* Content-Type : XML, JSON
 * Body :
 
 success
