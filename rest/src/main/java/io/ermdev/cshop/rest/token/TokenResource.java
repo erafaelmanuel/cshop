@@ -42,10 +42,15 @@ public class TokenResource {
     }
 
     @GET
-    public Response getAll(@Context UriInfo uriInfo) {
+    public Response getAll(@QueryParam("key") String key, @Context UriInfo uriInfo) {
         try {
-            List<TokenDto> tokenDtos = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
-            return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
+            if(key != null) {
+                TokenDto tokenDto = simpleMapper.set(tokenService.findByKey(key)).mapTo(TokenDto.class);
+                return Response.status(Response.Status.FOUND).entity(tokenDto).build();
+            } else {
+                List<TokenDto> tokenDtos = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
+                return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
+            }
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
