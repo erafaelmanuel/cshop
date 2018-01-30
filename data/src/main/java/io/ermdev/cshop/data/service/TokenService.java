@@ -1,9 +1,7 @@
 package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.commons.IdGenerator;
-import io.ermdev.cshop.data.dto.TokenDto;
 import io.ermdev.cshop.data.entity.Token;
-import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.repository.TokenRepository;
 import io.ermdev.cshop.data.repository.UserRepository;
 import io.ermdev.cshop.exception.EntityException;
@@ -88,29 +86,23 @@ public class TokenService {
         }
     }
 
-//    public Token delete(Long tokenId) throws EntityException {
-//        final TokenDto tokenDto = tokenRepository.findById(tokenId);
-//        if (tokenDto != null) {
-//            tokenRepository.delete(tokenDto);
-//            return modelMapper.set(tokenDto)
-//                    .field("userId", "user")
-//                    .convertFieldToType("user", User.class)
-//                    .getTransaction().mapTo(Token.class);
-//        } else {
-//            throw new EntityException("No token found");
-//        }
-//    }
-//
-//    public Token delete(Token token) throws EntityException {
-//        final TokenDto tokenDto = tokenRepository.findById(token.getId());
-//        if (tokenDto != null) {
-//            tokenRepository.delete(tokenDto);
-//            return modelMapper.set(tokenDto)
-//                    .field("userId", "user")
-//                    .convertFieldToType("user", User.class)
-//                    .getTransaction().mapTo(Token.class);
-//        } else {
-//            throw new EntityException("No token found");
-//        }
-//    }
+    public Token delete(Long tokenId) throws EntityException {
+        final Token token = tokenRepository.findById(tokenId);
+        if (token != null) {
+            tokenRepository.delete(token);
+            return token;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
+    public Token delete(Token token) throws EntityException {
+        final Token o = tokenRepository.findById(token.getId());
+        if (o != null) {
+            tokenRepository.delete(o);
+            return o;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
 }
