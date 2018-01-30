@@ -15,7 +15,7 @@ public interface TokenRepository {
     @Select("SELECT *, _key AS 'key' FROM tbl_token WHERE id=#{tokenId}")
     Token findById(@Param("tokenId") Long tokenId);
 
-    @Select("SELECT *, _key AS 'key' FROM tbl_token WHERE key=#{key}")
+    @Select("SELECT *, _key AS 'key' FROM tbl_token WHERE _key=#{key}")
     Token findByKey(@Param("key") String key);
 
     @Select("SELECT *, _key AS 'key' FROM tbl_token")
