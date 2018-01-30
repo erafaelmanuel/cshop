@@ -12,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -33,8 +34,18 @@ public class TokenResource {
     public Response getById(@PathParam("tokenId") Long tokenId, @Context UriInfo uriInfo) {
         try {
             TokenDto tokenDto = simpleMapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
-            System.out.println(tokenDto);
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @GET
+    public Response getAll(@Context UriInfo uriInfo) {
+        try {
+            List<TokenDto> tokenDtos = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
+            return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
