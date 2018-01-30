@@ -3,14 +3,13 @@ package io.ermdev.cshop.rest.token;
 import io.ermdev.cshop.commons.Link;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TokenDto {
 
     private Long id;
     private String key;
-    private Date expiryDate;
+    private String expiryDate;
     private List<Link> links = new ArrayList<>();
 
     public Long getId() {
@@ -29,11 +28,11 @@ public class TokenDto {
         this.key = key;
     }
 
-    public Date getExpiryDate() {
+    public String getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
 
