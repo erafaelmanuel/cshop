@@ -52,18 +52,6 @@ public class TokenService {
         }
     }
 
-    public Token findByUserId(Long userId) throws EntityException {
-        final TokenDto tokenDto = tokenRepository.findByUserId(userId);
-        if (tokenDto != null) {
-            return modelMapper.set(tokenDto)
-                    .field("userId", "user")
-                    .convertFieldToType("user", User.class)
-                    .getTransaction().mapTo(Token.class);
-        } else {
-            throw new EntityException("No token found");
-        }
-    }
-
     public List<Token> findAll() throws EntityException {
         final List<TokenDto> tokenDtos = tokenRepository.findAll();
         if (tokenDtos != null) {
@@ -81,7 +69,7 @@ public class TokenService {
         }
     }
 
-    Token save(Token token) throws EntityException {
+    public Token save(Token token) throws EntityException {
         if (token != null) {
             if (token.getId() == null) {
                 final TokenDto tokenDto = modelMapper.set(token).getTransaction().mapTo(TokenDto.class);

@@ -1,9 +1,6 @@
 package io.ermdev.cshop.core.config;
 
-import io.ermdev.cshop.data.repository.RoleRepository;
-import io.ermdev.cshop.data.repository.TokenRepository;
-import io.ermdev.cshop.data.repository.UserRepository;
-import io.ermdev.cshop.data.repository.UserRoleRepository;
+import io.ermdev.cshop.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +13,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
     private RoleRepository roleRepository;
     private UserRoleRepository userRoleRepository;
     private TokenRepository tokenRepository;
+    private TokenUserRepository tokenUserRepository;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -23,6 +21,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
         roleRepository.createTable();
         userRoleRepository.createTable();
         tokenRepository.createTable();
+        tokenUserRepository.createTable();
     }
 
     @Autowired
@@ -43,5 +42,10 @@ public class DatabaseConfiguration implements CommandLineRunner {
     @Autowired
     public void setTokenRepository(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
+    }
+
+    @Autowired
+    public void setTokenUserRepository(TokenUserRepository tokenUserRepository) {
+        this.tokenUserRepository = tokenUserRepository;
     }
 }

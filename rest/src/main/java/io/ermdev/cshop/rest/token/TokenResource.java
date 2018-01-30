@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.List;
 
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -36,22 +38,6 @@ public class TokenResource {
         try {
             TokenDto tokenDto = simpleMapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
-        } catch (EntityException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        }
-    }
-
-    @GetMapping
-    public Response getAll(@QueryParam("userId") Long userId, @Context UriInfo uriInfo) {
-        try {
-            if (userId == null) {
-                List<TokenDto> tokenDto = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
-                return Response.status(Response.Status.FOUND).entity(tokenDto).build();
-            } else {
-                TokenDto tokenDto = simpleMapper.set(tokenService.findByUserId(userId)).mapTo(TokenDto.class);
-                return Response.status(Response.Status.FOUND).entity(tokenDto).build();
-            }
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
