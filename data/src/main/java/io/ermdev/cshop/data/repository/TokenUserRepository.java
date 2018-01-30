@@ -12,8 +12,9 @@ public interface TokenUserRepository {
             "UPDATE CASCADE)")
     void createTable();
 
-    @Select("SELECT * FROM tbl_token_user WHERE tokenId=#{tokenId}")
-    User findUserIdByTokenId(@Param("tokenId") Long tokenId);
+    @Select("SELECT B.id, B.name, B.email, B.username, B.password, B.enabled FROM tbl_token_user AS A LEFT JOIN " +
+            "tbl_user AS B ON A.userId=B.id WHERE A.tokenId=#{tokenId} LIMIT 1")
+    User findUserByTokenId(@Param("tokenId") Long tokenId);
 
     @Insert("INSERT INTO tbl_token_user(tokenId, userId) VALUES(#{tokenId}, #{userId})")
     void addUserToToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
