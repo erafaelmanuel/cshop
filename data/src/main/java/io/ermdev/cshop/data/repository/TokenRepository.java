@@ -12,13 +12,13 @@ public interface TokenRepository {
             "VARCHAR(45), PRIMARY KEY(id))")
     void createTable();
 
-    @Select("SELECT * FROM tbl_token WHERE id=#{tokenId}")
+    @Select("SELECT *, _key AS 'key' FROM tbl_token WHERE id=#{tokenId}")
     Token findById(@Param("tokenId") Long tokenId);
 
-    @Select("SELECT * FROM tbl_token WHERE key=#{key}")
+    @Select("SELECT *, _key AS 'key' FROM tbl_token WHERE key=#{key}")
     Token findByKey(@Param("key") String key);
 
-    @Select("SELECT * FROM tbl_token")
+    @Select("SELECT *, _key AS 'key' FROM tbl_token")
     List<Token> findAll();
 
     @Insert("INSERT INTO tbl_token(id, _key, expiryDate) VALUES(#{id}, #{key}, #{expiryDate})")
