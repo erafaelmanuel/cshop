@@ -1,7 +1,7 @@
 package io.ermdev.cshop.data.repository;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import io.ermdev.cshop.data.entity.User;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface TokenUserRepository {
@@ -11,4 +11,13 @@ public interface TokenUserRepository {
             "DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY(userId) REFERENCES tbl_user(id) ON DELETE CASCADE ON " +
             "UPDATE CASCADE)")
     void createTable();
+
+    @Select("SELECT * FROM tbl_token_user WHERE tokenId=#{tokenId}")
+    User findUserIdByTokenId(@Param("tokenId") Long tokenId);
+
+    @Insert("INSERT INTO tbl_token_user(tokenId, userId) VALUES(#{tokenId}, #{userId})")
+    void addUserToToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
+
+    @Delete("DELETE FROM tbl_token_user WHERE tokenId=#{tokenId} AND userId=#{userId}")
+    void removeUserFromToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
 }
