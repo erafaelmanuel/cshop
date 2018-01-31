@@ -31,16 +31,17 @@ public class RegisterController {
     private VerificationTokenService verificationTokenService;
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
-    private SimpleMapper mapper;
+    private SimpleMapper simpleMapper;
 
     @Autowired
     public RegisterController(UserService userService, VerificationTokenService verificationTokenService,
-                              ApplicationEventPublisher publisher, MessageSource messageSource, SimpleMapper mapper) {
+                              ApplicationEventPublisher publisher, MessageSource messageSource,
+                              SimpleMapper simpleMapper) {
         this.userService = userService;
         this.verificationTokenService = verificationTokenService;
         this.publisher = publisher;
         this.messageSource = messageSource;
-        this.mapper = mapper;
+        this.simpleMapper = simpleMapper;
     }
 
     @GetMapping("register")
@@ -52,7 +53,7 @@ public class RegisterController {
     @PostMapping("register")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            User user = mapper.set(userDto).mapAllTo(User.class);
+            User user = simpleMapper.set(userDto).mapAllTo(User.class);
             user.setUsername(userDto.getEmail().split("@")[0]);
             try {
                 user = userService.save(user);
