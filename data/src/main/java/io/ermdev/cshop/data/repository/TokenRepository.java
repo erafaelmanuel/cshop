@@ -24,7 +24,7 @@ public interface TokenRepository {
     @Insert("INSERT INTO tbl_token(id, _key, expiryDate) VALUES(#{id}, #{key}, #{expiryDate})")
     void add(Token token);
 
-    @Update("UPDATE FROM tbl_token SET _key=#{key}, expiryDate=#{expiryDate} WHERE id=#{id}")
+    @Update("UPDATE tbl_token SET _key=#{key}, expiryDate=#{expiryDate} WHERE id=#{id}")
     void update(Token token);
 
     @Delete("DELETE FROM tbl_token WHERE id=#{id} OR _key=#{key}")
