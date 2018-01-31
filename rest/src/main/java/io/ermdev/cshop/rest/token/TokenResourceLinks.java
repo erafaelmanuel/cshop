@@ -12,11 +12,22 @@ public class TokenResourceLinks {
         this.uriInfo = uriInfo;
     }
 
-    public Link getSelf(Long tokenId) throws NullPointerException {
+    public Link getSelf(Long tokenId) {
         final String rel = "self";
         final String href = uriInfo.getBaseUriBuilder()
                 .path(TokenResource.class)
                 .path(tokenId.toString())
+                .build()
+                .toString();
+        return new Link(rel, href);
+    }
+
+    public Link getUser(Long tokenId) {
+        final String rel = "user";
+        final String href = uriInfo.getBaseUriBuilder()
+                .path(TokenResource.class)
+                .path(tokenId.toString())
+                .path(TokenUserResource.class)
                 .build()
                 .toString();
         return new Link(rel, href);
