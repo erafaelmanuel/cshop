@@ -49,7 +49,7 @@ public class TokenUserService {
         return user;
     }
 
-    public User removeUserFromToken(Long tokenId, Long userId) throws EntityException {
+    public User deleteUserFromToken(Long tokenId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         final User user = findUserByTokenId(tokenId);
         if(token == null) {
@@ -58,7 +58,7 @@ public class TokenUserService {
         if(user == null) {
             throw new EntityException("No user to remove");
         }
-        tokenUserRepository.removeUserFromToken(tokenId);
+        tokenUserRepository.deleteUserFromToken(tokenId);
         return user;
     }
 }

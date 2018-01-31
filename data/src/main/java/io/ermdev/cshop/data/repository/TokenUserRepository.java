@@ -20,5 +20,5 @@ public interface TokenUserRepository {
     void addUserToToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
 
     @Delete("DELETE FROM tbl_token_user WHERE tokenId=#{tokenId}")
-    void removeUserFromToken(@Param("tokenId") Long tokenId);
+    void deleteUserFromToken(@Param("tokenId") Long tokenId);
 }

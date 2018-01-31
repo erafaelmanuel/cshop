@@ -61,11 +61,9 @@ public class TokenUserResource {
 
     @DELETE
     @Path("{userId}")
-    public Response deleteUserFromToken(@PathParam("tokenId") Long tokenId, @PathParam("userId") Long userId) {
+    public Response deleteUserFromToken(@PathParam("tokenId") Long tokenId) {
         try {
-            UserDto userDto = simpleMapper
-                    .set(tokenUserService.removeUserFromToken(tokenId, userId))
-                    .mapTo(UserDto.class);
+            UserDto userDto = simpleMapper.set(tokenUserService.deleteUserFromToken(tokenId)).mapTo(UserDto.class);
             UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));
