@@ -39,6 +39,7 @@ public class TokenResource {
             TokenDto tokenDto = simpleMapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenId));
+            tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenId));
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -53,12 +54,14 @@ public class TokenResource {
                 TokenDto tokenDto = simpleMapper.set(tokenService.findByKey(key)).mapTo(TokenDto.class);
                 TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
                 tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenDto.getId()));
+                tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenDto.getId()));
                 return Response.status(Response.Status.FOUND).entity(tokenDto).build();
             } else {
                 List<TokenDto> tokenDtos = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
                 tokenDtos.parallelStream().forEach(tokenDto -> {
                     TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
                     tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenDto.getId()));
+                    tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenDto.getId()));
                 });
                 return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
             }
@@ -75,6 +78,7 @@ public class TokenResource {
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.setId(token.getId());
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
+            tokenDto.getLinks().add(tokenResourceLinks.getUser(token.getId()));
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -91,6 +95,7 @@ public class TokenResource {
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto = simpleMapper.set(token).mapTo(TokenDto.class);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
+            tokenDto.getLinks().add(tokenResourceLinks.getUser(token.getId()));
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -105,6 +110,7 @@ public class TokenResource {
             TokenDto tokenDto = simpleMapper.set(tokenService.delete(tokenId)).mapTo(TokenDto.class);
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenId));
+            tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenId));
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
