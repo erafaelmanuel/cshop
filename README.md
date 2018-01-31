@@ -6,36 +6,36 @@ Open source cloth web application that written in java and spring framework (sti
     [User](#user-getbyid)<br />
     [Role](#tag-getbyid)<br />
 ## User (getById)
-GET /api/user/{id}
+```
+GET /api/users/{id}
+```
 
 <b>Response</b>
-* Status: 200
 * Content-Type : XML, JSON
-* Body :
-
-success
-```
+* Status: 200
+```js
 {
     "id": 1,
+    "name": "Kelvin Datu",
+    "email": "kelvindatu@sample.com"
     "username": "kelvindatu",
     "password": "123",
-        {
-            "id": 1,
-            "name": "ROLE_USER"
-        }
-    ],
     "links": [
         {
             "rel": "self",
-            "href": "/api/tag/1"
+            "href": "/api/users/1"
+        },
+        {
+            "rel": "roles",
+            "href": "/api/users/1/roles"
         }
     ]
 }
 ```
-error
+* Status: 404
 ```
 {
-    "message": "No user found with id 1"
+    "message": "No user found"
 }
 ```
 
