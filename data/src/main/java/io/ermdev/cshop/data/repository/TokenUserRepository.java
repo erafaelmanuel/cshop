@@ -19,6 +19,6 @@ public interface TokenUserRepository {
     @Insert("INSERT INTO tbl_token_user(tokenId, userId) VALUES(#{tokenId}, #{userId})")
     void addUserToToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
 
-    @Delete("DELETE FROM tbl_token_user WHERE tokenId=#{tokenId} AND userId=#{userId}")
-    void removeUserFromToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
+    @Delete("DELETE FROM tbl_token_user WHERE tokenId=#{tokenId}")
+    void removeUserFromToken(@Param("tokenId") Long tokenId);
 }

@@ -53,10 +53,7 @@ public class TokenUserService {
         if(user == null) {
             throw new EntityException("No user to remove");
         }
-        if(!user.getId().equals(userId)) {
-            throw new EntityException("No user found");
-        }
-        tokenUserRepository.removeUserFromToken(tokenId, userId);
+        tokenUserRepository.removeUserFromToken(tokenId);
         return user;
     }
 }
