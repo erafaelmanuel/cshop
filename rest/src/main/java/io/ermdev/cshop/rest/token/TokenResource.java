@@ -21,11 +21,13 @@ import java.util.List;
 public class TokenResource {
 
     private TokenService tokenService;
+    private TokenUserResource tokenUserResource;
     private SimpleMapper simpleMapper;
 
     @Autowired
-    public TokenResource(TokenService tokenService, SimpleMapper simpleMapper) {
+    public TokenResource(TokenService tokenService, TokenUserResource tokenUserResource, SimpleMapper simpleMapper) {
         this.tokenService = tokenService;
+        this.tokenUserResource = tokenUserResource;
         this.simpleMapper = simpleMapper;
     }
 
@@ -63,5 +65,11 @@ public class TokenResource {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
+    }
+
+    @Path("{tokenId}/user")
+    public TokenUserResource tokenUserResource(@Context UriInfo uriInfo) {
+        tokenUserResource.setUriInfo(uriInfo);
+        return tokenUserResource;
     }
 }
