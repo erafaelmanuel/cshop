@@ -60,7 +60,6 @@ public class TokenUserResource {
     }
 
     @DELETE
-    @Path("{userId}")
     public Response deleteUserFromToken(@PathParam("tokenId") Long tokenId) {
         try {
             UserDto userDto = simpleMapper.set(tokenUserService.deleteUserFromToken(tokenId)).mapTo(UserDto.class);
