@@ -24,8 +24,13 @@ public class TokenUserService {
         this.tokenUserRepository = tokenUserRepository;
     }
 
-    public User findUserByTokenId(Long tokenId) {
-        return tokenUserRepository.findUserByTokenId(tokenId);
+    public User findUserByTokenId(Long tokenId) throws EntityException {
+        User user = tokenUserRepository.findUserByTokenId(tokenId);
+        if(user != null) {
+            return user;
+        } else {
+            throw new EntityException("No user found");
+        }
     }
 
     public User addUserToToken(Long tokenId, Long userId) throws EntityException {
