@@ -1,6 +1,7 @@
 package io.ermdev.cshop.rest.token;
 
 import io.ermdev.cshop.commons.Error;
+import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.service.TokenService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.mapfierj.SimpleMapper;
@@ -61,6 +62,50 @@ public class TokenResource {
                 });
                 return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
             }
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @POST
+    public Response add(TokenDto tokenDto, @Context UriInfo uriInfo) {
+        try {
+            Token token = tokenService.save(simpleMapper.set(tokenDto).mapTo(Token.class));
+            TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
+            tokenDto.setId(token.getId());
+            tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
+            return Response.status(Response.Status.FOUND).entity(tokenDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("{tokenId}")
+    public Response update(@PathParam("tokenId") Long tokenId, TokenDto tokenDto, @Context UriInfo uriInfo) {
+        try {
+            tokenDto.setId(tokenId);
+            Token token = tokenService.save(simpleMapper.set(tokenDto).mapTo(Token.class));
+            TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
+            tokenDto = simpleMapper.set(token).mapTo(TokenDto.class);
+            tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
+            return Response.status(Response.Status.FOUND).entity(tokenDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @DELETE
+    @Path("{tokenId}")
+    public Response delete(@PathParam("tokenId") Long tokenId, @Context UriInfo uriInfo) {
+        try {
+            TokenDto tokenDto = simpleMapper.set(tokenService.delete(tokenId)).mapTo(TokenDto.class);
+            TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
+            tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenId));
+            return Response.status(Response.Status.FOUND).entity(tokenDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
