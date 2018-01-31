@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2018 at 08:31 PM
+-- Generation Time: Jan 31, 2018 at 05:46 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -48,7 +48,26 @@ INSERT INTO `tbl_role` (`id`, `name`) VALUES
 CREATE TABLE IF NOT EXISTS `tbl_token` (
   `id` bigint(20) NOT NULL,
   `_key` varchar(100) DEFAULT NULL,
-  `expiryDate` varchar(45) DEFAULT NULL,
+  `expiryDate` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=201819122 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_token`
+--
+
+INSERT INTO `tbl_token` (`id`, `_key`, `expiryDate`) VALUES
+(1, 'asfsaf', 'asdasfasf'),
+(201819121, 'rrr', 'aaarrrsdsafasf');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_token_user`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_token_user` (
+  `id` bigint(20) NOT NULL,
+  `tokenId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -84,14 +103,14 @@ CREATE TABLE IF NOT EXISTS `tbl_user_role` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
   `roleId` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_user_role`
 --
 
 INSERT INTO `tbl_user_role` (`id`, `userId`, `roleId`) VALUES
-(3, 201821611, 1);
+(9, 201821611, 2);
 
 --
 -- Indexes for dumped tables
@@ -107,8 +126,15 @@ ALTER TABLE `tbl_role`
 -- Indexes for table `tbl_token`
 --
 ALTER TABLE `tbl_token`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_token_user`
+--
+ALTER TABLE `tbl_token_user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`);
+  ADD UNIQUE KEY `userId` (`userId`),
+  ADD KEY `tokenId` (`tokenId`);
 
 --
 -- Indexes for table `tbl_user`
@@ -137,6 +163,11 @@ ALTER TABLE `tbl_role`
 -- AUTO_INCREMENT for table `tbl_token`
 --
 ALTER TABLE `tbl_token`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=201819122;
+--
+-- AUTO_INCREMENT for table `tbl_token_user`
+--
+ALTER TABLE `tbl_token_user`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tbl_user`
@@ -147,16 +178,17 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT for table `tbl_user_role`
 --
 ALTER TABLE `tbl_user_role`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `tbl_token`
+-- Constraints for table `tbl_token_user`
 --
-ALTER TABLE `tbl_token`
-  ADD CONSTRAINT `tbl_token_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `tbl_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tbl_token_user`
+  ADD CONSTRAINT `tbl_token_user_ibfk_1` FOREIGN KEY (`tokenId`) REFERENCES `tbl_token` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_token_user_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `tbl_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_user_role`
