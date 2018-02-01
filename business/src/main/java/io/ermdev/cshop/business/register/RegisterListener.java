@@ -66,11 +66,31 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             if (onRegisterSuccess != null) {
                 onRegisterSuccess.onSuccess();
             }
-            sendConfirmRegistration(token, url, locale);
+            ConfirmRegistrationThread confirmRegistrationThread = new ConfirmRegistrationThread(token, url, locale);
+            confirmRegistrationThread.start();
         } catch (EntityException e) {
             if (onRegisterFailure != null) {
                 onRegisterFailure.onFailure();
             }
+        }
+    }
+
+    class ConfirmRegistrationThread extends Thread {
+
+        private Token token;
+        private String url;
+        private Locale locale;
+
+        public ConfirmRegistrationThread(Token token, String url, Locale locale) {
+            this.token = token;
+            this.url = url;
+            this.locale = locale;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            sendConfirmRegistration(token, url, locale);
         }
     }
 
