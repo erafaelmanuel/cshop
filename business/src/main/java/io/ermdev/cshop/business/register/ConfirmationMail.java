@@ -6,9 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Component;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 @Component
@@ -28,7 +26,6 @@ public class ConfirmationMail {
     }
 
     public MimeMailMessage constructMail(RegisterSource source) {
-
         try {
             final String address = messageSource.getMessage(EMAIL, null, source.getLocale());
             final String recipientAddress = source.getToken().getUser().getEmail();
