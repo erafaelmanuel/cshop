@@ -24,16 +24,16 @@ public class ConfirmationMail {
         this.mailSender = mailSender;
     }
 
-    public MimeMailMessage constructConfirmationMail(VerificationSource source) throws UnsupportedEncodingException,
+    public MimeMailMessage constructMail(RegisterSource source) throws UnsupportedEncodingException,
             MessagingException {
 
         String address = messageSource.getMessage("cshop.email", null, source.getLocale());
-        String recipientAddress = source.getVerificationToken().getUser().getEmail();
+        String recipientAddress = source.getToken().getUser().getEmail();
         String title = messageSource.getMessage("cshop.title", null, source.getLocale());
         String subject = messageSource.getMessage("register.mail.activation", new Object[] {
-                source.getVerificationToken().getUser().getName(), title}, source.getLocale());
+                source.getToken().getUser().getName(), title}, source.getLocale());
         String confirmationUrl = String.format(Locale.ENGLISH, "%s/register/confirmation?token=%s",
-                source.getUrl(), source.getVerificationToken().getToken());
+                source.getUrl(), source.getToken().getKey());
 
         MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
         mailMessage.setTo(recipientAddress);
