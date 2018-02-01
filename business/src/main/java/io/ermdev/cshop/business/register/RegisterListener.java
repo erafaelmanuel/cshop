@@ -35,30 +35,31 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
     }
 
     @Override
-    public void onApplicationEvent(RegisterEvent registerEvent) {
-
+    public void onApplicationEvent(RegisterEvent e) {
+        registerUser((RegisterSource) e.getSource());
     }
 
     private void registerUser(RegisterSource registerSource) {
         try {
-            final Token token = new Token();
-            final User user = registerSource.getUser();
+            Token token = new Token();
+            User user = registerSource.getUser();
             final String generatedUsername = user.getEmail().split("@")[0];
             final String generatedTokenKey = UUID.randomUUID().toString();
             final String url = registerSource.getUrl();
             final Locale locale = registerSource.getLocale();
 
             user.setUsername(generatedUsername);
-            user.setId(userService.save(user).getId());
+            user = userService.save(user);
 
             token.setKey(generatedTokenKey);
             token.setExpiryDate(dateHelper.setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
             token.setUser(user);
+            token = tokenService.save(token);
 
-            tokenService.save(token);
-
+            tokenUserService.addUserToToken(token.getId(), user.getId());
+            sendConfirmRegistration(token, url, locale);
         } catch (EntityException e) {
-
+            e.printStackTrace();
         }
     }
 
