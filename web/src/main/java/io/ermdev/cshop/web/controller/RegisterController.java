@@ -66,12 +66,9 @@ public class RegisterController {
             registerSource.setLocale(null);
 
             RegisterEvent registerEvent = new RegisterEvent(registerSource);
-            registerEvent.setOnRegisterSuccess(System.out::println);
-            registerEvent.setOnRegisterFailure(() -> {
-                System.out.println("failed");
-                result.reject("email", "message.error");
-            });
-            publisher.publishEvent(new RegisterEvent(registerSource));
+            registerEvent.setOnRegisterFailure(() -> result.reject("email"));
+
+            publisher.publishEvent(registerEvent);
             model.addAttribute("userId", user.getId());
         }
         if (result.hasErrors()) {
