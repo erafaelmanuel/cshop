@@ -1,5 +1,6 @@
 package io.ermdev.cshop.business.register;
 
+import io.ermdev.cshop.data.entity.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,15 +26,15 @@ public class ConfirmationMail {
         this.mailSender = mailSender;
     }
 
-    public MimeMailMessage constructMail(RegisterSource source) {
+    public MimeMailMessage constructMail(Token token, String url, Locale locale) {
         try {
-            final String address = messageSource.getMessage(EMAIL, null, source.getLocale());
-            final String recipientAddress = source.getToken().getUser().getEmail();
-            final String title = messageSource.getMessage(TITLE, null, source.getLocale());
-            final Object objects[] = new Object[]{source.getToken().getUser().getName(), title};
-            final String subject = messageSource.getMessage(MAIL_ACTIVATION, objects, source.getLocale());
+            final String address = messageSource.getMessage(EMAIL, null, locale);
+            final String recipientAddress = token.getUser().getEmail();
+            final String title = messageSource.getMessage(TITLE, null, locale);
+            final Object objects[] = new Object[]{token.getUser().getName(), title};
+            final String subject = messageSource.getMessage(MAIL_ACTIVATION, objects, locale);
             final String confirmationUrl = String.format(Locale.ENGLISH, "%s/register/confirmation?token=%s",
-                    source.getUrl(), source.getToken().getKey());
+                    url, token.getKey());
 
             MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
             mailMessage.setTo(recipientAddress);

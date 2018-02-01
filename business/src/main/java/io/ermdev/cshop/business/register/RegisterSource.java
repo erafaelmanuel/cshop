@@ -1,27 +1,21 @@
 package io.ermdev.cshop.business.register;
 
-import io.ermdev.cshop.data.entity.Token;
+import io.ermdev.cshop.data.entity.User;
 
 import java.util.Locale;
 
 public class RegisterSource {
 
-    private Token token;
+    private User user;
     private String url;
     private Locale locale;
 
-    public RegisterSource(Token token, String url, Locale locale) {
-        this.token = token;
-        this.url = url;
-        this.locale = locale;
+    public User getUser() {
+        return user;
     }
 
-    public Token getToken() {
-        return token;
-    }
-
-    public void setToken(Token token) {
-        this.token = token;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getUrl() {
