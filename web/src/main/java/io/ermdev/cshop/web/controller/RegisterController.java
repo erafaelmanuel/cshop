@@ -78,46 +78,38 @@ public class RegisterController {
         return showRegisterComplete(model);
     }
 
-    @PostMapping("register/complete")
-    public String showRegisterComplete(Model model) {
-        return "register-complete";
-    }
-
     @GetMapping("register/complete")
     public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId) {
         if (userId == null) {
-            UserDto userDto = new UserDto();
-            model.addAttribute("user", userDto);
-            return "register";
+            return showRegister(new UserDto(), model);
         } else {
             model.addAttribute("userId", userId);
             return "register-complete";
         }
     }
 
+    @PostMapping("register/complete")
+    public String showRegisterComplete(Model model) {
+        return "register-complete";
+    }
+
     @GetMapping("register/confirmation")
     public String registerConfirmation(@RequestParam("token") String key, Model model) {
         try {
-            if (key != null) {
-                final Token token = tokenService.findByKey(key);
-                final Calendar calendar = Calendar.getInstance();
-                final long remainingTime = token.getExpiryDate().getTime() - calendar.getTime().getTime();
+            final Token token = tokenService.findByKey(key);
+            final Calendar calendar = Calendar.getInstance();
+            final long remainingTime = token.getExpiryDate().getTime() - calendar.getTime().getTime();
 
-                if (remainingTime <= 0) {
-                    throw new TokenException("Token is expired");
-                } else {
-                    Long tokenId = token.getId();
-                    User user = token.getUser();
-                    user.setEnabled(true);
-
-                    userService.save(user);
-                    tokenService.delete(tokenId);
-                }
-                model.addAttribute("activation", true);
-                return "login";
+            if (remainingTime > 0) {
+                User user = token.getUser();
+                user.setEnabled(true);
+                userService.save(user);
+                tokenService.delete(token.getId());
             } else {
-                throw new TokenException("No token found.");
+                throw new TokenException("Token is expired");
             }
+            model.addAttribute("activation", true);
+            return "login";
         } catch (EntityException | TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
