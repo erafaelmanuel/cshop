@@ -1,10 +1,12 @@
 package io.ermdev.cshop.data.entity;
 
+import java.util.Date;
+
 public class Token {
 
     private Long id;
     private String key;
-    private String expiryDate;
+    private Date expiryDate;
     private User user;
 
     public Long getId() {
@@ -23,11 +25,11 @@ public class Token {
         this.key = key;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 

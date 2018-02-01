@@ -6,21 +6,27 @@ import java.util.Date;
 
 public class DateHelper {
 
-    final Calendar CALENDAR = Calendar.getInstance();
+    public static final int DAY_IN_MINUTE = 60 * 24;
+    public static final int WEEK_IN_MINUTE = 60 * 24 * 7;
+
+    public final Calendar CALENDAR = Calendar.getInstance();
+
     private Date date;
 
     public DateHelper() {
         date = new Date();
     }
 
-    public void setTimeNow() {
+    public DateHelper setTimeNow() {
         CALENDAR.setTime(new Timestamp(CALENDAR.getTime().getTime()));
         date = new Date(CALENDAR.getTime().getTime());
+        return this;
     }
 
-    public void addTimeInMinute(final int time) {
+    public DateHelper addTimeInMinute(final int time) {
         CALENDAR.set(Calendar.MINUTE, time);
         date = new Date(CALENDAR.getTime().getTime());
+        return this;
     }
 
     public Date getDate() {
@@ -29,13 +35,5 @@ public class DateHelper {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public static int dayInMinute() {
-        return 60 * 24;
-    }
-
-    public static int weekInMinute() {
-        return 60 * 24 * 7;
     }
 }
