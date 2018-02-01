@@ -72,6 +72,9 @@ public class UserService {
     public User save(User user) throws EntityException {
         if(user != null) {
             if(user.getId() == null) {
+                if(user.getEmail() != null && userRepository.findByEmail(user.getEmail()) != null) {
+                    throw new EntityException("Duplicate email entry");
+                }
                 if(user.getName() == null || user.getName().trim().isEmpty()) {
                     throw new EntityException("Name is required");
                 }
@@ -131,8 +134,8 @@ public class UserService {
     }
 
     public User delete(User user) throws EntityException {
-        User o = userRepository.findById(user.getId());
         if(user != null) {
+            final User o = userRepository.findById(user.getId());
             final List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             o.setRoles(roles);
             userRepository.delete(user);
