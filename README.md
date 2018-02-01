@@ -9,70 +9,40 @@ Open source cloth web application that written in java and spring framework (sti
 ```
 GET /api/users/{id}
 ```
-
-<b>Response</b>
-* Content-Type : XML, JSON
-* Status: 200
+Status: <b>200</b>, Content-Type: <b>JSON</b>
 ```js
 {
     "id": 1,
     "name": "Kelvin Datu",
     "email": "kelvindatu@sample.com"
     "username": "kelvindatu",
-    "password": "123",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/users/1"
-        },
-        {
-            "rel": "roles",
-            "href": "/api/users/1/roles"
-        }
-    ]
+    "password": "123"
 }
 ```
-* Status: 404
-```
+Status: <b>404</b>, Content-Type: <b>JSON</b>
+```js
 {
     "message": "No user found"
 }
 ```
 
 ## User (getAll)
-
-<b>Request</b>
-* Required: none
-* Method : GET
-* URI : /api/user
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
 ```
-[{
+GET /api/users
+```
+QueryParam:
+* long <b>userId</b>
+
+Status: <b>200</b>, Content-Type: <b>JSON</b>
+```js
+[
+  {
     "id": 1,
-    "username": "kelvindatu",
-    "password": "123",
-    "roles": [
-        {
-            "id": 1,
-            "name": "ROLE_USER"
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        }
-    ]
-}]
+    "name": "Kelvin Datu",
+    ...
 ```
-error
-```
+Status: <b>404</b>, Content-Type: <b>JSON</b>
+```js
 {
     "message": "No user found"
 }
