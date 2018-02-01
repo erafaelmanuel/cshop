@@ -54,6 +54,7 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             final Locale locale = registerSource.getLocale();
 
             user.setUsername(generatedUsername);
+            user.setEnabled(false);
             user = userService.save(user);
 
             token.setKey(generatedTokenKey);
