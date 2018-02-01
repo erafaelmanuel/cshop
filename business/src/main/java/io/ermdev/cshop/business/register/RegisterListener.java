@@ -18,6 +18,9 @@ import java.util.UUID;
 @Component
 public class RegisterListener implements ApplicationListener<RegisterEvent> {
 
+    private OnRegisterSuccess onRegisterSuccess;
+    private OnRegisterFailure onRegisterFailure;
+
     private UserService userService;
     private TokenService tokenService;
     private TokenUserService tokenUserService;
@@ -35,8 +38,10 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
     }
 
     @Override
-    public void onApplicationEvent(RegisterEvent e) {
-        registerUser((RegisterSource) e.getSource());
+    public void onApplicationEvent(RegisterEvent event) {
+        onRegisterSuccess = event.getOnRegisterSuccess();
+        onRegisterFailure = event.getOnRegisterFailure();
+        registerUser((RegisterSource) event.getSource());
     }
 
     private void registerUser(RegisterSource registerSource) {
@@ -56,10 +61,18 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             token.setUser(user);
             token = tokenService.save(token);
 
+            System.out.println(token.getId()+ " " +user.getId());
             tokenUserService.addUserToToken(token.getId(), user.getId());
+
+            if (onRegisterSuccess != null) {
+                onRegisterSuccess.onSuccess();
+            }
             sendConfirmRegistration(token, url, locale);
         } catch (EntityException e) {
             e.printStackTrace();
+            if (onRegisterFailure != null) {
+                onRegisterFailure.onFailure();
+            }
         }
     }
 

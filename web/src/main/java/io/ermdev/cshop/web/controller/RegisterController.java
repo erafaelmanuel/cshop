@@ -30,8 +30,6 @@ import java.util.UUID;
 @SessionAttributes({"cartItems"})
 public class RegisterController {
 
-    private final String URL = "cshop.url";
-
     private UserService userService;
     private TokenService tokenService;
     private ApplicationEventPublisher publisher;
@@ -59,26 +57,22 @@ public class RegisterController {
     @PostMapping("register")
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            try {
-                final String generatedUsername = userDto.getEmail().split("@")[0];
-                final String generatedTokenKey = UUID.randomUUID().toString();
-                final String url = messageSource.getMessage(URL, null, null);
+            final User user = simpleMapper.set(userDto).mapTo(User.class);
+            final String url = messageSource.getMessage("cshop.url", null, null);
+            final RegisterSource registerSource = new RegisterSource();
 
-                User user = simpleMapper.set(userDto).mapAllTo(User.class);
-                user.setUsername(generatedUsername);
-                user = userService.save(user);
+            registerSource.setUser(user);
+            registerSource.setUrl(url);
+            registerSource.setLocale(null);
 
-                Token token = new Token();
-                token.setKey(generatedTokenKey);
-                token.setExpiryDate(dateHelper.setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
-                token.setUser(user);
-
-                RegisterSource registerSource = new RegisterSource(token, url, null);
-                publisher.publishEvent(new RegisterEvent(registerSource));
-                model.addAttribute("userId", user.getId());
-            } catch (EntityException e) {
-                result.rejectValue("email", "message.error");
-            }
+            RegisterEvent registerEvent = new RegisterEvent(registerSource);
+            registerEvent.setOnRegisterSuccess(System.out::println);
+            registerEvent.setOnRegisterFailure(() -> {
+                System.out.println("failed");
+                result.reject("email", "message.error");
+            });
+            publisher.publishEvent(new RegisterEvent(registerSource));
+            model.addAttribute("userId", user.getId());
         }
         if (result.hasErrors()) {
             result.rejectValue("email", "message.error");

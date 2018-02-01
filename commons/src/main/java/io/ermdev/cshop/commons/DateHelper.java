@@ -1,9 +1,12 @@
 package io.ermdev.cshop.commons;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class DateHelper {
 
     public static final int DAY_IN_MINUTE = 60 * 24;
