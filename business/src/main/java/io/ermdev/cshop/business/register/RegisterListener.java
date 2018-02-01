@@ -61,15 +61,12 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             token.setUser(user);
             token = tokenService.save(token);
 
-            System.out.println(token.getId()+ " " +user.getId());
             tokenUserService.addUserToToken(token.getId(), user.getId());
-
             if (onRegisterSuccess != null) {
                 onRegisterSuccess.onSuccess();
             }
             sendConfirmRegistration(token, url, locale);
         } catch (EntityException e) {
-            e.printStackTrace();
             if (onRegisterFailure != null) {
                 onRegisterFailure.onFailure();
             }

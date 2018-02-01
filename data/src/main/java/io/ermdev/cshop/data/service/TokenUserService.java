@@ -42,7 +42,7 @@ public class TokenUserService {
         if(user == null) {
             throw new EntityException("No user found");
         }
-        if(findUserByTokenId(tokenId) != null) {
+        if(tokenUserRepository.findUserByTokenId(tokenId) != null) {
             throw new EntityException("An user already exists");
         }
         tokenUserRepository.addUserToToken(tokenId, userId);
