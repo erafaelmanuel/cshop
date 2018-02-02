@@ -2,12 +2,10 @@ package io.ermdev.cshop.web.controller;
 
 import io.ermdev.cshop.business.register.RegisterEvent;
 import io.ermdev.cshop.business.register.RegisterSource;
-import io.ermdev.cshop.business.verification.VerificationEvent;
-import io.ermdev.cshop.business.verification.VerificationSource;
+import io.ermdev.cshop.business.register.ResendEvent;
 import io.ermdev.cshop.commons.DateHelper;
 import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.entity.VerificationToken;
 import io.ermdev.cshop.data.service.TokenService;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Calendar;
-import java.util.UUID;
 
 @Controller
 @SessionAttributes({"cartItems"})
@@ -120,23 +117,29 @@ public class RegisterController {
     public String resendVerificationToken(@RequestParam("userId") Long userId, Model model) {
         try {
             if (userId != null) {
-                final User user = userService.findById(userId);
-                final String newToken = UUID.randomUUID().toString();
                 final String url = messageSource.getMessage("cshop.url", null, null);
-                final VerificationSource verificationSource = new VerificationSource();
+                final User user = new User();
+                final RegisterSource registerSource = new RegisterSource();
 
-                verificationSource.setVerificationToken(new VerificationToken(newToken, user));
-                verificationSource.setUrl(url);
-                if (!user.getEnabled()) {
-                    publisher.publishEvent(new VerificationEvent(verificationSource));
+                user.setId(userId);
+                registerSource.setUser(user);
+                registerSource.setUrl(url);
+                registerSource.setLocale(null);
+
+                ResendEvent resendEvent = new ResendEvent(registerSource);
+                ResendEvent.ReturnValue returnValue = resendEvent.new ReturnValue();
+                resendEvent.setOnResendFinished(returnValue::setHasError);
+                publisher.publishEvent(resendEvent);
+                if (!returnValue.hasError()) {
                     model.addAttribute("userId", userId);
                     return showRegisterComplete(model);
+                } else {
+                    throw new TokenException("Your email already registered");
                 }
-                throw new TokenException("Your email already registered");
             } else {
                 return "register";
             }
-        } catch (EntityException | TokenException e) {
+        } catch (TokenException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }
