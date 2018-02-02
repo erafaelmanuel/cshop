@@ -3,12 +3,13 @@ package io.ermdev.cshop.web.controller;
 import io.ermdev.cshop.business.register.RegisterEvent;
 import io.ermdev.cshop.business.register.RegisterSource;
 import io.ermdev.cshop.business.register.ResendEvent;
-import io.ermdev.cshop.commons.DateHelper;
+import io.ermdev.cshop.business.register.ResendSource;
 import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.service.TokenService;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
+import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.web.dto.UserDto;
 import io.ermdev.cshop.web.exception.TokenException;
 import io.ermdev.mapfierj.SimpleMapper;
@@ -32,17 +33,15 @@ public class RegisterController {
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
     private SimpleMapper simpleMapper;
-    private DateHelper dateHelper;
 
     @Autowired
     public RegisterController(UserService userService, TokenService tokenService, ApplicationEventPublisher publisher,
-                              MessageSource messageSource, SimpleMapper simpleMapper, DateHelper dateHelper) {
+                              MessageSource messageSource, SimpleMapper simpleMapper) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.publisher = publisher;
         this.messageSource = messageSource;
         this.simpleMapper = simpleMapper;
-        this.dateHelper = dateHelper;
     }
 
     @GetMapping("register")
@@ -114,19 +113,17 @@ public class RegisterController {
     }
 
     @PostMapping("register/resend-verification")
-    public String resendVerificationToken(@RequestParam("userId") Long userId, Model model) {
+    public String resendConfirmationMail(@RequestParam("userId") Long userId, Model model) {
         try {
             if (userId != null) {
                 final String url = messageSource.getMessage("cshop.url", null, null);
-                final User user = new User();
-                final RegisterSource registerSource = new RegisterSource();
+                final ResendSource resendSource = new ResendSource();
 
-                user.setId(userId);
-                registerSource.setUser(user);
-                registerSource.setUrl(url);
-                registerSource.setLocale(null);
+                resendSource.setUserId(userId);
+                resendSource.setUrl(url);
+                resendSource.setLocale(null);
 
-                ResendEvent resendEvent = new ResendEvent(registerSource);
+                ResendEvent resendEvent = new ResendEvent(resendSource);
                 ResendEvent.ReturnValue returnValue = resendEvent.new ReturnValue();
                 resendEvent.setOnResendFinished(returnValue::setHasError);
                 publisher.publishEvent(resendEvent);
@@ -134,12 +131,12 @@ public class RegisterController {
                     model.addAttribute("userId", userId);
                     return showRegisterComplete(model);
                 } else {
-                    throw new TokenException("Your email already registered");
+                    throw new ResourceException("Invalid request");
                 }
             } else {
                 return "register";
             }
-        } catch (TokenException e) {
+        } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }
