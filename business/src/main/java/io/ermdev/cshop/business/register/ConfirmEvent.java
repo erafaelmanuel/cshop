@@ -4,7 +4,21 @@ import org.springframework.context.ApplicationEvent;
 
 public class ConfirmEvent extends ApplicationEvent {
 
-    public ConfirmEvent(Object source) {
+    private OnConfirmCompleted onConfirmCompleted;
+
+    public ConfirmEvent(ConfirmSource source) {
         super(source);
+    }
+
+    public OnConfirmCompleted getOnConfirmCompleted() {
+        return onConfirmCompleted;
+    }
+
+    public void setOnConfirmCompleted(OnConfirmCompleted onConfirmCompleted) {
+        this.onConfirmCompleted = onConfirmCompleted;
+    }
+
+    public interface OnConfirmCompleted {
+        void onComplete();
     }
 }
