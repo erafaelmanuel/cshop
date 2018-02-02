@@ -4,21 +4,17 @@ import org.springframework.context.ApplicationEvent;
 
 public class ResendEvent extends ApplicationEvent {
 
-    public OnResendFinished onResendFinished;
+    public OnResendCompleted onResendCompleted;
 
     public ResendEvent(ResendSource source) {
         super(source);
     }
 
-    public OnResendFinished getOnResendFinished() {
-        return onResendFinished;
+    public OnResendCompleted getOnResendCompleted() {
+        return onResendCompleted;
     }
 
-    public void setOnResendFinished(OnResendFinished onResendFinished) {
-        this.onResendFinished = onResendFinished;
-    }
-
-    public interface OnResendFinished {
-        void onFinish(boolean hasError);
+    public void setOnResendCompleted(OnResendCompleted onResendCompleted) {
+        this.onResendCompleted = onResendCompleted;
     }
 }

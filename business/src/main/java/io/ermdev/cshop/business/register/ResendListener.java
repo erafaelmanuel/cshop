@@ -18,7 +18,7 @@ import java.util.UUID;
 @Component
 public class ResendListener implements ApplicationListener<ResendEvent> {
 
-    private ResendEvent.OnResendFinished onResendFinished;
+    private OnResendCompleted onResendCompleted;
 
     private UserService userService;
     private TokenService tokenService;
@@ -43,7 +43,7 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
         final Locale locale = resendSource.getLocale();
         final Long userId = resendSource.getUserId();
 
-        onResendFinished = event.getOnResendFinished();
+        onResendCompleted = event.getOnResendCompleted();
         createNewToken(userId, url, locale);
     }
 
@@ -60,14 +60,14 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
                 deleteOldToken(userId);
                 long tokenId = tokenService.save(token).getId();
                 tokenUserService.addUserToToken(tokenId, userId);
-                onResendFinished.onFinish(false);
+                onResendCompleted.onComplete(false);
                 ConfirmRegistrationThread confirmRegistrationThread = new ConfirmRegistrationThread(token, url, locale);
                 confirmRegistrationThread.start();
             } else {
                 throw new Exception();
             }
         } catch (Exception e) {
-            onResendFinished.onFinish(true);
+            onResendCompleted.onComplete(true);
         }
     }
 
@@ -78,6 +78,11 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
         } catch (EntityException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendConfirmRegistration(Token token, String url, Locale locale) {
+        MimeMailMessage mimeMailMessage = confirmationMail.constructMail(token, url, locale);
+        confirmationMail.getMailSender().send(mimeMailMessage.getMimeMessage());
     }
 
     class ConfirmRegistrationThread extends Thread {
@@ -97,10 +102,5 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
             super.run();
             sendConfirmRegistration(token, url, locale);
         }
-    }
-
-    private void sendConfirmRegistration(Token token, String url, Locale locale) {
-        MimeMailMessage mimeMailMessage = confirmationMail.constructMail(token, url, locale);
-        confirmationMail.getMailSender().send(mimeMailMessage.getMimeMessage());
     }
 }
