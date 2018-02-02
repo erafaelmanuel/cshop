@@ -26,23 +26,32 @@ public class TokenUserService {
 
     public User findUserByTokenId(Long tokenId) throws EntityException {
         User user = tokenUserRepository.findUserByTokenId(tokenId);
-        if(user != null) {
+        if (user != null) {
             return user;
         } else {
             throw new EntityException("No user found");
         }
     }
 
+    public Token findTokenByUserId(Long userId) throws EntityException {
+        Token token = tokenUserRepository.findTokenByUserId(userId);
+        if (token != null) {
+            return token;
+        } else {
+            throw new EntityException("No token found");
+        }
+    }
+
     public User addUserToToken(Long tokenId, Long userId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         final User user = userRepository.findById(userId);
-        if(token == null) {
+        if (token == null) {
             throw new EntityException("No token found");
         }
-        if(user == null) {
+        if (user == null) {
             throw new EntityException("No user found");
         }
-        if(tokenUserRepository.findUserByTokenId(tokenId) != null) {
+        if (tokenUserRepository.findUserByTokenId(tokenId) != null) {
             throw new EntityException("An user already exists");
         }
         tokenUserRepository.addUserToToken(tokenId, userId);
@@ -52,10 +61,10 @@ public class TokenUserService {
     public User deleteUserFromToken(Long tokenId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         final User user = findUserByTokenId(tokenId);
-        if(token == null) {
+        if (token == null) {
             throw new EntityException("No token found");
         }
-        if(user == null) {
+        if (user == null) {
             throw new EntityException("No user to remove");
         }
         tokenUserRepository.deleteUserFromToken(tokenId);
