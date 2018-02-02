@@ -11,7 +11,6 @@ import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.web.dto.UserDto;
-import io.ermdev.cshop.web.exception.TokenException;
 import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -102,11 +101,11 @@ public class RegisterController {
                 userService.save(user);
                 tokenService.delete(token.getId());
             } else {
-                throw new TokenException("Token is expired");
+                throw new ResourceException("Token is expired");
             }
             model.addAttribute("activation", true);
             return "login";
-        } catch (EntityException | TokenException e) {
+        } catch (EntityException | ResourceException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }
