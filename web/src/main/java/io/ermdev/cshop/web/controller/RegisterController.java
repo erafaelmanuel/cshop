@@ -1,15 +1,8 @@
 package io.ermdev.cshop.web.controller;
 
-import io.ermdev.cshop.business.register.RegisterEvent;
-import io.ermdev.cshop.business.register.RegisterSource;
-import io.ermdev.cshop.business.register.ResendEvent;
-import io.ermdev.cshop.business.register.ResendSource;
+import io.ermdev.cshop.business.register.*;
 import io.ermdev.cshop.commons.ReturnValue;
-import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.entity.User;
-import io.ermdev.cshop.data.service.TokenService;
-import io.ermdev.cshop.data.service.UserService;
-import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.web.dto.UserDto;
 import io.ermdev.mapfierj.SimpleMapper;
@@ -22,26 +15,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Calendar;
 
 @Controller
 @SessionAttributes({"cartItems"})
 public class RegisterController {
 
-    private UserService userService;
-    private TokenService tokenService;
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
     private SimpleMapper simpleMapper;
 
     @Autowired
-    public RegisterController(UserService userService, TokenService tokenService, ApplicationEventPublisher publisher,
-                              MessageSource messageSource, SimpleMapper simpleMapper) {
-        this.userService = userService;
-        this.tokenService = tokenService;
+    public RegisterController(ApplicationEventPublisher publisher, MessageSource messageSource, SimpleMapper mapper) {
         this.publisher = publisher;
         this.messageSource = messageSource;
-        this.simpleMapper = simpleMapper;
+        this.simpleMapper = mapper;
     }
 
     @GetMapping("register")
@@ -90,30 +77,32 @@ public class RegisterController {
     }
 
     @GetMapping("register/confirmation")
-    public String registerConfirmation(@RequestParam("token") String key, Model model) {
+    public String confirmUser(@RequestParam("token") String key, Model model) {
         try {
-            final Token token = tokenService.findByKey(key);
-            final Calendar calendar = Calendar.getInstance();
-            final long remainingTime = token.getExpiryDate().getTime() - calendar.getTime().getTime();
+            if (key != null) {
+                final ReturnValue returnValue = new ReturnValue();
+                final ConfirmSource confirmSource = new ConfirmSource(key);
+                final ConfirmEvent confirmEvent = new ConfirmEvent(confirmSource);
 
-            if (remainingTime > 0) {
-                User user = token.getUser();
-                user.setEnabled(true);
-                userService.save(user);
-                tokenService.delete(token.getId());
+                confirmEvent.setOnConfirmCompleted(returnValue::setHasError);
+                publisher.publishEvent(confirmEvent);
+                if (!returnValue.hasError()) {
+                    model.addAttribute("activation", true);
+                    return "login";
+                } else {
+                    throw new ResourceException("Invalid Request");
+                }
             } else {
-                throw new ResourceException("Token is expired");
+                return "register";
             }
-            model.addAttribute("activation", true);
-            return "login";
-        } catch (EntityException | ResourceException e) {
+        } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());
             return "error/403";
         }
     }
 
     @PostMapping("register/resend-verification")
-    public String resendConfirmationMail(@RequestParam("userId") Long userId, Model model) {
+    public String resendConfirm(@RequestParam("userId") Long userId, Model model) {
         try {
             if (userId != null) {
                 final String url = messageSource.getMessage("cshop.url", null, null);
