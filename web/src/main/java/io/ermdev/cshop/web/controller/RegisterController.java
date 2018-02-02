@@ -4,6 +4,7 @@ import io.ermdev.cshop.business.register.RegisterEvent;
 import io.ermdev.cshop.business.register.RegisterSource;
 import io.ermdev.cshop.business.register.ResendEvent;
 import io.ermdev.cshop.business.register.ResendSource;
+import io.ermdev.cshop.commons.ReturnValue;
 import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.service.TokenService;
@@ -123,7 +124,7 @@ public class RegisterController {
                 resendSource.setLocale(null);
 
                 ResendEvent resendEvent = new ResendEvent(resendSource);
-                ResendEvent.ReturnValue returnValue = resendEvent.new ReturnValue();
+                ReturnValue returnValue = new ReturnValue();
                 resendEvent.setOnResendFinished(returnValue::setHasError);
                 publisher.publishEvent(resendEvent);
                 if (!returnValue.hasError()) {
