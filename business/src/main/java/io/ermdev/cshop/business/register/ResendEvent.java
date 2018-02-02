@@ -6,7 +6,7 @@ public class ResendEvent extends ApplicationEvent {
 
     public OnResendFinished onResendFinished;
 
-    public ResendEvent(RegisterSource source) {
+    public ResendEvent(ResendSource source) {
         super(source);
     }
 

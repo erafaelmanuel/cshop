@@ -9,6 +9,7 @@ import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -22,27 +23,27 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
     private UserService userService;
     private TokenService tokenService;
     private TokenUserService tokenUserService;
+    private ConfirmationMail confirmationMail;
     private DateHelper dateHelper;
 
     @Autowired
     public ResendListener(UserService userService, TokenService tokenService, TokenUserService tokenUserService,
-                          DateHelper dateHelper) {
+                          ConfirmationMail confirmationMail, DateHelper dateHelper) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.tokenUserService = tokenUserService;
+        this.confirmationMail = confirmationMail;
         this.dateHelper = dateHelper;
     }
 
     @Override
     public void onApplicationEvent(ResendEvent event) {
-        final RegisterSource registerSource = (RegisterSource) event.getSource();
-        final String url = registerSource.getUrl();
-        final Locale locale = registerSource.getLocale();
-        final Long userId = registerSource.getUser().getId();
+        final ResendSource resendSource = (ResendSource) event.getSource();
+        final String url = resendSource.getUrl();
+        final Locale locale = resendSource.getLocale();
+        final Long userId = resendSource.getUserId();
 
         onResendFinished = event.getOnResendFinished();
-
-        deleteOldToken(userId);
         createNewToken(userId, url, locale);
     }
 
@@ -56,12 +57,17 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
             token.setExpiryDate(dateHelper.setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
             token.setUser(user);
             if (!user.getEnabled()) {
+                deleteOldToken(userId);
+                long tokenId = tokenService.save(token).getId();
+                tokenUserService.addUserToToken(tokenId, userId);
                 onResendFinished.onFinish(false);
+                ConfirmRegistrationThread confirmRegistrationThread = new ConfirmRegistrationThread(token, url, locale);
+                confirmRegistrationThread.start();
             } else {
-                onResendFinished.onFinish(true);
+                throw new Exception();
             }
-        } catch (EntityException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            onResendFinished.onFinish(true);
         }
     }
 
@@ -72,5 +78,29 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
         } catch (EntityException e) {
             e.printStackTrace();
         }
+    }
+
+    class ConfirmRegistrationThread extends Thread {
+
+        private Token token;
+        private String url;
+        private Locale locale;
+
+        public ConfirmRegistrationThread(Token token, String url, Locale locale) {
+            this.token = token;
+            this.url = url;
+            this.locale = locale;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            sendConfirmRegistration(token, url, locale);
+        }
+    }
+
+    private void sendConfirmRegistration(Token token, String url, Locale locale) {
+        MimeMailMessage mimeMailMessage = confirmationMail.constructMail(token, url, locale);
+        confirmationMail.getMailSender().send(mimeMailMessage.getMimeMessage());
     }
 }
