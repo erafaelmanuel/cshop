@@ -17,8 +17,4 @@ public class ConfirmEvent extends ApplicationEvent {
     public void setOnConfirmCompleted(OnConfirmCompleted onConfirmCompleted) {
         this.onConfirmCompleted = onConfirmCompleted;
     }
-
-    public interface OnConfirmCompleted {
-        void onComplete();
-    }
 }
