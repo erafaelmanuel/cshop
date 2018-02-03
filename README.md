@@ -2,482 +2,66 @@
 
 Open source cloth web application that written in java and spring framework (still under development)
 
-## Available APIs
-    [User](#user-getbyid)<br />
-    [Role](#tag-getbyid)<br />
-## User (getById)
+## How to Run
+This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You run it using the java -jar command.
+
+* Clone this repository
+* Make sure you are using JDK 1.8 and Maven 3.x
+* You can build the project and run the tests by running mvn clean package
+* Once successfully built, you can run the service by one of these two methods:
 ```
-GET /api/users/{id}
+      java -jar target/cshop-1.0-SNAPSHOT-spring-boot.jar
+or
+      mvn spring-boot:run
 ```
-Status: <b>200</b>, Content-Type: <b>JSON</b>
-```js
+Once the application runs you should see something like this
+
+```
+2018-02-03 18:46:46.185  INFO 1816 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2018-02-03 18:46:48.992  INFO 1816 --- [           main] io.ermdev.cshop.core.CShopApplication    : Started CShopApplication in 34.43 seconds (JVM running for 43.366)
+```
+
+Here are some endpoints you can call:
+### Get information about the user
+```
+http://localhost:8080/api/users
+http://localhost:8080/api/users/{id}
+http://localhost:8080/api/users/{id}/roles
+```
+
+### Create a user resource
+
+```
+POST /api/users
+Accept: application/json
+Content-Type: application/json
+
 {
-    "id": 1,
-    "name": "Kelvin Datu",
-    "email": "kelvindatu@sample.com"
-    "username": "kelvindatu",
-    "password": "123"
+  "name" : "Kelvin Datu",
+  "email" : "sample@mail.com",
+  "username" : "kelvz",
+  "password" : "123"
 }
+
+RESPONSE: HTTP 201 (Created)
+Location header: http://localhost:8080/api/users
 ```
-Status: <b>404</b>, Content-Type: <b>JSON</b>
-```js
+
+### Update a user resource
+
+```
+PUT /api/users/{id}
+Accept: application/json
+Content-Type: application/json
+
 {
-    "message": "No user found"
+  "name" : "Kelvin Datu",
+  "email" : "sample@mail.com",
+  "username" : "kelvz",
+  "password" : "123"
 }
+
+RESPONSE: HTTP 204 (No Content)
 ```
 
-## User (getAll)
-```
-GET /api/users
-```
-QueryParam:
-* long <b>userId</b>
-
-Status: <b>200</b>, Content-Type: <b>JSON</b>
-```js
-[
-  {
-    "id": 1,
-    "name": "Kelvin Datu",
-    ...
-```
-Status: <b>404</b>, Content-Type: <b>JSON</b>
-```js
-{
-    "message": "No user found"
-}
-```
-
-## User (add)
-
-<b>Request</b>
-* Required: username, password
-* Method : POST
-* URI : /api/user
-* Body : 
-
-```
-{
-    "username": "ralenmandap",
-    "password": "123"
-}
-```
-
-<b>Response</b>
-* Status: 201
-* Content-Type : xml, json
-* Body :
-
-```
-{
-    "id": 2,
-    "username": "ralenmandap",
-    "password": "123",
-        {
-            "id": 1,
-            "name": "ROLE_USER"
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/2"
-        }
-    ]
-}
-```
-
-## User (updateById)
-
-<b>Request</b>
-* Required: none
-* Method : PUT
-* URI : /api/user/[USER_ID]
-* Body :
-```
-{
-    "username": "kelvindatu",
-    "password": "456",
-}
-```
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-
-```
-{
-    "id": 1,
-    "username": "kelvindatu",
-    "password": "456",
-        {
-            "id": 1,
-            "name": "ROLE_USER"
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No user found with id 1"
-}
-```
-
-## User (deleteById)
-
-<b>Request</b>
-* Required: none
-* Method : DELETE
-* URI : /api/user/[USER_ID]
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-
-```
-{
-    "id": 1,
-    "username": "kelvindatu",
-    "password": "123",
-        {
-            "id": 1,
-            "name": "ROLE_USER"
-        }
-    ],
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No user found with id 1"
-}
-```
-
-## Tag (getById)
-
-<b>Request</b>
-* Required: none
-* Method : GET
-* URI : /api/tag/[TAG_ID]
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No tag found with id 1"
-}
-```
-
-## Tag (getAll)
-
-<b>Request</b>
-* Required: none
-* Method : GET
-* URI : /api/tag
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-```
-[{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}]
-```
-error
-```
-{
-    "message": "No tag found"
-}
-```
-
-## Tag (getRelatedTag)
-
-<b>Request</b>
-* Required: none
-* Method : GET
-* URI : /api/tag/[TAG_ID]/related
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-```
-[{
-    "id": 2,
-    "title": "Yellow-Pokemon",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#yellowpokemon",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/2"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/2/related"
-        }
-    ]
-}]
-```
-error
-```
-{
-    "message": "No tag found with id 1"
-}
-```
-
-## Tag (add)
-
-<b>Request</b>
-* Required: title, description, keyword
-* Method : POST
-* URI : /api/tag
-* Body : 
-
-```
-{
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-}
-```
-
-<b>Response</b>
-* Status: 201
-* Content-Type : xml, json
-* Body :
-
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-
-## Tag (addRelatedTag)
-
-<b>Request</b>
-* Required: none;
-* Method : POST
-* URI : /api/tag/[TAG_ID]/related/[RELATED_TAG_ID]
-
-<b>Response</b>
-* Status: 201
-* Content-Type : xml, json
-* Body :
-
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-
-## Tag (updateById)
-
-<b>Request</b>
-* Required: none
-* Method : PUT
-* URI : /api/tag/[TAG_ID]
-* Body :
-```
-{
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-}
-```
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No tag found with id 1"
-}
-```
-
-## Tag (deleteById)
-
-<b>Request</b>
-* Required: none
-* Method : DELETE
-* URI : /api/tag/[TAG_ID]
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No tag found with id 1"
-}
-```
-
-## Tag (deleteRelatedTag)
-
-<b>Request</b>
-* Required: none
-* Method : DELETE
-* URI : /api/tag/[TAG_ID]/related/[RELATED_TAG_ID]
-
-<b>Response</b>
-* Status: 200
-* Content-Type : xml, json
-* Body :
-
-success
-
-```
-{
-    "id": 1,
-    "title": "Black-Ninja",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    "keyword": "#blackninja",
-    "links": [
-        {
-            "rel": "self",
-            "href": "/api/tag/1"
-        },
-        {
-            "rel": "related",
-            "href": "/api/tag/1/related"
-        }
-    ]
-}
-```
-error
-```
-{
-    "message": "No tag found with id 1"
-}
-```
+## Questions and Comments: ermdev.io@gmail.com
