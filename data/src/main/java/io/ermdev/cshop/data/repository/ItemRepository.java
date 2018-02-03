@@ -9,21 +9,24 @@ import java.util.List;
 @Mapper
 public interface ItemRepository {
 
-    @Select("SELECT * FROM tblitem WHERE id = #{itemId}")
+    @Insert("CREATE TABLE IF NOT EXISTS tbl_item(id BIGINT NOT NULL AUTO_INCREMENT, name VARCHAR(100), description " +
+            "VARCHAR(200), price decimal(11, 2), PRIMARY KEY(id))")
+    void createTable();
+
+    @Select("SELECT * FROM tbl_item WHERE id = #{itemId}")
     Item findById(@Param("itemId") Long itemId);
 
-    @Select("SELECT * FROM tblitem")
+    @Select("SELECT * FROM tbl_item")
     List<Item> findAll();
 
-    @Insert("INSERT INSERT tblitem(id, name, description, price, discount, categoryId) values(#{itemId}, #{name}, " +
+    @Insert("INSERT INSERT tbl_item(id, name, description, price, discount, categoryId) values(#{itemId}, #{name}, " +
             "#{description}, #{price}, #{discount}, #{categoryId})")
-    void add(@Param("itemId") Long itemId, @Param("name") String name, @Param("description") String description,
-             @Param("price") Double price, @Param("discount") Double discount, @Param("categoryId") Long categoryId);
+    void add(Item item);
 
-    @Update("UPDATE tblitem SET name=#{name}, description=#{description}, price=#{price}, discount=#{discount}, " +
+    @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price}, discount=#{discount}, " +
             "categoryId=#{categoryId} WHERE id=#{id}")
     void updateById(Item item);
 
-    @Delete("DELETE FROM tblitem WHERE id=#{itemId}")
+    @Delete("DELETE FROM tbl_item WHERE id=#{itemId}")
     void deleteById(Long itemId);
 }
