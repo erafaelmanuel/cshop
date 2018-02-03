@@ -24,8 +24,8 @@ public interface ItemRepository {
 
     @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price}, categoryId=#{categoryId} " +
             "WHERE id=#{id}")
-    void updateById(Item item);
+    void update(Item item);
 
-    @Delete("DELETE FROM tbl_item WHERE id=#{itemId}")
-    void deleteById(Long itemId);
+    @Delete("DELETE FROM tbl_item WHERE id=#{id}")
+    void delete(Item item);
 }
