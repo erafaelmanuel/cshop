@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DatabaseConfiguration implements CommandLineRunner {
 
-
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private UserRoleRepository userRoleRepository;
     private TokenRepository tokenRepository;
     private TokenUserRepository tokenUserRepository;
+    private ItemRepository itemRepository;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -22,6 +22,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
         userRoleRepository.createTable();
         tokenRepository.createTable();
         tokenUserRepository.createTable();
+        itemRepository.createTable();
     }
 
     @Autowired
@@ -47,5 +48,10 @@ public class DatabaseConfiguration implements CommandLineRunner {
     @Autowired
     public void setTokenUserRepository(TokenUserRepository tokenUserRepository) {
         this.tokenUserRepository = tokenUserRepository;
+    }
+
+    @Autowired
+    public void setItemRepository(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 }

@@ -83,26 +83,26 @@ public class ItemService {
     }
 
     public Item add(Item item, Long categoryId) throws EntityNotFoundException, UnsatisfiedEntityException {
-        final long id = IdGenerator.randomUUID();
-        if(item == null)
-            throw new UnsatisfiedEntityException("Item is null");
-        if(item.getName() == null || item.getName().equals(""))
-            throw new UnsatisfiedEntityException("Name is required");
-        if(item.getDescription() == null || item.getDescription().equals(""))
-            throw new UnsatisfiedEntityException("Description is required");
-        if(item.getPrice() == null || item.getPrice() < 0)
-            throw new UnsatisfiedEntityException("Price is required");
-        if(item.getDiscount() == null || item.getDiscount() < 0)
-            throw new UnsatisfiedEntityException("Discount is required");
-        if(categoryId == null)
-            throw new UnsatisfiedEntityException("Category is required");
-
-        final Category category = categoryRepository.findById(categoryId);
-        if(category == null)
-            throw new EntityNotFoundException("No category found with id " + categoryId);
-        item.setId(id);
-        itemRepository.add(id, item.getName(), item.getDescription(), item.getPrice(), item.getDiscount(), categoryId);
-        item.setCategory(category);
+//        final long id = IdGenerator.randomUUID();
+//        if(item == null)
+//            throw new UnsatisfiedEntityException("Item is null");
+//        if(item.getName() == null || item.getName().equals(""))
+//            throw new UnsatisfiedEntityException("Name is required");
+//        if(item.getDescription() == null || item.getDescription().equals(""))
+//            throw new UnsatisfiedEntityException("Description is required");
+//        if(item.getPrice() == null || item.getPrice() < 0)
+//            throw new UnsatisfiedEntityException("Price is required");
+//        if(item.getDiscount() == null || item.getDiscount() < 0)
+//            throw new UnsatisfiedEntityException("Discount is required");
+//        if(categoryId == null)
+//            throw new UnsatisfiedEntityException("Category is required");
+//
+//        final Category category = categoryRepository.findById(categoryId);
+//        if(category == null)
+//            throw new EntityNotFoundException("No category found with id " + categoryId);
+//        item.setId(id);
+//        itemRepository.add(id, item.getName(), item.getDescription(), item.getPrice(), item.getDiscount(), categoryId);
+//        item.setCategory(category);
         return item;
     }
 

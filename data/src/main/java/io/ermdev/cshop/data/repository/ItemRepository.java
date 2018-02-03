@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-@Deprecated
 @Mapper
 public interface ItemRepository {
 
@@ -19,12 +18,12 @@ public interface ItemRepository {
     @Select("SELECT * FROM tbl_item")
     List<Item> findAll();
 
-    @Insert("INSERT INSERT tbl_item(id, name, description, price, discount, categoryId) values(#{itemId}, #{name}, " +
+    @Insert("INSERT INSERT tbl_item(id, name, description, price, categoryId) values(#{itemId}, #{name}, " +
             "#{description}, #{price}, #{discount}, #{categoryId})")
     void add(Item item);
 
-    @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price}, discount=#{discount}, " +
-            "categoryId=#{categoryId} WHERE id=#{id}")
+    @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price}, categoryId=#{categoryId} " +
+            "WHERE id=#{id}")
     void updateById(Item item);
 
     @Delete("DELETE FROM tbl_item WHERE id=#{itemId}")
