@@ -93,7 +93,7 @@ public class RegisterController {
                     throw new ResourceException("Invalid Request");
                 }
             } else {
-                return "register";
+                return showRegister(new UserDto(), model);
             }
         } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());
@@ -114,7 +114,7 @@ public class RegisterController {
 
                 ResendEvent resendEvent = new ResendEvent(resendSource);
                 ReturnValue returnValue = new ReturnValue();
-                resendEvent.setOnResendFinished(returnValue::setHasError);
+                resendEvent.setOnResendCompleted(returnValue::setHasError);
                 publisher.publishEvent(resendEvent);
                 if (!returnValue.hasError()) {
                     model.addAttribute("userId", userId);
@@ -123,7 +123,7 @@ public class RegisterController {
                     throw new ResourceException("Invalid request");
                 }
             } else {
-                return "register";
+                return showRegister(new UserDto(), model);
             }
         } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());
