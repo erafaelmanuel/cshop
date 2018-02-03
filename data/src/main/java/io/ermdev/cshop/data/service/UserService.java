@@ -25,7 +25,7 @@ public class UserService {
 
     public User findById(Long userId) throws EntityException {
         final User user = userRepository.findById(userId);
-        if(user != null) {
+        if (user != null) {
             List<Role> roles = userRoleRepository.findRolesByUserId(userId);
             user.setRoles(roles);
             return user;
@@ -36,7 +36,7 @@ public class UserService {
 
     public User findByEmail(String email) throws EntityException {
         final User user = userRepository.findByEmail(email);
-        if(user != null) {
+        if (user != null) {
             List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             user.setRoles(roles);
             return user;
@@ -47,7 +47,7 @@ public class UserService {
 
     public User findByUsername(String username) throws EntityException {
         final User user = userRepository.findByUsername(username);
-        if(user != null) {
+        if (user != null) {
             List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
             user.setRoles(roles);
             return user;
@@ -56,9 +56,9 @@ public class UserService {
         }
     }
 
-    public List<User> findAll() throws EntityException{
+    public List<User> findAll() throws EntityException {
         final List<User> users = userRepository.findAll();
-        if(users != null) {
+        if (users != null) {
             users.parallelStream().forEach(user -> {
                 List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
                 user.setRoles(roles);
@@ -70,21 +70,21 @@ public class UserService {
     }
 
     public User save(User user) throws EntityException {
-        if(user != null) {
-            if(user.getId() == null) {
-                if(user.getEmail() != null && userRepository.findByEmail(user.getEmail()) != null) {
+        if (user != null) {
+            if (user.getId() == null) {
+                if (user.getEmail() != null && userRepository.findByEmail(user.getEmail()) != null) {
                     throw new EntityException("Duplicate email entry");
                 }
-                if(user.getName() == null || user.getName().trim().isEmpty()) {
+                if (user.getName() == null || user.getName().trim().isEmpty()) {
                     throw new EntityException("Name is required");
                 }
-                if(user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+                if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
                     throw new EntityException("Email is required");
                 }
-                if(user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+                if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
                     throw new EntityException("Username is required");
                 }
-                if(user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+                if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
                     throw new EntityException("Password is required");
                 }
                 final long generatedId = IdGenerator.randomUUID();
@@ -93,20 +93,20 @@ public class UserService {
                 return user;
             } else {
                 User o = userRepository.findById(user.getId());
-                if(o != null) {
-                    if(user.getName() == null || user.getName().trim().isEmpty()) {
+                if (o != null) {
+                    if (user.getName() == null || user.getName().trim().isEmpty()) {
                         user.setName(o.getName());
                     }
-                    if(user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+                    if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
                         user.setEmail(o.getEmail());
                     }
-                    if(user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+                    if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
                         user.setUsername(o.getUsername());
                     }
-                    if(user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+                    if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
                         user.setPassword(o.getPassword());
                     }
-                    if(user.getEnabled() == null) {
+                    if (user.getEnabled() == null) {
                         user.setEnabled(o.getEnabled());
                     }
                     userRepository.update(user);
@@ -117,16 +117,16 @@ public class UserService {
                 }
             }
         } else {
-            return user;
+            throw new NullPointerException("User is null");
         }
     }
 
     public User delete(Long userId) throws EntityException {
         User user = userRepository.findById(userId);
-        if(user != null) {
+        if (user != null) {
             final List<Role> roles = userRoleRepository.findRolesByUserId(userId);
-            userRepository.delete(user);
             user.setRoles(roles);
+            userRepository.delete(user);
             return user;
         } else {
             throw new EntityException("No user found");
@@ -134,14 +134,18 @@ public class UserService {
     }
 
     public User delete(User user) throws EntityException {
-        if(user != null) {
+        if (user != null) {
             final User o = userRepository.findById(user.getId());
-            final List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
-            o.setRoles(roles);
-            userRepository.delete(user);
-            return o;
+            if (o != null) {
+                List<Role> roles = userRoleRepository.findRolesByUserId(user.getId());
+                o.setRoles(roles);
+                userRepository.delete(user);
+                return o;
+            } else {
+                throw new EntityException("No user found");
+            }
         } else {
-            throw new EntityException("No user found");
+            throw new NullPointerException("User is null");
         }
     }
 }

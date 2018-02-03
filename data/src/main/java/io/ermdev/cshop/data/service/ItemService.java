@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Deprecated
 @Service
 public class ItemService {
 
@@ -74,7 +73,7 @@ public class ItemService {
                 }
             }
         } else {
-            throw new NullPointerException("item is null");
+            throw new NullPointerException("Item is null");
         }
     }
 
@@ -89,7 +88,7 @@ public class ItemService {
     }
 
     public Item delete(Item item) throws EntityException {
-        if(item != null && item.getId() != null) {
+        if (item != null && item.getId() != null) {
             final Item o = itemRepository.findById(item.getId());
             if (o != null) {
                 itemRepository.delete(item);
@@ -98,7 +97,7 @@ public class ItemService {
                 throw new EntityException("No item found");
             }
         } else {
-            throw new NullPointerException("item is null");
+            throw new NullPointerException("Item is null");
         }
     }
 }

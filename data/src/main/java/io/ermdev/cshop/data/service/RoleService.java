@@ -59,7 +59,7 @@ public class RoleService {
                 }
             }
         } else {
-            return role;
+            throw new NullPointerException("Role is null");
         }
     }
 
@@ -75,13 +75,16 @@ public class RoleService {
     }
 
     public Role delete(Role role) throws EntityException {
-        final Role o = roleRepository.findById(role.getId());
-        if (o != null) {
-            roleRepository.delete(role);
-            return o;
+        if(role != null) {
+            final Role o = roleRepository.findById(role.getId());
+            if (o != null) {
+                roleRepository.delete(role);
+                return o;
+            } else {
+                throw new EntityException("No role found");
+            }
         } else {
-            throw new EntityException("No role found");
+            throw new NullPointerException("Role is null");
         }
-
     }
 }

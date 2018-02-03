@@ -88,16 +88,16 @@ public class TokenService {
                 }
             }
         } else {
-            return null;
+            throw new NullPointerException("Token is null");
         }
     }
 
     public Token delete(Long tokenId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         if (token != null) {
-            final User user = tokenUserRepository.findUserByTokenId(token.getId());
-            tokenRepository.delete(token);
+            User user = tokenUserRepository.findUserByTokenId(token.getId());
             token.setUser(user);
+            tokenRepository.delete(token);
             return token;
         } else {
             throw new EntityException("No token found");
@@ -105,14 +105,18 @@ public class TokenService {
     }
 
     public Token delete(Token token) throws EntityException {
-        final Token o = tokenRepository.findById(token.getId());
-        if (o != null) {
-            final User user = tokenUserRepository.findUserByTokenId(token.getId());
-            tokenRepository.delete(o);
-            token.setUser(user);
-            return o;
+        if (token != null) {
+            final Token o = tokenRepository.findById(token.getId());
+            if (o != null) {
+                User user = tokenUserRepository.findUserByTokenId(token.getId());
+                token.setUser(user);
+                tokenRepository.delete(o);
+                return o;
+            } else {
+                throw new EntityException("No token found");
+            }
         } else {
-            throw new EntityException("No token found");
+            throw new NullPointerException("Token is null");
         }
     }
 }
