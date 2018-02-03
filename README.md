@@ -10,8 +10,9 @@ This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or 
 * You can build the project and run the tests by running mvn clean package
 * Once successfully built, you can run the service by one of these two methods:
 ```
-      java -jar target/cshop-1.0-SNAPSHOT-spring-boot.jar
+      java -jar core/target/core-1.0-SNAPSHOT-spring-boot.jar
 or
+      cd core
       mvn spring-boot:run
 ```
 Once the application runs you should see something like this
@@ -23,7 +24,7 @@ Once the application runs you should see something like this
 
 Here are some endpoints you can call:
 ### Get information about the user
-```
+```java
 http://localhost:8080/api/users
 http://localhost:8080/api/users/{id}
 http://localhost:8080/api/users/{id}/roles
@@ -31,7 +32,7 @@ http://localhost:8080/api/users/{id}/roles
 
 ### Create a user resource
 
-```
+```java
 POST /api/users
 Accept: application/json
 Content-Type: application/json
@@ -49,7 +50,7 @@ Location header: http://localhost:8080/api/users
 
 ### Update a user resource
 
-```
+```java
 PUT /api/users/{id}
 Accept: application/json
 Content-Type: application/json
