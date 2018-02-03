@@ -1,8 +1,8 @@
 package io.ermdev.cshop.web.controller;
 
 import io.ermdev.cshop.data.entity.Item;
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.ItemService;
+import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +42,7 @@ public class CatalogController {
         try {
             Item item = itemService.findById(itemId);
             model.addAttribute("item", item);
-        } catch (EntityNotFoundException e) {
+        } catch (EntityException e) {
             e.printStackTrace();
         }
         return "modal/cart-modal";
