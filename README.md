@@ -10,9 +10,11 @@ This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or 
 * You can build the project and run the tests by running mvn clean package
 * Once successfully built, you can run the service by one of these two methods:
 ```
-      java -jar target/cshop-1.0-SNAPSHOT-spring-boot.jar
-or
-      mvn spring-boot:run
+java -jar core/target/core-1.0-SNAPSHOT-spring-boot.jar
+```
+```
+cd core
+mvn spring-boot:run
 ```
 Once the application runs you should see something like this
 
@@ -63,5 +65,8 @@ Content-Type: application/json
 
 RESPONSE: HTTP 204 (No Content)
 ```
+### To view Swagger 2 API docs
+
+Run the server and browse to localhost:8080/swagger-ui.html
 
 ## Questions and Comments: ermdev.io@gmail.com
