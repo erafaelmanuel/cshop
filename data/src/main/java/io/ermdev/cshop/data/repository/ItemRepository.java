@@ -18,12 +18,10 @@ public interface ItemRepository {
     @Select("SELECT * FROM tbl_item")
     List<Item> findAll();
 
-    @Insert("INSERT INSERT tbl_item(id, name, description, price, categoryId) values(#{itemId}, #{name}, " +
-            "#{description}, #{price}, #{discount}, #{categoryId})")
+    @Insert("INSERT INTO tbl_item(id, name, description, price) values(#{id}, #{name}, #{description}, #{price})")
     void add(Item item);
 
-    @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price}, categoryId=#{categoryId} " +
-            "WHERE id=#{id}")
+    @Update("UPDATE tbl_item SET name=#{name}, description=#{description}, price=#{price} WHERE id=#{id}")
     void update(Item item);
 
     @Delete("DELETE FROM tbl_item WHERE id=#{id}")

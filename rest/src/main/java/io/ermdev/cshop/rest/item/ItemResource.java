@@ -15,11 +15,8 @@ import java.util.List;
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("item")
+@Path("items")
 public class ItemResource {
-
-    @QueryParam("categoryId")
-    private Long categoryId;
 
     private ItemService itemService;
 
@@ -56,6 +53,31 @@ public class ItemResource {
         try {
             item = itemService.save(item);
             return Response.status(Response.Status.CREATED).entity(item).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("{itemId}")
+    public Response update(@PathParam("itemId") Long itemId, Item item) {
+        try {
+            item.setId(itemId);
+            item = itemService.save(item);
+            return Response.status(Response.Status.OK).entity(item).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @DELETE
+    @Path("{itemId}")
+    public Response delete(@PathParam("itemId") Long itemId) {
+        try {
+            Item item = itemService.delete(itemId);
+            return Response.status(Response.Status.OK).entity(item).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
