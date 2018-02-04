@@ -1,4 +1,4 @@
-package io.ermdev.cshop.rest.item;
+package io.ermdev.cshop.rest.tag;
 
 import io.ermdev.cshop.commons.Link;
 

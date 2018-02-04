@@ -4,12 +4,15 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Item;
 import io.ermdev.cshop.data.service.ItemService;
 import io.ermdev.cshop.exception.EntityException;
+import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 @Component
@@ -19,18 +22,22 @@ import java.util.List;
 public class ItemResource {
 
     private ItemService itemService;
+    private SimpleMapper simpleMapper;
 
     @Autowired
-    public ItemResource(ItemService itemService) {
+    public ItemResource(ItemService itemService, SimpleMapper simpleMapper) {
         this.itemService = itemService;
+        this.simpleMapper = simpleMapper;
     }
 
     @GET
     @Path("{itemId}")
-    public Response getById(@PathParam("itemId") long itemId) {
+    public Response getById(@PathParam("itemId") long itemId, @Context UriInfo uriInfo) {
         try {
-            Item item = itemService.findById(itemId);
-            return Response.status(Response.Status.OK).entity(item).build();
+            ItemDto itemDto = simpleMapper.set(itemService.findById(itemId)).mapTo(ItemDto.class);
+            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
+            itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
+            return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -38,10 +45,14 @@ public class ItemResource {
     }
 
     @GET
-    public Response getAll() {
+    public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<Item> items = itemService.findAll();
-            return Response.status(Response.Status.OK).entity(items).build();
+            List<ItemDto> itemDtos = simpleMapper.set(itemService.findAll()).mapToList(ItemDto.class);
+            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
+            itemDtos.parallelStream().forEach(itemDto -> {
+                itemDto.getLinks().add(itemResourceLinks.getSelf(itemDto.getId()));
+            });
+            return Response.status(Response.Status.OK).entity(itemDtos).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -49,23 +60,27 @@ public class ItemResource {
     }
 
     @POST
-    public Response add(Item item) {
+    public Response add(Item item, @Context UriInfo uriInfo) {
         try {
-            item = itemService.save(item);
-            return Response.status(Response.Status.CREATED).entity(item).build();
+            ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
+            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
+            itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
+            return Response.status(Response.Status.CREATED).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 
     @PUT
     @Path("{itemId}")
-    public Response update(@PathParam("itemId") Long itemId, Item item) {
+    public Response update(@PathParam("itemId") Long itemId, Item item, @Context UriInfo uriInfo) {
         try {
             item.setId(itemId);
-            item = itemService.save(item);
-            return Response.status(Response.Status.OK).entity(item).build();
+            ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
+            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
+            itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
+            return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
@@ -74,10 +89,12 @@ public class ItemResource {
 
     @DELETE
     @Path("{itemId}")
-    public Response delete(@PathParam("itemId") Long itemId) {
+    public Response delete(@PathParam("itemId") Long itemId, @Context UriInfo uriInfo) {
         try {
-            Item item = itemService.delete(itemId);
-            return Response.status(Response.Status.OK).entity(item).build();
+            ItemDto itemDto = simpleMapper.set(itemService.delete(itemId)).mapTo(ItemDto.class);
+            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
+            itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
+            return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();

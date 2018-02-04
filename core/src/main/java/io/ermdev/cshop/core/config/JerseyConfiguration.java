@@ -1,8 +1,8 @@
 package io.ermdev.cshop.core.config;
 
-import io.ermdev.cshop.rest.item.CategoryResource;
+import io.ermdev.cshop.rest.category.CategoryResource;
 import io.ermdev.cshop.rest.item.ItemResource;
-import io.ermdev.cshop.rest.item.TagResource;
+import io.ermdev.cshop.rest.tag.TagResource;
 import io.ermdev.cshop.rest.role.RoleResource;
 import io.ermdev.cshop.rest.token.TokenResource;
 import io.ermdev.cshop.rest.user.UserResource;
