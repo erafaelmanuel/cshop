@@ -1,7 +1,6 @@
 package io.ermdev.cshop.rest.item;
 
 import io.ermdev.cshop.commons.Error;
-import io.ermdev.cshop.data.entity.Image;
 import io.ermdev.cshop.data.service.ImageService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.image.ImageDto;
