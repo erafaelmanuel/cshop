@@ -1,11 +1,15 @@
 package io.ermdev.cshop.data.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Item {
 
     private Long id;
     private String name;
     private String description;
     private Double price;
+    private List<String> images = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -37,5 +41,13 @@ public class Item {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }

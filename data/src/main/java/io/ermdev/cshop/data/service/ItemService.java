@@ -1,5 +1,6 @@
 package io.ermdev.cshop.data.service;
 
+import io.ermdev.cshop.commons.CShopProperties;
 import io.ermdev.cshop.commons.IdGenerator;
 import io.ermdev.cshop.data.entity.Item;
 import io.ermdev.cshop.data.repository.ItemRepository;
@@ -13,10 +14,12 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private CShopProperties properties;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository, CShopProperties properties) {
         this.itemRepository = itemRepository;
+        this.properties = properties;
     }
 
     public Item findById(Long itemId) throws EntityException {
@@ -31,6 +34,9 @@ public class ItemService {
     public List<Item> findAll() throws EntityException {
         final List<Item> items = itemRepository.findAll();
         if (items != null) {
+            items.parallelStream().forEach(item -> {
+                item.getImages().add(properties.getDefaultImage());
+            });
             return items;
         } else {
             throw new EntityException("No item found");

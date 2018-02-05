@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes({"cartItems", "hasUser", "userName"})
 public class CatalogController {
 
-    private final long ITEM_PER_PAGE = 20;
-
     private final ItemService itemService;
 
     @Autowired
@@ -27,6 +25,7 @@ public class CatalogController {
 
     @GetMapping("catalog")
     public String showCatalog(ModelMap modelMap, @RequestParam(required = false, value = "page") Integer page) {
+        final long ITEM_PER_PAGE = 20;
         try {
             page = 1;
             modelMap.addAttribute("page", page);
