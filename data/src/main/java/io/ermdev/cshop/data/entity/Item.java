@@ -9,7 +9,7 @@ public class Item {
     private String name;
     private String description;
     private Double price;
-    private List<String> images = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Item {
         this.price = price;
     }
 
-    public List<String> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 }
