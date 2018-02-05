@@ -23,7 +23,7 @@ public class ItemResourceLinks {
     }
 
     public Link getImages(Long itemId) {
-        final String rel = "image";
+        final String rel = "images";
         final String href = uriInfo.getBaseUriBuilder()
                 .path(ItemResource.class)
                 .path(itemId.toString())

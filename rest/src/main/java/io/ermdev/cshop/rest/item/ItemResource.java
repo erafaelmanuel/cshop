@@ -21,11 +21,13 @@ import java.util.List;
 @Path("items")
 public class ItemResource {
 
+    private ItemImageResource itemImageResource;
     private ItemService itemService;
     private SimpleMapper simpleMapper;
 
     @Autowired
-    public ItemResource(ItemService itemService, SimpleMapper simpleMapper) {
+    public ItemResource(ItemImageResource itemImageResource, ItemService itemService, SimpleMapper simpleMapper) {
+        this.itemImageResource = itemImageResource;
         this.itemService = itemService;
         this.simpleMapper = simpleMapper;
     }
@@ -104,5 +106,11 @@ public class ItemResource {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
+    }
+
+    @Path("{itemId}/images")
+    public ItemImageResource itemImageResource(@Context UriInfo uriInfo) {
+        itemImageResource.setUriInfo(uriInfo);
+        return itemImageResource;
     }
 }
