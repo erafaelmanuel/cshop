@@ -14,15 +14,19 @@ public class DatabaseConfiguration implements CommandLineRunner {
     private TokenRepository tokenRepository;
     private TokenUserRepository tokenUserRepository;
     private ItemRepository itemRepository;
+    private ImageRepository imageRepository;
+    private ImageItemRepository imageItemRepository;
 
     @Override
-    public void run(String... strings) throws Exception {
+    public void run(String... strings) {
         userRepository.createTable();
         roleRepository.createTable();
         userRoleRepository.createTable();
         tokenRepository.createTable();
         tokenUserRepository.createTable();
         itemRepository.createTable();
+        imageRepository.createTable();
+        imageItemRepository.createTable();
     }
 
     @Autowired
@@ -53,5 +57,15 @@ public class DatabaseConfiguration implements CommandLineRunner {
     @Autowired
     public void setItemRepository(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
+
+    @Autowired
+    public void setImageRepository(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
+
+    @Autowired
+    public void setImageItemRepository(ImageItemRepository imageItemRepository) {
+        this.imageItemRepository = imageItemRepository;
     }
 }
