@@ -37,6 +37,7 @@ public class ItemResource {
             ItemDto itemDto = simpleMapper.set(itemService.findById(itemId)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
+            itemDto.getLinks().add(itemResourceLinks.getImages(itemId));
             return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -51,6 +52,7 @@ public class ItemResource {
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDtos.parallelStream().forEach(itemDto -> {
                 itemDto.getLinks().add(itemResourceLinks.getSelf(itemDto.getId()));
+                itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
             });
             return Response.status(Response.Status.OK).entity(itemDtos).build();
         } catch (EntityException e) {
@@ -65,6 +67,7 @@ public class ItemResource {
             ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
+            itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
             return Response.status(Response.Status.CREATED).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -80,6 +83,7 @@ public class ItemResource {
             ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
+            itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
             return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
@@ -94,6 +98,7 @@ public class ItemResource {
             ItemDto itemDto = simpleMapper.set(itemService.delete(itemId)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
+            itemDto.getLinks().add(itemResourceLinks.getImages(itemId));
             return Response.status(Response.Status.OK).entity(itemDto).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());

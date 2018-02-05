@@ -21,4 +21,15 @@ public class ItemResourceLinks {
                 .toString();
         return new Link(rel, href);
     }
+
+    public Link getImages(Long itemId) {
+        final String rel = "image";
+        final String href = uriInfo.getBaseUriBuilder()
+                .path(ItemResource.class)
+                .path(itemId.toString())
+                .path(ItemImageResource.class)
+                .build()
+                .toString();
+        return new Link(rel, href);
+    }
 }
