@@ -17,7 +17,7 @@ public interface ImageItemRepository {
             "CASCADE)")
     void createTable();
 
-    @Select("SELECT A.id, B.src FROM tbl_image AS A LEFT JOIN tbl_image_item AS B ON A.id=B.imageId WHERE " +
+    @Select("SELECT A.id, A.src FROM tbl_image AS A LEFT JOIN tbl_image_item AS B ON A.id=B.imageId WHERE " +
             "B.itemId=#{itemId}")
     List<Image> findImagesByItemId(@Param("itemId") Long itemId);
 }
