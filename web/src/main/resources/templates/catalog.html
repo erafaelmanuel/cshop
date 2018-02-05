@@ -26,7 +26,7 @@
             <div class="col-lg-3 catalog-item" th:each="item : ${items}">
                 <div class="card h-100">
                     <div class="catalog-item-img">
-                        <img class="card-img-top" th:src="@{${item.images[0]}}" alt=""/>
+                        <img class="card-img-top" th:src="@{${item.images[0].src}}" alt=""/>
                         <div href="#" class="card-img-overlay text-center">
                             <ul class="catalog-item-option">
                                 <li>
