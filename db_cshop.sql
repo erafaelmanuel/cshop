@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2018 at 05:46 PM
+-- Generation Time: Feb 05, 2018 at 02:17 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -19,6 +19,56 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_cshop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_image`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_image` (
+  `id` bigint(20) NOT NULL,
+  `src` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_image`
+--
+
+INSERT INTO `tbl_image` (`id`, `src`) VALUES
+(1, '/images/required/item-image-default.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_image_item`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_image_item` (
+  `id` bigint(20) NOT NULL,
+  `imageId` bigint(20) NOT NULL,
+  `itemId` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_item`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_item` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `price` decimal(11,2) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_item`
+--
+
+INSERT INTO `tbl_item` (`id`, `name`, `description`, `price`) VALUES
+(1, 'Jacket', 'Perfect for hot temperature', '120.00');
 
 -- --------------------------------------------------------
 
@@ -49,15 +99,14 @@ CREATE TABLE IF NOT EXISTS `tbl_token` (
   `id` bigint(20) NOT NULL,
   `_key` varchar(100) DEFAULT NULL,
   `expiryDate` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=201819122 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_token`
 --
 
 INSERT INTO `tbl_token` (`id`, `_key`, `expiryDate`) VALUES
-(1, 'asfsaf', 'asdasfasf'),
-(201819121, 'rrr', 'aaarrrsdsafasf');
+(1, 'asfsaf', 'asdasfasf');
 
 -- --------------------------------------------------------
 
@@ -84,14 +133,15 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
   `username` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   `enabled` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=201821612 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=201876539 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_user`
 --
 
 INSERT INTO `tbl_user` (`id`, `name`, `email`, `username`, `password`, `enabled`) VALUES
-(201821611, 'Rafael Manuel', 'erafaelmanuel@gmail.com', 'erafaelmanuel', '123', 1);
+(201821611, 'Rafael Manuel', 'erafaelmanuel@gmail.com', 'erafaelmanuel', '123', 1),
+(201876538, 'Hhhhhhhhx8', 'rafaelmanuel00@gmail.com', 'rafaelmanuel00', '123', 1);
 
 -- --------------------------------------------------------
 
@@ -115,6 +165,26 @@ INSERT INTO `tbl_user_role` (`id`, `userId`, `roleId`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_image`
+--
+ALTER TABLE `tbl_image`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_image_item`
+--
+ALTER TABLE `tbl_image_item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `imageId` (`imageId`),
+  ADD KEY `itemId` (`itemId`);
+
+--
+-- Indexes for table `tbl_item`
+--
+ALTER TABLE `tbl_item`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_role`
@@ -155,6 +225,21 @@ ALTER TABLE `tbl_user_role`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_image`
+--
+ALTER TABLE `tbl_image`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `tbl_image_item`
+--
+ALTER TABLE `tbl_image_item`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tbl_item`
+--
+ALTER TABLE `tbl_item`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
@@ -163,7 +248,7 @@ ALTER TABLE `tbl_role`
 -- AUTO_INCREMENT for table `tbl_token`
 --
 ALTER TABLE `tbl_token`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=201819122;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tbl_token_user`
 --
@@ -173,7 +258,7 @@ ALTER TABLE `tbl_token_user`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=201821612;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=201876539;
 --
 -- AUTO_INCREMENT for table `tbl_user_role`
 --
@@ -182,6 +267,13 @@ ALTER TABLE `tbl_user_role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_image_item`
+--
+ALTER TABLE `tbl_image_item`
+  ADD CONSTRAINT `tbl_image_item_ibfk_1` FOREIGN KEY (`imageId`) REFERENCES `tbl_image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_image_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `tbl_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_token_user`
