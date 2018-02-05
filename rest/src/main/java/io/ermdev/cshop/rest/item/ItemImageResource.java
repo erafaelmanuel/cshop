@@ -4,6 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.service.ImageService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.image.ImageDto;
+import io.ermdev.cshop.rest.image.ImageResourceLinks;
 import io.ermdev.mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,10 @@ public class ItemImageResource {
     public Response getAll(@PathParam("itemId") Long itemId) {
         try {
             List<ImageDto> imageDtos = simpleMapper.set(imageService.findByItemId(itemId)).mapToList(ImageDto.class);
+            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
+            imageDtos.parallelStream().forEach(imageDto -> {
+                imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+            });
             return Response.status(Response.Status.FOUND).entity(imageDtos).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
