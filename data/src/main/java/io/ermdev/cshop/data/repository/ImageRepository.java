@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface ImageRepository {
 
@@ -17,5 +19,5 @@ public interface ImageRepository {
     Image findById(@Param("imageId") Long imageId);
 
     @Select("SELECT * FROM tbl_image")
-    Image findAll();
+    List<Image> findAll();
 }
