@@ -1,8 +1,10 @@
 package io.ermdev.cshop.data.service;
 
-import io.ermdev.cshop.commons.CShopProperties;
 import io.ermdev.cshop.commons.IdGenerator;
+import io.ermdev.cshop.data.entity.Image;
 import io.ermdev.cshop.data.entity.Item;
+import io.ermdev.cshop.data.repository.ImageItemRepository;
+import io.ermdev.cshop.data.repository.ImageRepository;
 import io.ermdev.cshop.data.repository.ItemRepository;
 import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +16,27 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private CShopProperties properties;
+    private ImageRepository imageRepository;
+    private ImageItemRepository imageItemRepository;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, CShopProperties properties) {
+    public ItemService(ItemRepository itemRepository, ImageRepository imageRepository,
+                       ImageItemRepository imageItemRepository) {
         this.itemRepository = itemRepository;
-        this.properties = properties;
+        this.imageRepository = imageRepository;
+        this.imageItemRepository = imageItemRepository;
     }
 
     public Item findById(Long itemId) throws EntityException {
         final Item item = itemRepository.findById(itemId);
         if (item != null) {
+            List<Image> images = imageItemRepository.findImagesByItemId(itemId);
+            if (images != null && images.size() > 0) {
+                item.setImages(images);
+            } else {
+                Image image = imageRepository.findById((long) 1);
+                item.getImages().add(image);
+            }
             return item;
         } else {
             throw new EntityException("No item found");
@@ -35,7 +47,13 @@ public class ItemService {
         final List<Item> items = itemRepository.findAll();
         if (items != null) {
             items.parallelStream().forEach(item -> {
-                item.getImages().add(properties.getDefaultImage());
+                List<Image> images = imageItemRepository.findImagesByItemId(item.getId());
+                if (images != null && images.size() > 0) {
+                    item.setImages(images);
+                } else {
+                    Image image = imageRepository.findById((long) 1);
+                    item.getImages().add(image);
+                }
             });
             return items;
         } else {
