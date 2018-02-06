@@ -12,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -36,6 +37,21 @@ public class ImageResource {
             ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
             imageDto.getLinks().add(imageResourceLinks.getSelf(imageId));
             return Response.status(Response.Status.OK).entity(imageDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @GET
+    public Response getAll(@Context UriInfo uriInfo) {
+        try {
+            List<ImageDto> imageDtos = simpleMapper.set(imageService.findAll()).mapToList(ImageDto.class);
+            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
+            imageDtos.parallelStream().forEach(imageDto -> {
+                imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+            });
+            return Response.status(Response.Status.OK).entity(imageDtos).build();
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
