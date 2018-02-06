@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"hasUser", "userName", "cartItems"})
+@SessionAttributes({"cartItems", "user"})
 public class LoginController {
 
     private UserService userService;
@@ -29,12 +29,11 @@ public class LoginController {
     public String onLoginSuccess(Authentication authentication, Model model) {
         try {
             User user = userService.findByUsername(authentication.getName());
-            model.addAttribute("userName", user.getName().trim().toUpperCase().charAt(0));
+            model.addAttribute("user", user);
         } catch (EntityException e) {
             model.addAttribute("message", e.getMessage());
             return "error/500";
         }
-        model.addAttribute("hasUser", true);
         return "redirect:/catalog";
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"cartItems", "hasUser", "userName"})
+@SessionAttributes({"cartItems", "user"})
 public class CatalogController {
 
     private final ItemService itemService;
