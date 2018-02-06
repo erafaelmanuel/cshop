@@ -1,5 +1,6 @@
 package io.ermdev.cshop.web.interceptor;
 
+import io.ermdev.cshop.data.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,8 +16,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         try {
             final HttpSession session = request.getSession();
             if (request.getMethod().equalsIgnoreCase("GET")) {
-                final Boolean hasUser = (Boolean) session.getAttribute("hasUser");
-                if(hasUser != null && hasUser) {
+                final User user = (User) session.getAttribute("user");
+                if(user != null) {
                     response.sendRedirect("/");
                     return false;
                 }

@@ -42,12 +42,12 @@
                                 <span class="badge badge-success" th:if="${cartItems != null and #lists.size(cartItems) > 0}" th:text="${#lists.size(cartItems)}"></span>
                             </div>
                         </li>
-                        <li class="nav-item" th:if="${hasUser} eq null or ${hasUser} eq false">
+                        <li class="nav-item" th:if="${user} eq null">
                             <div class="item">
                                 <a class="nav-link" href="/login" style="font-size:14px;font-weight:500;">LOGIN</a>
                             </div>
                         </li>
-                        <li class="nav-item account-item" th:if="${hasUser} != null and ${hasUser}">
+                        <li class="nav-item account-item" th:if="${user} != null">
                             <div class="dropdown">
                                 <button class="btn btn-link dropdown-toggle" type="button" id="myAccount-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span th:text="${#strings.substring(user.name, 0, 1)}"></span>MY ACCOUNT
