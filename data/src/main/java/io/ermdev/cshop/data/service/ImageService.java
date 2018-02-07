@@ -76,4 +76,28 @@ public class ImageService {
             throw new NullPointerException("Image is null");
         }
     }
+
+    public Image delete(Long imageId) throws EntityException {
+        Image image = imageRepository.findById(imageId);
+        if(image != null) {
+            imageRepository.delete(image);
+            return image;
+        } else {
+            throw new EntityException("No image found");
+        }
+    }
+
+    public Image delete(Image image) throws EntityException {
+        if(image != null) {
+            Image o = findById(image.getId());
+            if(o != null) {
+                imageRepository.delete(o);
+                return o;
+            } else {
+                throw new EntityException("No image found");
+            }
+        } else {
+            throw new NullPointerException("Image is null");
+        }
+    }
 }
