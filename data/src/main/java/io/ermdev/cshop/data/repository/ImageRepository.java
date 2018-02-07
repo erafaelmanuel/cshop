@@ -1,10 +1,7 @@
 package io.ermdev.cshop.data.repository;
 
 import io.ermdev.cshop.data.entity.Image;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -23,4 +20,7 @@ public interface ImageRepository {
 
     @Insert("INSERT INTO tbl_image(src) VALUES(#{src})")
     void add(Image image);
+
+    @Update("UPDATE tbl_image SET src=#{src} WHERE id=#{id}")
+    void update(Image image);
 }
