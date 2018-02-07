@@ -20,4 +20,7 @@ public interface ImageRepository {
 
     @Select("SELECT * FROM tbl_image")
     List<Image> findAll();
+
+    @Insert("INSERT INTO tbl_image(src) VALUES(#{src})")
+    void add(Image image);
 }
