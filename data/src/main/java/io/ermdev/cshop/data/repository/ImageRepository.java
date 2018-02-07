@@ -23,4 +23,7 @@ public interface ImageRepository {
 
     @Update("UPDATE tbl_image SET src=#{src} WHERE id=#{id}")
     void update(Image image);
+
+    @Delete("DELETE FROM tbl_image WHERE id=#{id}")
+    void delete(Image image);
 }
