@@ -3,8 +3,8 @@ package io.ermdev.cshop.data.service;
 import io.ermdev.cshop.commons.IdGenerator;
 import io.ermdev.cshop.data.entity.Image;
 import io.ermdev.cshop.data.entity.Item;
-import io.ermdev.cshop.data.repository.ItemImageRepository;
 import io.ermdev.cshop.data.repository.ImageRepository;
+import io.ermdev.cshop.data.repository.ItemImageRepository;
 import io.ermdev.cshop.data.repository.ItemRepository;
 import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    private final ItemRepository itemRepository;
+    private ItemRepository itemRepository;
     private ImageRepository imageRepository;
     private ItemImageRepository imageItemRepository;
 
