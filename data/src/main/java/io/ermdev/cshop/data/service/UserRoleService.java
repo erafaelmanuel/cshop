@@ -48,10 +48,10 @@ public class UserRoleService {
         if (user == null) {
             throw new EntityException("No user found");
         }
-        if(role == null) {
+        if (role == null) {
             throw new EntityException("No role found");
         }
-        if(userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId) != null) {
+        if (userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId) != null) {
             throw new EntityException("The role already exists");
         }
         userRoleRepository.addRoleToUser(userId, roleId);
@@ -59,7 +59,11 @@ public class UserRoleService {
     }
 
     public Role deleteRoleFromUser(Long userId, Long roleId) throws EntityException {
+        final User user = userRepository.findById(userId);
         final Role role = userRoleRepository.findRoleByUserIdAndRoleId(userId, roleId);
+        if (user == null) {
+            throw new EntityException("No user found");
+        }
         if (role == null) {
             throw new EntityException("No role found");
         }
