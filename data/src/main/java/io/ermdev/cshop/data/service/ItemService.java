@@ -3,7 +3,7 @@ package io.ermdev.cshop.data.service;
 import io.ermdev.cshop.commons.IdGenerator;
 import io.ermdev.cshop.data.entity.Image;
 import io.ermdev.cshop.data.entity.Item;
-import io.ermdev.cshop.data.repository.ImageItemRepository;
+import io.ermdev.cshop.data.repository.ItemImageRepository;
 import io.ermdev.cshop.data.repository.ImageRepository;
 import io.ermdev.cshop.data.repository.ItemRepository;
 import io.ermdev.cshop.exception.EntityException;
@@ -17,11 +17,11 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private ImageRepository imageRepository;
-    private ImageItemRepository imageItemRepository;
+    private ItemImageRepository imageItemRepository;
 
     @Autowired
     public ItemService(ItemRepository itemRepository, ImageRepository imageRepository,
-                       ImageItemRepository imageItemRepository) {
+                       ItemImageRepository imageItemRepository) {
         this.itemRepository = itemRepository;
         this.imageRepository = imageRepository;
         this.imageItemRepository = imageItemRepository;

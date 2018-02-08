@@ -15,7 +15,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
     private TokenUserRepository tokenUserRepository;
     private ItemRepository itemRepository;
     private ImageRepository imageRepository;
-    private ImageItemRepository imageItemRepository;
+    private ItemImageRepository imageItemRepository;
 
     @Override
     public void run(String... strings) {
@@ -65,7 +65,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
     }
 
     @Autowired
-    public void setImageItemRepository(ImageItemRepository imageItemRepository) {
+    public void setImageItemRepository(ItemImageRepository imageItemRepository) {
         this.imageItemRepository = imageItemRepository;
     }
 }
