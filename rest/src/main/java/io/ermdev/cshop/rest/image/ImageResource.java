@@ -1,6 +1,7 @@
 package io.ermdev.cshop.rest.image;
 
 import io.ermdev.cshop.commons.Error;
+import io.ermdev.cshop.data.entity.Image;
 import io.ermdev.cshop.data.service.ImageService;
 import io.ermdev.cshop.exception.EntityException;
 import mapfierj.SimpleMapper;
@@ -55,6 +56,50 @@ public class ImageResource {
         } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+        }
+    }
+
+    @POST
+    public Response add(ImageDto imageDto, @Context UriInfo uriInfo) {
+        try {
+            Image image = imageService.save(simpleMapper.set(imageDto).mapTo(Image.class));
+            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
+            imageDto.setId(image.getId());
+            imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+            return Response.status(Response.Status.OK).entity(imageDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
+        }
+    }
+
+    @PUT
+    @Path("{imageId}")
+    public Response update(@PathParam("imageId") Long imageId, ImageDto imageDto, @Context UriInfo uriInfo) {
+        try {
+            imageDto.setId(imageId);
+            Image image = imageService.save(simpleMapper.set(imageDto).mapTo(Image.class));
+            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
+            imageDto = simpleMapper.set(image).mapTo(ImageDto.class);
+            imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+            return Response.status(Response.Status.OK).entity(imageDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
+        }
+    }
+
+    @DELETE
+    @Path("{imageId}")
+    public Response delete(@PathParam("imageId") Long imageId, @Context UriInfo uriInfo) {
+        try {
+            ImageDto imageDto = simpleMapper.set(imageService.delete(imageId)).mapTo(ImageDto.class);
+            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
+            imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+            return Response.status(Response.Status.OK).entity(imageDto).build();
+        } catch (EntityException e) {
+            Error error = new Error(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
 }
