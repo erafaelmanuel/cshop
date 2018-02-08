@@ -1,8 +1,8 @@
 package io.ermdev.cshop.core.bean;
 
 import io.ermdev.cshop.typeconverter.UserConverter;
-import io.ermdev.mapfierj.ModelMapper;
-import io.ermdev.mapfierj.SimpleMapper;
+import mapfierj.ModelMapper;
+import mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

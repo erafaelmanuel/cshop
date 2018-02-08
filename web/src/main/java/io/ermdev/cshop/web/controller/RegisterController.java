@@ -5,7 +5,7 @@ import io.ermdev.cshop.commons.ReturnValue;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.web.dto.UserDto;
-import io.ermdev.mapfierj.SimpleMapper;
+import mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;

@@ -3,12 +3,12 @@ package io.ermdev.cshop.typeconverter;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
-import io.ermdev.mapfierj.TypeConverterAdapter;
-import io.ermdev.mapfierj.TypeException;
+import mapfierj.TypeConverterAdapter;
+import mapfierj.TypeException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConverter extends TypeConverterAdapter<Long, User>{
+public class UserConverter extends TypeConverterAdapter<Long, User> {
 
     private UserService userService;
 
