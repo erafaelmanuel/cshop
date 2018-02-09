@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2018 at 02:17 PM
+-- Generation Time: Feb 09, 2018 at 02:31 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -29,26 +29,16 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `tbl_image` (
   `id` bigint(20) NOT NULL,
   `src` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_image`
 --
 
 INSERT INTO `tbl_image` (`id`, `src`) VALUES
-(1, '/images/required/item-image-default.png');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_image_item`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_image_item` (
-  `id` bigint(20) NOT NULL,
-  `imageId` bigint(20) NOT NULL,
-  `itemId` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(1, '/images/required/item-image-default.png'),
+(2, '/images/item/3.jpg'),
+(3, '/images/item/4.jpg');
 
 -- --------------------------------------------------------
 
@@ -69,6 +59,26 @@ CREATE TABLE IF NOT EXISTS `tbl_item` (
 
 INSERT INTO `tbl_item` (`id`, `name`, `description`, `price`) VALUES
 (1, 'Jacket', 'Perfect for hot temperature', '120.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_item_image`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_item_image` (
+  `id` bigint(20) NOT NULL,
+  `itemId` bigint(20) NOT NULL,
+  `imageId` bigint(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_item_image`
+--
+
+INSERT INTO `tbl_item_image` (`id`, `itemId`, `imageId`) VALUES
+(2, 1, 3),
+(3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -173,18 +183,18 @@ ALTER TABLE `tbl_image`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_image_item`
---
-ALTER TABLE `tbl_image_item`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `imageId` (`imageId`),
-  ADD KEY `itemId` (`itemId`);
-
---
 -- Indexes for table `tbl_item`
 --
 ALTER TABLE `tbl_item`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_item_image`
+--
+ALTER TABLE `tbl_item_image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `itemId` (`itemId`),
+  ADD KEY `imageId` (`imageId`);
 
 --
 -- Indexes for table `tbl_role`
@@ -228,17 +238,17 @@ ALTER TABLE `tbl_user_role`
 -- AUTO_INCREMENT for table `tbl_image`
 --
 ALTER TABLE `tbl_image`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `tbl_image_item`
---
-ALTER TABLE `tbl_image_item`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tbl_item`
 --
 ALTER TABLE `tbl_item`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `tbl_item_image`
+--
+ALTER TABLE `tbl_item_image`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tbl_role`
 --
@@ -269,11 +279,11 @@ ALTER TABLE `tbl_user_role`
 --
 
 --
--- Constraints for table `tbl_image_item`
+-- Constraints for table `tbl_item_image`
 --
-ALTER TABLE `tbl_image_item`
-  ADD CONSTRAINT `tbl_image_item_ibfk_1` FOREIGN KEY (`imageId`) REFERENCES `tbl_image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_image_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `tbl_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tbl_item_image`
+  ADD CONSTRAINT `tbl_item_image_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `tbl_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_item_image_ibfk_2` FOREIGN KEY (`imageId`) REFERENCES `tbl_image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_token_user`
