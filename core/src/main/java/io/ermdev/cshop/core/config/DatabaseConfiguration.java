@@ -16,6 +16,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
     private ItemRepository itemRepository;
     private ImageRepository imageRepository;
     private ItemImageRepository imageItemRepository;
+    private TagRepository tagRepository;
 
     @Override
     public void run(String... strings) {
@@ -27,6 +28,7 @@ public class DatabaseConfiguration implements CommandLineRunner {
         itemRepository.createTable();
         imageRepository.createTable();
         imageItemRepository.createTable();
+        tagRepository.createTable();
     }
 
     @Autowired
@@ -67,5 +69,10 @@ public class DatabaseConfiguration implements CommandLineRunner {
     @Autowired
     public void setImageItemRepository(ItemImageRepository imageItemRepository) {
         this.imageItemRepository = imageItemRepository;
+    }
+
+    @Autowired
+    public void setTagRepository(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
     }
 }
