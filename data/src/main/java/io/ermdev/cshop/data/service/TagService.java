@@ -71,4 +71,28 @@ public class TagService {
             throw new NullPointerException("Tag is null");
         }
     }
+
+    public Tag delete(Long tagId) throws EntityException {
+        final Tag tag = tagRepository.findById(tagId);
+        if (tag != null) {
+            tagRepository.delete(tag);
+            return tag;
+        } else {
+            throw new EntityException("No tag found");
+        }
+    }
+
+    public Tag delete(Tag tag) throws EntityException {
+        if (tag != null) {
+            final Tag o = tagRepository.findById(tag.getId());
+            if (o != null) {
+                tagRepository.delete(o);
+                return o;
+            } else {
+                throw new EntityException("No tag found");
+            }
+        } else {
+            throw new NullPointerException("Tag is null");
+        }
+    }
 }
