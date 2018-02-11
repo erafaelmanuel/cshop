@@ -5,7 +5,6 @@ import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.TagService;
 import io.ermdev.cshop.data.entity.Tag;
 import io.ermdev.cshop.commons.Error;
-import io.ermdev.cshop.rest.tag.TagLinks;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
