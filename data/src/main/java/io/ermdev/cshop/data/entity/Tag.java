@@ -3,7 +3,7 @@ package io.ermdev.cshop.data.entity;
 public class Tag {
 
     private Long id;
-    private String title;
+    private String name;
     private String description;
 
     public Long getId() {
@@ -14,12 +14,12 @@ public class Tag {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
