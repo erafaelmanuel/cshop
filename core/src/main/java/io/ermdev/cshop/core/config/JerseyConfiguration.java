@@ -3,7 +3,6 @@ package io.ermdev.cshop.core.config;
 import io.ermdev.cshop.rest.category.CategoryResource;
 import io.ermdev.cshop.rest.image.ImageResource;
 import io.ermdev.cshop.rest.item.ItemResource;
-import io.ermdev.cshop.rest.tag.TagResource;
 import io.ermdev.cshop.rest.role.RoleResource;
 import io.ermdev.cshop.rest.token.TokenResource;
 import io.ermdev.cshop.rest.user.UserResource;
