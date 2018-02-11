@@ -93,7 +93,6 @@ public class ItemImageResource {
         }
     }
 
-
     public void setUriInfo(UriInfo uriInfo) {
         this.uriInfo = uriInfo;
     }
