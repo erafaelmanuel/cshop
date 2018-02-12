@@ -1,16 +1,14 @@
 package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.commons.IdGenerator;
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.repository.CategoryRepository;
 import io.ermdev.cshop.data.entity.Category;
+import io.ermdev.cshop.data.repository.CategoryRepository;
+import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Deprecated
 @Service
 public class CategoryService {
 
@@ -21,58 +19,88 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category findById(Long categoryId) throws EntityNotFoundException {
+    public Category findById(Long categoryId) throws EntityException {
         final Category category = categoryRepository.findById(categoryId);
-        if(category == null)
-            throw new EntityNotFoundException("No category found with id " + categoryId);
-        return category;
+        if (category != null) {
+            return category;
+        } else {
+            throw new EntityException("No category found");
+        }
     }
 
-    public List<Category> findByParent(Long parentId) throws EntityNotFoundException {
-        List<Category> categories = categoryRepository.findByParent(parentId);
-        if(categories == null)
-            throw new EntityNotFoundException("No category found");
-        return categories;
+    public List<Category> findByParentId(Long parentId) throws EntityException {
+        List<Category> categories = categoryRepository.findByParentId(parentId);
+        if (categories != null) {
+            return categories;
+        } else {
+            throw new EntityException("No category found");
+        }
     }
-    public List<Category> findAll() throws EntityNotFoundException {
+
+    public List<Category> findAll() throws EntityException {
         List<Category> categories = categoryRepository.findAll();
-        if(categories == null)
-            throw new EntityNotFoundException("No category found");
-        return categories;
+        if (categories != null) {
+            return categories;
+        } else {
+            throw new EntityException("No category found");
+        }
     }
 
-    public Category add(Category category) throws EntityNotFoundException, UnsatisfiedEntityException {
-        final long id = IdGenerator.randomUUID();
-        if(category.getName() == null || category.getName().trim().equals(""))
-            throw new UnsatisfiedEntityException("Name is required");
-        if(category.getDescription() == null || category.getDescription().trim().equals(""))
-            throw new UnsatisfiedEntityException("Description is required");
-        if(category.getParentId() != null && categoryRepository.findById(category.getParentId()) == null)
-            throw new EntityNotFoundException("No category found with id " + category.getParentId());
-        category.setId(id);
-        categoryRepository.add(category);
-        return category;
+    public Category save(Category category) throws EntityException {
+        if (category != null) {
+            if (category.getId() == null) {
+                if (category.getName() == null || category.getName().trim().isEmpty()) {
+                    throw new EntityException("Name is required");
+                }
+                if (category.getDescription() == null || category.getDescription().trim().isEmpty()) {
+                    throw new EntityException("Description is required");
+                }
+                final long generatedId = IdGenerator.randomUUID();
+                category.setId(generatedId);
+                categoryRepository.add(category);
+                return category;
+            } else {
+                Category o = categoryRepository.findById(category.getId());
+                if (o != null) {
+                    if (category.getName() == null || category.getName().trim().isEmpty()) {
+                        category.setName(o.getName());
+                    }
+                    if (category.getDescription() == null || category.getDescription().trim().isEmpty()) {
+                        category.setDescription(o.getDescription());
+                    }
+                    categoryRepository.update(category);
+                    return category;
+                } else {
+                    category.setId(null);
+                    return save(category);
+                }
+            }
+        } else {
+            throw new NullPointerException("Category is null");
+        }
     }
 
-    public Category updateById(Long categoryId, Category category) throws EntityNotFoundException {
-        Category oldCategory = findById(categoryId);
-        if(category == null)
-            return oldCategory;
-        category.setId(categoryId);
-        if(category.getName() == null || category.getName().trim().equals(""))
-            category.setName(oldCategory.getName());
-        if(category.getDescription() == null || category.getDescription().trim().equals(""))
-            category.setDescription(oldCategory.getDescription());
-        if(category.getParentId() == null || category.getParentId() < 1)
-            category.setParentId(oldCategory.getParentId());
-        categoryRepository.updateById(category);
-
-        return category;
+    public Category delete(Long categoryId) throws EntityException {
+        final Category category = categoryRepository.findById(categoryId);
+        if (category != null) {
+            categoryRepository.delete(category);
+            return category;
+        } else {
+            throw new EntityException("No category found");
+        }
     }
 
-    public Category deleteById(Long categoryId) throws EntityNotFoundException {
-        Category category = categoryRepository.findById(categoryId);
-        categoryRepository.deleteById(categoryId);
-        return category;
+    public Category delete(Category category) throws EntityException {
+        if (category != null) {
+            final Category o = categoryRepository.findById(category.getId());
+            if (o != null) {
+                categoryRepository.delete(o);
+                return o;
+            } else {
+                throw new EntityException("No category found");
+            }
+        } else {
+            throw new NullPointerException("Category is null");
+        }
     }
 }
