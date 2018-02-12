@@ -1,28 +1,11 @@
 package io.ermdev.cshop.data.entity;
 
-import io.ermdev.cshop.commons.Link;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-
-@Deprecated
-@XmlRootElement
 public class Category {
 
     private Long id;
     private String name;
     private String description;
     private Long parentId;
-    private List<Link> links = new ArrayList<>();
-
-    public Category() {}
-
-    public Category(String name, String description, Long parentId) {
-        this.name = name;
-        this.description = description;
-        this.parentId = parentId;
-    }
 
     public Long getId() {
         return id;
@@ -54,23 +37,5 @@ public class Category {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", parentId=" + parentId +
-                '}';
     }
 }
