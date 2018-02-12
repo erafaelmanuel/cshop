@@ -5,24 +5,25 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-@Deprecated
 @Mapper
 public interface AttributeRepository {
 
-    @Select("select * from tblattribute where id=#{attributeId}")
+    @Insert("CREATE TABLE IF NOT EXISTS tbl_attribute(id BIGINT NOT NULL AUTO_INCREMENT, name VARCHAR(100), type " +
+            "VARCHAR(100), PRIMARY KEY(id))")
+    void createTable();
+
+    @Select("SELECT * FROM tbl_attribute WHERE id=#{attributeId}")
     Attribute findById(@Param("attributeId") Long attributeId);
 
-    @Select("select * from tblattribute")
+    @Select("SELECT * FROM tbl_attribute")
     List<Attribute> findAll();
 
-    @Insert("insert into tblattribute(id, title, content, description, type) values(#{id}, #{title}, #{content}, " +
-            "#{description}, #{type})")
+    @Insert("INSERT INTO tbl_attribute(id, name, type) VALUES(#{id}, #{name}, #{type})")
     Attribute add(Attribute attribute);
 
-    @Update("update tblattribute set title=#{title}, content=#{content}, description=#{description}, type=#{type} " +
-            "where id=#{id}")
-    Attribute updateById(Attribute attribute);
+    @Update("UPDATE tbl_attribute SET name=#{name}, type=#{type} WHERE id=#{id}")
+    Attribute update(Attribute attribute);
 
-    @Delete("detele from tblattribute where id=#{attributeId}")
-    Attribute deleteById(@Param("attributeId") Long attributeId);
+    @Delete("DELETE FROM tbl_attribute WHERE id=#{id}")
+    Attribute delete(Attribute attribute);
 }
