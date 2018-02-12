@@ -1,9 +1,10 @@
 package io.ermdev.cshop.rest.attribute;
 
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.service.AttributeService;
-import io.ermdev.cshop.data.entity.Attribute;
 import io.ermdev.cshop.commons.Error;
+import io.ermdev.cshop.data.entity.Attribute;
+import io.ermdev.cshop.data.service.AttributeService;
+import io.ermdev.cshop.exception.EntityException;
+import mapfierj.SimpleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,94 +18,45 @@ import java.util.List;
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("attribute")
+@Path("attributes")
 public class AttributeResource {
 
-    @Context
-    private UriInfo uriInfo;
-
     private AttributeService attributeService;
+    private SimpleMapper simpleMapper;
 
     @Autowired
-    public AttributeResource(AttributeService attributeService) {
+    public AttributeResource(AttributeService attributeService, SimpleMapper simpleMapper) {
         this.attributeService = attributeService;
+        this.simpleMapper = simpleMapper;
     }
 
-    @Path("{attributeId}")
     @GET
-    public Response getById(@PathParam("attributeId") Long attributeId) {
+    @Path("{attributeId}")
+    public Response getById(@PathParam("attributeId") Long attributeId, @Context UriInfo uriInfo) {
         try {
             Attribute attribute = attributeService.findById(attributeId);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.FOUND).entity(attribute).build();
-        } catch (EntityNotFoundException e) {
+            AttributeDto attributeDto = simpleMapper.set(attribute).mapTo(AttributeDto.class);
+            AttributeResourceLinks attributeResourceLinks = new AttributeResourceLinks(uriInfo);
+            attributeDto.getLinks().add(attributeResourceLinks.getSelf(attributeId));
+            return Response.status(Response.Status.OK).entity(attributeDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
     @GET
-    public Response getAll() {
+    public Response getAll(@Context UriInfo uriInfo) {
         try {
             List<Attribute> attributes = attributeService.findAll();
-            attributes.forEach(attribute -> attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo)));
-            return Response.status(Response.Status.FOUND).entity(attributes).build();
-        } catch (EntityNotFoundException e) {
+            List<AttributeDto> attributeDtos = simpleMapper.set(attributes).mapToList(AttributeDto.class);
+            AttributeResourceLinks attributeResourceLinks = new AttributeResourceLinks(uriInfo);
+            attributeDtos.parallelStream().forEach(attributeDto ->
+                    attributeDto.getLinks().add(attributeResourceLinks.getSelf(attributeDto.getId())));
+            return Response.status(Response.Status.OK).entity(attributeDtos).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
-        }
-    }
-
-    @POST
-    public Response add(Attribute attribute) {
-        try {
-            attribute = attributeService.add(attribute);
-            attribute.getLinks().add(AttributeLinks.self(attribute.getId(), uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
-        } catch (UnsatisfiedEntityException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
-        }
-    }
-
-    @Path("{attributeId}")
-    @POST
-    public Response updateById(@PathParam("attributeId") Long attributeId, Attribute attribute) {
-        try {
-            attribute = attributeService.updateById(attributeId, attribute);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
-        } catch (EntityNotFoundException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
-        }
-    }
-
-    @Path("{attributeId}")
-    @POST
-    public Response deleteById(@PathParam("attributeId") Long attributeId) {
-        try {
-            Attribute attribute = attributeService.findById(attributeId);
-            attribute.getLinks().add(AttributeLinks.self(attributeId, uriInfo));
-            return Response.status(Response.Status.OK).entity(attribute).build();
-        } catch (EntityNotFoundException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 }
