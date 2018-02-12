@@ -1,15 +1,13 @@
 package io.ermdev.cshop.data.service;
 
 import io.ermdev.cshop.commons.IdGenerator;
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
-import io.ermdev.cshop.data.repository.AttributeRepository;
 import io.ermdev.cshop.data.entity.Attribute;
+import io.ermdev.cshop.data.repository.AttributeRepository;
+import io.ermdev.cshop.exception.EntityException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Deprecated
 @Service
 public class AttributeService {
 
@@ -19,57 +17,79 @@ public class AttributeService {
         this.attributeRepository = attributeRepository;
     }
 
-    public Attribute findById(Long attributeId) throws EntityNotFoundException {
+    public Attribute findById(Long attributeId) throws EntityException {
         Attribute attribute = attributeRepository.findById(attributeId);
-        if(attribute == null)
-            throw new EntityNotFoundException("No attribute found with id " + attributeId);
-        return attribute;
+        if (attribute != null) {
+            return attribute;
+        } else {
+            throw new EntityException("No attribute found");
+        }
     }
 
-    public List<Attribute> findAll() throws EntityNotFoundException {
+    public List<Attribute> findAll() throws EntityException {
         List<Attribute> attributes = attributeRepository.findAll();
-        if(attributes == null)
-            throw new EntityNotFoundException("No attribute found");
-        return attributes;
+        if (attributes != null) {
+            return attributes;
+        } else {
+            throw new EntityException("No attribute found");
+        }
     }
 
-    public Attribute add(Attribute attribute) throws UnsatisfiedEntityException {
-        final long id = IdGenerator.randomUUID();
-        if(attribute == null)
-            throw new UnsatisfiedEntityException("attribute is null");
-        if(attribute.getTitle() == null || attribute.getTitle().trim().equals(""))
-            throw new UnsatisfiedEntityException("Title is required");
-        if(attribute.getContent() == null || attribute.getContent().trim().equals(""))
-            throw new UnsatisfiedEntityException("Content is required");
-        if(attribute.getDescription() == null || attribute.getDescription().trim().equals(""))
-            throw new UnsatisfiedEntityException("Description is required");
-        if(attribute.getType() == null || attribute.getType().trim().equals(""))
-            throw new UnsatisfiedEntityException("Type is required");
-        attribute.setId(id);
-        attributeRepository.add(attribute);
-        return attribute;
+    public Attribute save(Attribute attribute) throws EntityException {
+        if (attribute != null) {
+            if (attribute.getId() == null) {
+                if (attribute.getName() == null || attribute.getName().trim().isEmpty()) {
+                    throw new EntityException("Name is required");
+                }
+                if (attribute.getType() == null || attribute.getType().trim().isEmpty()) {
+                    throw new EntityException("Type is required");
+                }
+                final Long generatedId = IdGenerator.randomUUID();
+                attribute.setId(generatedId);
+                attributeRepository.add(attribute);
+                return attribute;
+            } else {
+                final Attribute o = attributeRepository.findById(attribute.getId());
+                if (o != null) {
+                    if (attribute.getName() == null && attribute.getName().trim().isEmpty()) {
+                        attribute.setName(o.getName());
+                    }
+                    if (attribute.getType() == null && attribute.getType().trim().isEmpty()) {
+                        attribute.setType(o.getType());
+                    }
+                    attributeRepository.update(attribute);
+                    return attribute;
+                } else {
+                    attribute.setId(null);
+                    return save(attribute);
+                }
+            }
+        } else {
+            throw new NullPointerException("Attribute is null");
+        }
     }
 
-    public Attribute updateById(Long attributeId, Attribute attribute) throws EntityNotFoundException {
-        Attribute oldAttribute = findById(attributeId);
-        if(attribute == null)
-            return oldAttribute;
-        attribute.setId(attributeId);
-        if(attribute.getTitle() == null || attribute.getTitle().trim().equals(""))
-            attribute.setTitle(oldAttribute.getTitle());
-        if(attribute.getContent() == null || attribute.getContent().trim().equals(""))
-            attribute.setContent(oldAttribute.getContent());
-        if(attribute.getDescription() == null || attribute.getDescription().trim().equals(""))
-            attribute.setDescription(oldAttribute.getDescription());
-        if(attribute.getType() == null || attribute.getType().trim().equals(""))
-            attribute.setType(oldAttribute.getType());
-        return attribute;
+    public Attribute delete(Long attributeId) throws EntityException {
+        final Attribute attribute = attributeRepository.findById(attributeId);
+        if (attribute != null) {
+            attributeRepository.delete(attribute);
+            return attribute;
+        } else {
+            throw new EntityException("No attribute found");
+        }
     }
 
-    public Attribute deleteById(Long attributeId) throws EntityNotFoundException {
-        Attribute attribute = attributeRepository.findById(attributeId);
-        attributeRepository.deleteById(attributeId);
-
-        return attribute;
+    public Attribute delete(Attribute attribute) throws EntityException {
+        if (attribute != null) {
+            final Attribute o = attributeRepository.findById(attribute.getId());
+            if (o != null) {
+                attributeRepository.delete(o);
+                return o;
+            } else {
+                throw new EntityException("No attribute found");
+            }
+        } else {
+            throw new NullPointerException("Attribute is null");
+        }
     }
 }
