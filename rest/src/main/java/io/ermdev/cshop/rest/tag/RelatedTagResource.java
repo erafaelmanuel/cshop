@@ -1,6 +1,5 @@
 package io.ermdev.cshop.rest.tag;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.TagService;
 import io.ermdev.cshop.data.entity.Tag;

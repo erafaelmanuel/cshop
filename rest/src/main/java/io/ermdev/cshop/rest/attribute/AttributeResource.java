@@ -1,6 +1,5 @@
 package io.ermdev.cshop.rest.attribute;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.AttributeService;
 import io.ermdev.cshop.data.entity.Attribute;

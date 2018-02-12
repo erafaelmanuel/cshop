@@ -1,6 +1,5 @@
 package io.ermdev.cshop.web.controller;
 
-import io.ermdev.cshop.data.exception.EntityNotFoundException;
 import io.ermdev.cshop.data.service.ItemService;
 import io.ermdev.cshop.data.entity.Item;
 import io.ermdev.cshop.exception.EntityException;
