@@ -7,6 +7,7 @@ import io.ermdev.cshop.exception.EntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +45,17 @@ public class CategoryService {
         } else {
             throw new EntityException("No category found");
         }
+    }
+
+    public List<Category> findDescendants(Long categoryId) throws EntityException {
+        List<Category> categories = new ArrayList<>();
+        Category parentCategory = findById(categoryId);
+
+        categories.add(parentCategory);
+        for (Category category : findByParentId(categoryId)) {
+            categories.addAll(findDescendants(category.getId()));
+        }
+        return categories;
     }
 
     public Category save(Category category) throws EntityException {
