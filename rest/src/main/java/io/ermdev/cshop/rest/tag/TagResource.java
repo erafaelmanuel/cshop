@@ -48,8 +48,8 @@ public class TagResource {
     public Response getAll(@Context UriInfo uriInfo) {
         try {
             List<TagDto> tagDtos = simpleMapper.set(tagService.findAll()).mapToList(TagDto.class);
+            TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
             tagDtos.parallelStream().forEach(tagDto -> {
-                TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
                 tagDto.getLinks().add(tagResourceLinks.getSelf(tagDto.getId()));
             });
             return Response.status(Response.Status.FOUND).entity(tagDtos).build();
