@@ -1,5 +1,7 @@
 package io.ermdev.cshop.core.config;
 
+import io.ermdev.cshop.rest.attribute.AttributeResource;
+import io.ermdev.cshop.rest.category.CategoryResource;
 import io.ermdev.cshop.rest.image.ImageResource;
 import io.ermdev.cshop.rest.item.ItemResource;
 import io.ermdev.cshop.rest.role.RoleResource;
@@ -22,5 +24,7 @@ public class JerseyConfiguration extends ResourceConfig {
         register(ItemResource.class);
         register(ImageResource.class);
         register(TagResource.class);
+        register(AttributeResource.class);
+        register(CategoryResource.class);
     }
 }
