@@ -1,6 +1,5 @@
 package io.ermdev.cshop.rest.category;
 
-import io.ermdev.cshop.data.exception.UnsatisfiedEntityException;
 import io.ermdev.cshop.data.service.CategoryService;
 import io.ermdev.cshop.data.entity.Category;
 import io.ermdev.cshop.commons.Error;
