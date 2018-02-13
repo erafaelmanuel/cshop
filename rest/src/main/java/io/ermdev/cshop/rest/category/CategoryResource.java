@@ -1,8 +1,13 @@
 package io.ermdev.cshop.rest.category;
 
-import io.ermdev.cshop.data.service.CategoryService;
-import io.ermdev.cshop.data.entity.Category;
 import io.ermdev.cshop.commons.Error;
+import io.ermdev.cshop.data.entity.Category;
+import io.ermdev.cshop.data.service.CategoryService;
+import io.ermdev.cshop.exception.EntityException;
+import io.ermdev.cshop.rest.item.ItemDto;
+import io.ermdev.cshop.rest.item.ItemResourceLinks;
+import mapfierj.SimpleMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -10,113 +15,91 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Path("category")
+@Path("categories")
 public class CategoryResource {
 
-    @Context
-    private UriInfo uriInfo;
-
-    @QueryParam("parentId")
-    private Long parentId;
-
     private CategoryService categoryService;
+    private SimpleMapper simpleMapper;
 
-    public CategoryResource(CategoryService categoryService) {
+    @Autowired
+    public CategoryResource(CategoryService categoryService, SimpleMapper simpleMapper) {
         this.categoryService = categoryService;
+        this.simpleMapper = simpleMapper;
     }
 
-    @Path("{categoryId}")
     @GET
-    public Response getById(@PathParam("categoryId") Long categoryId) {
+    @Path("{categoryId}")
+    public Response getById(@PathParam("categoryId") long categoryId, @Context UriInfo uriInfo) {
         try {
-            Category category = categoryService.findById(categoryId);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
-        } catch (EntityNotFoundException e) {
+            CategoryDto categoryDto = simpleMapper.set(categoryService.findById(categoryId)).mapTo(CategoryDto.class);
+            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
+            categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryId));
+            return Response.status(Response.Status.OK).entity(categoryDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
     @GET
-    public Response getAll() {
+    public Response getAll(@Context UriInfo uriInfo) {
         try {
-            final List<Category> categories = new ArrayList<>();
-
-            if(parentId == null) {
-                categories.addAll(categoryService.findAll());
-            } else {
-                categories.addAll(categoryService.findByParent(parentId));
-            }
-            categories.forEach(category -> {
-                category.getLinks().add(CategoryLinks.self(category.getId(), uriInfo));
+            List<CategoryDto> categoryDtos = simpleMapper.set(categoryService.findAll()).mapToList(CategoryDto.class);
+            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
+            categoryDtos.parallelStream().forEach(categoryDto -> {
+                categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
             });
-            return Response.status(Response.Status.OK).entity(categories).build();
-        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.OK).entity(categoryDtos).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
     @POST
-    public Response add(Category category) {
+    public Response add(Category category, @Context UriInfo uriInfo) {
         try {
-            category = categoryService.add(category);
-            category.getLinks().add(CategoryLinks.self(category.getId(), uriInfo));
-            return Response.status(Response.Status.CREATED).entity(category).build();
-        } catch (EntityNotFoundException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (UnsatisfiedEntityException e) {
+            CategoryDto categoryDto = simpleMapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
+            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
+            categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
+            return Response.status(Response.Status.CREATED).entity(categoryDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
-    @Path("{categoryId}")
     @PUT
-    public Response updateById(@PathParam("categoryId") Long categoryId, Category category) {
+    @Path("{categoryId}")
+    public Response update(@PathParam("categoryId") Long categoryId, Category category, @Context UriInfo uriInfo) {
         try {
-            category = categoryService.updateById(categoryId, category);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
-        } catch (EntityNotFoundException e) {
+            category.setId(categoryId);
+            CategoryDto categoryDto = simpleMapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
+            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
+            categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
+            return Response.status(Response.Status.OK).entity(categoryDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 
-    @Path("{categoryId}")
     @DELETE
-    public Response deleteById(@PathParam("categoryId") Long categoryId) {
+    @Path("{categoryId}")
+    public Response delete(@PathParam("categoryId") Long categoryId, @Context UriInfo uriInfo) {
         try {
-            final Category category = categoryService.deleteById(categoryId);
-            category.getLinks().add(CategoryLinks.self(categoryId, uriInfo));
-            return Response.status(Response.Status.OK).entity(category).build();
-        } catch (EntityNotFoundException e) {
+            CategoryDto categoryDto = simpleMapper.set(categoryService.delete(categoryId)).mapTo(CategoryDto.class);
+            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
+            categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
+            return Response.status(Response.Status.OK).entity(categoryDto).build();
+        } catch (EntityException e) {
             Error error = new Error(e.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-        } catch (NullPointerException e) {
-            Error error = new Error(e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
 }
