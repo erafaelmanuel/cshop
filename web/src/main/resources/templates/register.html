@@ -21,7 +21,7 @@
             <p th:text="#{register.subtitle}"/>
         </div>
         <div class="form">
-            <form th:object="${user}" action="/register" method="post" class="register-form">
+            <form th:object="${userDto}" action="/register" method="post" class="register-form">
                 <div>
                     <input th:field="*{name}" placeholder="Name" />
                     <p th:each="error, iterStat : ${#fields.errors('name')}" th:text="${error}"

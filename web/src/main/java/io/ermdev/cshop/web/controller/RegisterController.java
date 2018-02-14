@@ -33,12 +33,12 @@ public class RegisterController {
 
     @GetMapping("register")
     public String showRegister(UserDto userDto, Model model) {
-        model.addAttribute("user", userDto);
+        model.addAttribute("userDto", userDto);
         return "register";
     }
 
     @PostMapping("register")
-    public String registerUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String registerUser(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
             final User user = simpleMapper.set(userDto).mapTo(User.class);
             final String url = messageSource.getMessage("cshop.url", null, null);
