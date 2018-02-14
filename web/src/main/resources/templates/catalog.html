@@ -20,7 +20,7 @@
     <div class="container">
         <div class="my-4">
             <h2>Result for "All"</h2>
-            <big th:text="'('+ ${itemCount} + ' Items found)'"/>
+            <big th:text="'('+ ${itemCount} + ' Items found)'"></big>
         </div>
         <div class="row">
             <div class="col-lg-3 catalog-item" th:each="item : ${items}">
@@ -55,7 +55,7 @@
                     <div class="card-body">
                         <div class="card-block">
                             <h6 class="card-title">
-                                <a href="#"><span th:text="${item.name}"/></a>
+                                <a href="#"><span th:text="${item.name}"></span></a>
                             </h6>
                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra
                                 euismod odio, gravida pellentesque urna varius vitae.</p>

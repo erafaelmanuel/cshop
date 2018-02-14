@@ -17,10 +17,10 @@
     <th:block th:include="header :: header"/>
     <div class="login-page">
         <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
-            <p th:text="#{login.message.success}"/>
+            <p th:text="#{login.message.success}"></p>
         </div>
         <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
-            <p th:text="#{login.message.error}"/>
+            <p th:text="#{login.message.error}"></p>
         </div>
         <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
             <h2>Welcome Back</h2>
