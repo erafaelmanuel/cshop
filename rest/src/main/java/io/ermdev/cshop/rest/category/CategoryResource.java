@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -47,12 +48,12 @@ public class CategoryResource {
     @GET
     public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<CategoryDto> categoryDtos = mapper.set(categoryService.findAll())
-                    .transactional()
-                    .mapToList(CategoryDto.class);
-            CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
-            categoryDtos.parallelStream().forEach(categoryDto -> {
+            List<CategoryDto> categoryDtos = new ArrayList<>();
+            categoryService.findAll().forEach(category -> {
+                CategoryDto categoryDto = mapper.set(category).mapTo(CategoryDto.class);
+                CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
                 categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
+                categoryDtos.add(categoryDto);
             });
             return Response.status(Response.Status.OK).entity(categoryDtos).build();
         } catch (EntityException e) {

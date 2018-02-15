@@ -4,7 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Item;
 import io.ermdev.cshop.data.service.ItemService;
 import io.ermdev.cshop.exception.EntityException;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,20 +24,20 @@ public class ItemResource {
 
     private ItemImageResource itemImageResource;
     private ItemService itemService;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     @Autowired
-    public ItemResource(ItemImageResource itemImageResource, ItemService itemService, SimpleMapper simpleMapper) {
+    public ItemResource(ItemImageResource itemImageResource, ItemService itemService, Mapper mapper) {
         this.itemImageResource = itemImageResource;
         this.itemService = itemService;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     @GET
     @Path("{itemId}")
     public Response getById(@PathParam("itemId") long itemId, @Context UriInfo uriInfo) {
         try {
-            ItemDto itemDto = simpleMapper.set(itemService.findById(itemId)).mapTo(ItemDto.class);
+            ItemDto itemDto = mapper.set(itemService.findById(itemId)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
             itemDto.getLinks().add(itemResourceLinks.getImages(itemId));
@@ -50,11 +51,13 @@ public class ItemResource {
     @GET
     public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<ItemDto> itemDtos = simpleMapper.set(itemService.findAll()).mapToList(ItemDto.class);
-            ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
-            itemDtos.parallelStream().forEach(itemDto -> {
+            List<ItemDto> itemDtos = new ArrayList<>();
+            itemService.findAll().forEach(item -> {
+                ItemDto itemDto = mapper.set(item).mapTo(ItemDto.class);
+                ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
                 itemDto.getLinks().add(itemResourceLinks.getSelf(itemDto.getId()));
                 itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
+                itemDtos.add(itemDto);
             });
             return Response.status(Response.Status.OK).entity(itemDtos).build();
         } catch (EntityException e) {
@@ -66,7 +69,7 @@ public class ItemResource {
     @POST
     public Response add(Item item, @Context UriInfo uriInfo) {
         try {
-            ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
+            ItemDto itemDto = mapper.set(itemService.save(item)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
             itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
@@ -82,7 +85,7 @@ public class ItemResource {
     public Response update(@PathParam("itemId") Long itemId, Item item, @Context UriInfo uriInfo) {
         try {
             item.setId(itemId);
-            ItemDto itemDto = simpleMapper.set(itemService.save(item)).mapTo(ItemDto.class);
+            ItemDto itemDto = mapper.set(itemService.save(item)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(item.getId()));
             itemDto.getLinks().add(itemResourceLinks.getImages(itemDto.getId()));
@@ -97,7 +100,7 @@ public class ItemResource {
     @Path("{itemId}")
     public Response delete(@PathParam("itemId") Long itemId, @Context UriInfo uriInfo) {
         try {
-            ItemDto itemDto = simpleMapper.set(itemService.delete(itemId)).mapTo(ItemDto.class);
+            ItemDto itemDto = mapper.set(itemService.delete(itemId)).mapTo(ItemDto.class);
             ItemResourceLinks itemResourceLinks = new ItemResourceLinks(uriInfo);
             itemDto.getLinks().add(itemResourceLinks.getSelf(itemId));
             itemDto.getLinks().add(itemResourceLinks.getImages(itemId));

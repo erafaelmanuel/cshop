@@ -6,7 +6,7 @@ import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.role.RoleDto;
 import io.ermdev.cshop.rest.role.RoleResourceLinks;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,14 +24,14 @@ import java.util.List;
 public class UserRoleResource {
 
     private UserRoleService userRoleService;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     private UriInfo uriInfo;
 
     @Autowired
-    public UserRoleResource(UserRoleService userRoleService, SimpleMapper simpleMapper) {
+    public UserRoleResource(UserRoleService userRoleService, Mapper mapper) {
         this.userRoleService = userRoleService;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     public void setUriInfo(UriInfo uriInfo) {
@@ -42,7 +43,7 @@ public class UserRoleResource {
     public Response getById(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
             Role role = userRoleService.findRoleByUserIdAndRoleId(userId, roleId);
-            RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
+            RoleDto roleDto = mapper.set(role).mapTo(RoleDto.class);
             RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
             roleDto.getLinks().add(roleResourceLinks.getSelf(roleId));
             return Response.status(Response.Status.FOUND).entity(roleDto).build();
@@ -55,11 +56,12 @@ public class UserRoleResource {
     @GET
     public Response getAll(@PathParam("userId") Long userId) {
         try {
-            List<Role> roles = userRoleService.findRolesByUserId(userId);
-            List<RoleDto> roleDtos = simpleMapper.set(roles).mapToList(RoleDto.class);
-            roleDtos.parallelStream().forEach(roleDto -> {
+            List<RoleDto> roleDtos = new ArrayList<>();
+            userRoleService.findRolesByUserId(userId).forEach(role -> {
+                RoleDto roleDto = mapper.set(role).mapTo(RoleDto.class);
                 RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
                 roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
+                roleDtos.add(roleDto);
             });
             return Response.status(Response.Status.FOUND).entity(roleDtos).build();
         } catch (EntityException e) {
@@ -73,7 +75,7 @@ public class UserRoleResource {
     public Response addRole(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
             Role role = userRoleService.addRoleToUser(userId, roleId);
-            RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
+            RoleDto roleDto = mapper.set(role).mapTo(RoleDto.class);
             RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
             roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
             return Response.status(Response.Status.FOUND).entity(roleDto).build();
@@ -88,7 +90,7 @@ public class UserRoleResource {
     public Response deleteRole(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         try {
             Role role = userRoleService.deleteRoleFromUser(userId, roleId);
-            RoleDto roleDto = simpleMapper.set(role).mapTo(RoleDto.class);
+            RoleDto roleDto = mapper.set(role).mapTo(RoleDto.class);
             RoleResourceLinks roleResourceLinks = new RoleResourceLinks(uriInfo);
             roleDto.getLinks().add(roleResourceLinks.getSelf(roleDto.getId()));
             return Response.status(Response.Status.FOUND).entity(roleDto).build();

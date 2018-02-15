@@ -49,11 +49,10 @@ public class AttributeResource {
     @GET
     public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<Attribute> attributes = attributeService.findAll();
             List<AttributeDto> attributeDtos = new ArrayList<>();
-            AttributeResourceLinks attributeResourceLinks = new AttributeResourceLinks(uriInfo);
-            attributes.parallelStream().forEach(attribute -> {
+            attributeService.findAll().parallelStream().forEach(attribute -> {
                 AttributeDto attributeDto = mapper.set(attribute).mapTo(AttributeDto.class);
+                AttributeResourceLinks attributeResourceLinks = new AttributeResourceLinks(uriInfo);
                 attributeDto.getLinks().add(attributeResourceLinks.getSelf(attributeDto.getId()));
                 attributeDtos.add(attributeDto);
             });

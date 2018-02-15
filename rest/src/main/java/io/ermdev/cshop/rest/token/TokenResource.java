@@ -4,7 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Token;
 import io.ermdev.cshop.data.service.TokenService;
 import io.ermdev.cshop.exception.EntityException;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,20 +24,20 @@ public class TokenResource {
 
     private TokenService tokenService;
     private TokenUserResource tokenUserResource;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     @Autowired
-    public TokenResource(TokenService tokenService, TokenUserResource tokenUserResource, SimpleMapper simpleMapper) {
+    public TokenResource(TokenService tokenService, TokenUserResource tokenUserResource, Mapper mapper) {
         this.tokenService = tokenService;
         this.tokenUserResource = tokenUserResource;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     @GET
     @Path("{tokenId}")
     public Response getById(@PathParam("tokenId") Long tokenId, @Context UriInfo uriInfo) {
         try {
-            TokenDto tokenDto = simpleMapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
+            TokenDto tokenDto = mapper.set(tokenService.findById(tokenId)).mapTo(TokenDto.class);
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenId));
             tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenId));
@@ -50,18 +51,21 @@ public class TokenResource {
     @GET
     public Response getAll(@QueryParam("key") String key, @Context UriInfo uriInfo) {
         try {
-            if(key != null) {
-                TokenDto tokenDto = simpleMapper.set(tokenService.findByKey(key)).mapTo(TokenDto.class);
+            if (key != null) {
+                TokenDto tokenDto = mapper.set(tokenService.findByKey(key)).mapTo(TokenDto.class);
                 TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
                 tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenDto.getId()));
                 tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenDto.getId()));
                 return Response.status(Response.Status.FOUND).entity(tokenDto).build();
             } else {
-                List<TokenDto> tokenDtos = simpleMapper.set(tokenService.findAll()).mapToList(TokenDto.class);
-                tokenDtos.parallelStream().forEach(tokenDto -> {
+                List<TokenDto> tokenDtos = new ArrayList<>();
+                tokenService.findAll().forEach(token -> {
+                    TokenDto tokenDto = mapper.set(token).mapTo(TokenDto.class);
+                    ;
                     TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
                     tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenDto.getId()));
                     tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenDto.getId()));
+                    tokenDtos.add(tokenDto);
                 });
                 return Response.status(Response.Status.FOUND).entity(tokenDtos).build();
             }
@@ -74,7 +78,7 @@ public class TokenResource {
     @POST
     public Response add(TokenDto tokenDto, @Context UriInfo uriInfo) {
         try {
-            Token token = tokenService.save(simpleMapper.set(tokenDto).mapTo(Token.class));
+            Token token = tokenService.save(mapper.set(tokenDto).mapTo(Token.class));
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.setId(token.getId());
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
@@ -91,9 +95,9 @@ public class TokenResource {
     public Response update(@PathParam("tokenId") Long tokenId, TokenDto tokenDto, @Context UriInfo uriInfo) {
         try {
             tokenDto.setId(tokenId);
-            Token token = tokenService.save(simpleMapper.set(tokenDto).mapTo(Token.class));
+            Token token = tokenService.save(mapper.set(tokenDto).mapTo(Token.class));
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
-            tokenDto = simpleMapper.set(token).mapTo(TokenDto.class);
+            tokenDto = mapper.set(token).mapTo(TokenDto.class);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(token.getId()));
             tokenDto.getLinks().add(tokenResourceLinks.getUser(token.getId()));
             return Response.status(Response.Status.FOUND).entity(tokenDto).build();
@@ -107,7 +111,7 @@ public class TokenResource {
     @Path("{tokenId}")
     public Response delete(@PathParam("tokenId") Long tokenId, @Context UriInfo uriInfo) {
         try {
-            TokenDto tokenDto = simpleMapper.set(tokenService.delete(tokenId)).mapTo(TokenDto.class);
+            TokenDto tokenDto = mapper.set(tokenService.delete(tokenId)).mapTo(TokenDto.class);
             TokenResourceLinks tokenResourceLinks = new TokenResourceLinks(uriInfo);
             tokenDto.getLinks().add(tokenResourceLinks.getSelf(tokenId));
             tokenDto.getLinks().add(tokenResourceLinks.getUser(tokenId));

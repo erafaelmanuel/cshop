@@ -6,7 +6,7 @@ import io.ermdev.cshop.data.service.ItemImageService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.image.ImageDto;
 import io.ermdev.cshop.rest.image.ImageResourceLinks;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,13 +24,13 @@ import java.util.List;
 public class ItemImageResource {
 
     private ItemImageService itemImageService;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
     private UriInfo uriInfo;
 
     @Autowired
-    public ItemImageResource(ItemImageService itemImageService, SimpleMapper simpleMapper) {
+    public ItemImageResource(ItemImageService itemImageService, Mapper mapper) {
         this.itemImageService = itemImageService;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     @GET
@@ -37,7 +38,7 @@ public class ItemImageResource {
     public Response getById(@PathParam("itemId") Long itemId, @PathParam("imageId") Long imageId) {
         try {
             Image image = itemImageService.findImageByItemIdAndImageId(itemId, imageId);
-            ImageDto imageDto = simpleMapper.set(image).mapTo(ImageDto.class);
+            ImageDto imageDto = mapper.set(image).mapTo(ImageDto.class);
             ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
             imageDto.getLinks().add(imageResourceLinks.getSelf(imageId));
             return Response.status(Response.Status.FOUND).entity(imageDto).build();
@@ -50,11 +51,12 @@ public class ItemImageResource {
     @GET
     public Response getAll(@PathParam("itemId") Long itemId) {
         try {
-            List<Image> images = itemImageService.findImagesByItemId(itemId);
-            List<ImageDto> imageDtos = simpleMapper.set(images).mapToList(ImageDto.class);
-            ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
-            imageDtos.parallelStream().forEach(imageDto -> {
+            List<ImageDto> imageDtos = new ArrayList<>();
+            itemImageService.findImagesByItemId(itemId).forEach(image -> {
+                ImageDto imageDto = mapper.set(image).mapTo(ImageDto.class);
+                ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
                 imageDto.getLinks().add(imageResourceLinks.getSelf(imageDto.getId()));
+                imageDtos.add(imageDto);
             });
             return Response.status(Response.Status.FOUND).entity(imageDtos).build();
         } catch (EntityException e) {
@@ -68,7 +70,7 @@ public class ItemImageResource {
     public Response addImage(@PathParam("itemId") Long itemId, @PathParam("imageId") Long imageId) {
         try {
             Image image = itemImageService.addImageToItem(itemId, imageId);
-            ImageDto imageDto = simpleMapper.set(image).mapTo(ImageDto.class);
+            ImageDto imageDto = mapper.set(image).mapTo(ImageDto.class);
             ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
             imageDto.getLinks().add(imageResourceLinks.getSelf(imageId));
             return Response.status(Response.Status.FOUND).entity(imageDto).build();
@@ -83,7 +85,7 @@ public class ItemImageResource {
     public Response deleteImage(@PathParam("itemId") Long itemId, @PathParam("imageId") Long imageId) {
         try {
             Image image = itemImageService.deleteImageFromItem(itemId, imageId);
-            ImageDto imageDto = simpleMapper.set(image).mapTo(ImageDto.class);
+            ImageDto imageDto = mapper.set(image).mapTo(ImageDto.class);
             ImageResourceLinks imageResourceLinks = new ImageResourceLinks(uriInfo);
             imageDto.getLinks().add(imageResourceLinks.getSelf(imageId));
             return Response.status(Response.Status.FOUND).entity(imageDto).build();

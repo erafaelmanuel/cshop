@@ -4,7 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Tag;
 import io.ermdev.cshop.data.service.TagService;
 import io.ermdev.cshop.exception.EntityException;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,19 +23,19 @@ import java.util.List;
 public class TagResource {
 
     private TagService tagService;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     @Autowired
-    public TagResource(TagService tagService, SimpleMapper simpleMapper) {
+    public TagResource(TagService tagService, Mapper mapper) {
         this.tagService = tagService;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     @GET
     @Path("{tagId}")
     public Response getById(@PathParam("tagId") Long tagId, @Context UriInfo uriInfo) {
         try {
-            TagDto tagDto = simpleMapper.set(tagService.findById(tagId)).mapTo(TagDto.class);
+            TagDto tagDto = mapper.set(tagService.findById(tagId)).mapTo(TagDto.class);
             TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
             tagDto.getLinks().add(tagResourceLinks.getSelf(tagId));
             return Response.status(Response.Status.FOUND).entity(tagDto).build();
@@ -47,10 +48,12 @@ public class TagResource {
     @GET
     public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<TagDto> tagDtos = simpleMapper.set(tagService.findAll()).mapToList(TagDto.class);
-            TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
-            tagDtos.parallelStream().forEach(tagDto -> {
+            List<TagDto> tagDtos = new ArrayList<>();
+            tagService.findAll().forEach(tag -> {
+                TagDto tagDto = mapper.set(tag).mapTo(TagDto.class);
+                TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
                 tagDto.getLinks().add(tagResourceLinks.getSelf(tagDto.getId()));
+                tagDtos.add(tagDto);
             });
             return Response.status(Response.Status.FOUND).entity(tagDtos).build();
         } catch (EntityException e) {
@@ -62,7 +65,7 @@ public class TagResource {
     @POST
     public Response add(TagDto tagDto, @Context UriInfo uriInfo) {
         try {
-            Tag tag = tagService.save(simpleMapper.set(tagDto).mapTo(Tag.class));
+            Tag tag = tagService.save(mapper.set(tagDto).mapTo(Tag.class));
             TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
             tagDto.setId(tag.getId());
             tagDto.getLinks().add(tagResourceLinks.getSelf(tagDto.getId()));
@@ -78,9 +81,9 @@ public class TagResource {
     public Response update(@PathParam("tagId") Long tagId, TagDto tagDto, @Context UriInfo uriInfo) {
         try {
             tagDto.setId(tagId);
-            Tag tag = tagService.save(simpleMapper.set(tagDto).mapTo(Tag.class));
+            Tag tag = tagService.save(mapper.set(tagDto).mapTo(Tag.class));
             TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
-            tagDto = simpleMapper.set(tag).mapTo(TagDto.class);
+            tagDto = mapper.set(tag).mapTo(TagDto.class);
             tagDto.getLinks().add(tagResourceLinks.getSelf(tagDto.getId()));
             return Response.status(Response.Status.OK).entity(tagDto).build();
         } catch (EntityException e) {
@@ -93,7 +96,7 @@ public class TagResource {
     @Path("{tagId}")
     public Response delete(@PathParam("tagId") final Long tagId, @Context UriInfo uriInfo) {
         try {
-            TagDto tagDto = simpleMapper.set(tagService.delete(tagId)).mapTo(TagDto.class);
+            TagDto tagDto = mapper.set(tagService.delete(tagId)).mapTo(TagDto.class);
             TagResourceLinks tagResourceLinks = new TagResourceLinks(uriInfo);
             tagDto.getLinks().add(tagResourceLinks.getSelf(tagDto.getId()));
             return Response.status(Response.Status.OK).entity(tagDto).build();
