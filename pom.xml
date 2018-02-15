@@ -146,8 +146,8 @@
 
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
-            <artifactId>mapfierJ</artifactId>
-            <version>v1.0-beta.6.3</version>
+            <artifactId>mapfierj</artifactId>
+            <version>v1.0.1</version>
         </dependency>
     </dependencies>
 </project>

@@ -4,9 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Category;
 import io.ermdev.cshop.data.service.CategoryService;
 import io.ermdev.cshop.exception.EntityException;
-import io.ermdev.cshop.rest.item.ItemDto;
-import io.ermdev.cshop.rest.item.ItemResourceLinks;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,19 +22,19 @@ import java.util.List;
 public class CategoryResource {
 
     private CategoryService categoryService;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     @Autowired
-    public CategoryResource(CategoryService categoryService, SimpleMapper simpleMapper) {
+    public CategoryResource(CategoryService categoryService, Mapper mapper) {
         this.categoryService = categoryService;
-        this.simpleMapper = simpleMapper;
+        this.mapper = mapper;
     }
 
     @GET
     @Path("{categoryId}")
     public Response getById(@PathParam("categoryId") long categoryId, @Context UriInfo uriInfo) {
         try {
-            CategoryDto categoryDto = simpleMapper.set(categoryService.findById(categoryId)).mapTo(CategoryDto.class);
+            CategoryDto categoryDto = mapper.set(categoryService.findById(categoryId)).mapTo(CategoryDto.class);
             CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
             categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryId));
             return Response.status(Response.Status.OK).entity(categoryDto).build();
@@ -49,7 +47,9 @@ public class CategoryResource {
     @GET
     public Response getAll(@Context UriInfo uriInfo) {
         try {
-            List<CategoryDto> categoryDtos = simpleMapper.set(categoryService.findAll()).mapToList(CategoryDto.class);
+            List<CategoryDto> categoryDtos = mapper.set(categoryService.findAll())
+                    .transactional()
+                    .mapToList(CategoryDto.class);
             CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
             categoryDtos.parallelStream().forEach(categoryDto -> {
                 categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
@@ -64,7 +64,7 @@ public class CategoryResource {
     @POST
     public Response add(Category category, @Context UriInfo uriInfo) {
         try {
-            CategoryDto categoryDto = simpleMapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
+            CategoryDto categoryDto = mapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
             CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
             categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
             return Response.status(Response.Status.CREATED).entity(categoryDto).build();
@@ -79,7 +79,7 @@ public class CategoryResource {
     public Response update(@PathParam("categoryId") Long categoryId, Category category, @Context UriInfo uriInfo) {
         try {
             category.setId(categoryId);
-            CategoryDto categoryDto = simpleMapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
+            CategoryDto categoryDto = mapper.set(categoryService.save(category)).mapTo(CategoryDto.class);
             CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
             categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
             return Response.status(Response.Status.OK).entity(categoryDto).build();
@@ -93,7 +93,7 @@ public class CategoryResource {
     @Path("{categoryId}")
     public Response delete(@PathParam("categoryId") Long categoryId, @Context UriInfo uriInfo) {
         try {
-            CategoryDto categoryDto = simpleMapper.set(categoryService.delete(categoryId)).mapTo(CategoryDto.class);
+            CategoryDto categoryDto = mapper.set(categoryService.delete(categoryId)).mapTo(CategoryDto.class);
             CategoryResourceLinks categoryResourceLinks = new CategoryResourceLinks(uriInfo);
             categoryDto.getLinks().add(categoryResourceLinks.getSelf(categoryDto.getId()));
             return Response.status(Response.Status.OK).entity(categoryDto).build();
