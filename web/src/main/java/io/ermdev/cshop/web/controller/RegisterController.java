@@ -5,7 +5,7 @@ import io.ermdev.cshop.commons.ReturnValue;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.exception.ResourceException;
 import io.ermdev.cshop.web.dto.UserDto;
-import mapfierj.SimpleMapper;
+import mapfierj.xyz.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -22,13 +22,13 @@ public class RegisterController {
 
     private ApplicationEventPublisher publisher;
     private MessageSource messageSource;
-    private SimpleMapper simpleMapper;
+    private Mapper mapper;
 
     @Autowired
-    public RegisterController(ApplicationEventPublisher publisher, MessageSource messageSource, SimpleMapper mapper) {
+    public RegisterController(ApplicationEventPublisher publisher, MessageSource messageSource, Mapper mapper) {
         this.publisher = publisher;
         this.messageSource = messageSource;
-        this.simpleMapper = mapper;
+        this.mapper = mapper;
     }
 
     @GetMapping("register")
@@ -40,7 +40,7 @@ public class RegisterController {
     @PostMapping("register")
     public String registerUser(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            final User user = simpleMapper.set(userDto).mapTo(User.class);
+            final User user = mapper.set(userDto).mapTo(User.class);
             final String url = messageSource.getMessage("cshop.url", null, null);
             final RegisterSource registerSource = new RegisterSource();
 
