@@ -4,7 +4,7 @@ import io.ermdev.cshop.commons.Error;
 import io.ermdev.cshop.data.entity.Category;
 import io.ermdev.cshop.data.service.CategoryService;
 import io.ermdev.cshop.exception.EntityException;
-import mapfierj.xyz.Mapper;
+import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package io.ermdev.cshop.core.bean;
 
 import io.ermdev.cshop.typeconverter.UserConverter;
 import mapfierj.SimpleMapper;
-import mapfierj.xyz.Mapper;
+import mapfierj.Mapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
             <artifactId>mapfierj</artifactId>
-            <version>v1.0.1</version>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 </project>

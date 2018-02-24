@@ -6,7 +6,7 @@ import io.ermdev.cshop.data.service.ItemImageService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.image.ImageDto;
 import io.ermdev.cshop.rest.image.ImageResourceLinks;
-import mapfierj.xyz.Mapper;
+import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

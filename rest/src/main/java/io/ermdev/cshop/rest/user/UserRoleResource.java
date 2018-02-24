@@ -6,7 +6,7 @@ import io.ermdev.cshop.data.service.UserRoleService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.role.RoleDto;
 import io.ermdev.cshop.rest.role.RoleResourceLinks;
-import mapfierj.xyz.Mapper;
+import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

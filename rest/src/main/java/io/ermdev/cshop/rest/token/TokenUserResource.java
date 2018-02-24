@@ -5,7 +5,7 @@ import io.ermdev.cshop.data.service.TokenUserService;
 import io.ermdev.cshop.exception.EntityException;
 import io.ermdev.cshop.rest.user.UserDto;
 import io.ermdev.cshop.rest.user.UserResourceLinks;
-import mapfierj.xyz.Mapper;
+import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
