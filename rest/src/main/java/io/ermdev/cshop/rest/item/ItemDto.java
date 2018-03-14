@@ -1,17 +1,13 @@
 package io.ermdev.cshop.rest.item;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ItemDto {
+public class ItemDto extends ResourceSupport {
 
     private Long id;
     private String name;
     private String description;
     private Double price;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -43,13 +39,5 @@ public class ItemDto {
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

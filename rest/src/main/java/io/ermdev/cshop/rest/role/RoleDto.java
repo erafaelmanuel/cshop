@@ -1,17 +1,11 @@
 package io.ermdev.cshop.rest.role;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class RoleDto {
+public class RoleDto extends ResourceSupport {
 
     private Long id;
     private String name;
-    private List<Link> links = new ArrayList<>();
-
-    public RoleDto() {}
 
     public Long getId() {
         return id;
@@ -27,13 +21,5 @@ public class RoleDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

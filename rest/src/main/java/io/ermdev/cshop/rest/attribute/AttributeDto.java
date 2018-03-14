@@ -1,16 +1,12 @@
 package io.ermdev.cshop.rest.attribute;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AttributeDto {
+public class AttributeDto extends ResourceSupport {
 
     private Long id;
     private String name;
     private String type;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -34,13 +30,5 @@ public class AttributeDto {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

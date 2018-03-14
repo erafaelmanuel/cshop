@@ -1,16 +1,12 @@
 package io.ermdev.cshop.rest.token;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TokenDto {
+public class TokenDto extends ResourceSupport {
 
     private Long id;
     private String key;
     private String expiryDate;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -34,13 +30,5 @@ public class TokenDto {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

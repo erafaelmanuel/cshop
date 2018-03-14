@@ -1,16 +1,12 @@
 package io.ermdev.cshop.rest.tag;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TagDto {
+public class TagDto extends ResourceSupport {
 
     private Long id;
     private String name;
     private String description;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -34,13 +30,5 @@ public class TagDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

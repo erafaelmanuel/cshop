@@ -1,15 +1,11 @@
 package io.ermdev.cshop.rest.image;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ImageDto {
+public class ImageDto extends ResourceSupport {
 
     private Long id;
     private String src;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -25,13 +21,5 @@ public class ImageDto {
 
     public void setSrc(String src) {
         this.src = src;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

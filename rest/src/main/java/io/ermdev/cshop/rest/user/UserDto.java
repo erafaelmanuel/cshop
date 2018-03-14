@@ -1,11 +1,8 @@
 package io.ermdev.cshop.rest.user;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class UserDto {
+public class UserDto extends ResourceSupport {
 
     private Long id;
     private String name;
@@ -13,7 +10,6 @@ public class UserDto {
     private String username;
     private String password;
     private Boolean enabled;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -61,13 +57,5 @@ public class UserDto {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }

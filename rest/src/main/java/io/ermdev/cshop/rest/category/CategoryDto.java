@@ -1,17 +1,13 @@
 package io.ermdev.cshop.rest.category;
 
-import io.ermdev.cshop.commons.Link;
+import io.ermdev.cshop.commons.ResourceSupport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CategoryDto {
+public class CategoryDto extends ResourceSupport {
 
     private Long id;
     private String name;
     private String description;
     private Long parentId;
-    private List<Link> links = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -43,13 +39,5 @@ public class CategoryDto {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 }
