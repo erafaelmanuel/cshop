@@ -5,13 +5,13 @@ import java.util.List;
 
 public class ResourceSupport {
 
-    private List<Link> links = new ArrayList<>();
+    private List<Link> _links = new ArrayList<>();
 
     public List<Link> getLinks() {
-        return links;
+        return _links;
     }
 
-    public void setLinks(List<Link> links) {
-        this.links = links;
+    public void setLinks(List<Link> _links) {
+        this._links = _links;
     }
 }
