@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2018 at 02:31 PM
+-- Generation Time: Apr 03, 2018 at 05:59 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -19,6 +19,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_cshop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_attribute`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_attribute` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_category`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_category` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `parentId` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -102,6 +127,25 @@ INSERT INTO `tbl_role` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_tag`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tag` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_tag`
+--
+
+INSERT INTO `tbl_tag` (`id`, `name`, `description`) VALUES
+(1, 'Tae', 'assafsaf');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_token`
 --
 
@@ -177,6 +221,19 @@ INSERT INTO `tbl_user_role` (`id`, `userId`, `roleId`) VALUES
 --
 
 --
+-- Indexes for table `tbl_attribute`
+--
+ALTER TABLE `tbl_attribute`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_category`
+--
+ALTER TABLE `tbl_category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parentId` (`parentId`);
+
+--
 -- Indexes for table `tbl_image`
 --
 ALTER TABLE `tbl_image`
@@ -200,6 +257,12 @@ ALTER TABLE `tbl_item_image`
 -- Indexes for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_tag`
+--
+ALTER TABLE `tbl_tag`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -235,6 +298,16 @@ ALTER TABLE `tbl_user_role`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_attribute`
+--
+ALTER TABLE `tbl_attribute`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tbl_category`
+--
+ALTER TABLE `tbl_category`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `tbl_image`
 --
 ALTER TABLE `tbl_image`
@@ -254,6 +327,11 @@ ALTER TABLE `tbl_item_image`
 --
 ALTER TABLE `tbl_role`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `tbl_tag`
+--
+ALTER TABLE `tbl_tag`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tbl_token`
 --
@@ -277,6 +355,12 @@ ALTER TABLE `tbl_user_role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_category`
+--
+ALTER TABLE `tbl_category`
+  ADD CONSTRAINT `tbl_category_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `tbl_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_item_image`
