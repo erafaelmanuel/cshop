@@ -19,13 +19,13 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>ecloth</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Cloth Shop</name>
+    <description>Open source cloth web project that written in java and spring framework </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
+        <version>1.5.11.RELEASE</version>
         <relativePath/>
     </parent>
 
