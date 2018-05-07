@@ -21,7 +21,7 @@ public class UserConverter extends TypeConverterAdapter<Long, User> {
        try {
            return userService.findById(id);
        } catch (EntityException e) {
-           return null;
+           throw new TypeException("Unable to convert");
        }
     }
 
@@ -30,7 +30,7 @@ public class UserConverter extends TypeConverterAdapter<Long, User> {
         try {
             return user.getId();
         } catch (NullPointerException e) {
-            return null;
+            throw new TypeException("Unable to convert");
         }
     }
 }
