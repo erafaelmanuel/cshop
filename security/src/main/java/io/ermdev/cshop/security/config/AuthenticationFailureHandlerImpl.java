@@ -3,7 +3,6 @@ package io.ermdev.cshop.security.config;
 import io.ermdev.cshop.data.entity.User;
 import io.ermdev.cshop.data.service.UserService;
 import io.ermdev.cshop.exception.EntityException;
-import io.ermdev.cshop.security.validator.EmailValidator;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -19,38 +18,31 @@ import java.io.IOException;
 @Component
 public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHandler {
 
-    private UserService userService;
+    final private UserService userService;
 
-    AuthenticationFailureHandlerImpl(UserService userService) {
+    final private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+    public AuthenticationFailureHandlerImpl(UserService userService) {
         this.userService = userService;
     }
-
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        String emailOrUsername = request.getParameter("username");
+        final String username = request.getParameter("username");
         String urlToRedirect = "/login?error";
-        User user;
         try {
-            final boolean isEmail = new EmailValidator().validateEmail(emailOrUsername);
-            if (isEmail) {
-                user = userService.findByEmail(emailOrUsername);
-            } else {
-                user = userService.findByUsername(emailOrUsername);
-            }
+            final User user = userService.findByUsername(username);
+            if (!user.getEnabled())
+                urlToRedirect = "/register/complete?userId=" + user.getId();
         } catch (EntityException e) {
-            user = null;
-        }
-        if (user != null && !user.getEnabled()) {
-            urlToRedirect = "/register/complete?userId=" + user.getId();
+            e.printStackTrace();
         }
         redirectStrategy.sendRedirect(request, response, urlToRedirect);
         clearAuthenticationAttributes(request);
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request) {
+    private void clearAuthenticationAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return;
