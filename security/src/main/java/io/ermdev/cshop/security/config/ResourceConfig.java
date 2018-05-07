@@ -9,12 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class ResourceConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private AuthenticationFailureHandlerImpl failureHandler;
+
     private UserDetailServiceImpl userDetailService;
 
     @Autowired
-    public ResourceConfig(UserDetailServiceImpl userDetailService) {
+    public ResourceConfig(AuthenticationFailureHandlerImpl failureHandler, UserDetailServiceImpl userDetailService) {
+        this.failureHandler = failureHandler;
         this.userDetailService = userDetailService;
     }
 
@@ -39,8 +40,5 @@ public class ResourceConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .csrf()
                 .disable();
-
     }
-
-
 }

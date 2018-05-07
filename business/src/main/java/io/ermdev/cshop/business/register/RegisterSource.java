@@ -7,7 +7,9 @@ import java.util.Locale;
 public class RegisterSource {
 
     private User user;
+
     private String url;
+
     private Locale locale;
 
     public User getUser() {

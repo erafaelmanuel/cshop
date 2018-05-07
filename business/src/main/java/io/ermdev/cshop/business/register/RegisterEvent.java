@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationEvent;
 public class RegisterEvent extends ApplicationEvent {
 
     private OnRegisterSuccess onRegisterSuccess;
+
     private OnRegisterFailure onRegisterFailure;
 
     public RegisterEvent(RegisterSource registerSource) {

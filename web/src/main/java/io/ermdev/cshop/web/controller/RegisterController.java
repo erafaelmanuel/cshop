@@ -21,7 +21,9 @@ import javax.validation.Valid;
 public class RegisterController {
 
     private ApplicationEventPublisher publisher;
+
     private MessageSource messageSource;
+
     private Mapper mapper;
 
     @Autowired
@@ -32,13 +34,13 @@ public class RegisterController {
     }
 
     @GetMapping("register")
-    public String showRegister(UserDto userDto, Model model) {
+    public String getRegister(UserDto userDto, Model model) {
         model.addAttribute("userDto", userDto);
         return "register";
     }
 
     @PostMapping("register")
-    public String registerUser(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String register(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
             final User user = mapper.set(userDto).mapTo(User.class);
             final String url = messageSource.getMessage("cshop.url", null, null);
@@ -56,7 +58,7 @@ public class RegisterController {
         }
         if (result.hasErrors()) {
             result.rejectValue("email", "message.error");
-            return showRegister(userDto, model);
+            return getRegister(userDto, model);
         }
         return showRegisterComplete(model);
     }
@@ -64,7 +66,7 @@ public class RegisterController {
     @GetMapping("register/complete")
     public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId) {
         if (userId == null) {
-            return showRegister(new UserDto(), model);
+            return getRegister(new UserDto(), model);
         } else {
             model.addAttribute("userId", userId);
             return "register-complete";
@@ -93,7 +95,7 @@ public class RegisterController {
                     throw new ResourceException("Invalid Request");
                 }
             } else {
-                return showRegister(new UserDto(), model);
+                return getRegister(new UserDto(), model);
             }
         } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());
@@ -123,7 +125,7 @@ public class RegisterController {
                     throw new ResourceException("Invalid request");
                 }
             } else {
-                return showRegister(new UserDto(), model);
+                return getRegister(new UserDto(), model);
             }
         } catch (ResourceException e) {
             model.addAttribute("message", e.getMessage());

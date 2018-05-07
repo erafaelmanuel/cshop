@@ -19,12 +19,17 @@ import java.util.UUID;
 public class RegisterListener implements ApplicationListener<RegisterEvent> {
 
     private OnRegisterSuccess onRegisterSuccess;
+
     private OnRegisterFailure onRegisterFailure;
 
     private UserService userService;
+
     private TokenService tokenService;
+
     private TokenUserService tokenUserService;
+
     private ConfirmationMail confirmationMail;
+
     private DateHelper dateHelper;
 
     @Autowired
