@@ -59,7 +59,7 @@ public class ResendListener implements ApplicationListener<ResendEvent> {
             if (!user.getEnabled()) {
                 deleteOldToken(userId);
                 long tokenId = tokenService.save(token).getId();
-                tokenUserService.addUserToToken(tokenId, userId);
+                tokenUserService.save(tokenId, userId);
                 onResendCompleted.onComplete(false);
                 ConfirmRegistrationThread confirmRegistrationThread = new ConfirmRegistrationThread(token, url, locale);
                 confirmRegistrationThread.start();

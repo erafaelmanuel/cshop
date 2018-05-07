@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 public class TokenUserService {
 
     private TokenRepository tokenRepository;
+
     private UserRepository userRepository;
+
     private TokenUserRepository tokenUserRepository;
 
     @Autowired
@@ -42,7 +44,7 @@ public class TokenUserService {
         }
     }
 
-    public User addUserToToken(Long tokenId, Long userId) throws EntityException {
+    public User save(Long tokenId, Long userId) throws EntityException {
         final Token token = tokenRepository.findById(tokenId);
         final User user = userRepository.findById(userId);
         if (token == null) {
@@ -54,7 +56,7 @@ public class TokenUserService {
         if (tokenUserRepository.findUserByTokenId(tokenId) != null) {
             throw new EntityException("An user already exists");
         }
-        tokenUserRepository.addUserToToken(tokenId, userId);
+        tokenUserRepository.save(tokenId, userId);
         return user;
     }
 

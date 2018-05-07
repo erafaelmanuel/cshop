@@ -46,9 +46,9 @@ public class TokenUserResource {
 
     @POST
     @Path("{userId}")
-    public Response addUserToToken(@PathParam("tokenId") Long tokenId, @PathParam("userId") Long userId) {
+    public Response addTokenUser(@PathParam("tokenId") Long tokenId, @PathParam("userId") Long userId) {
         try {
-            UserDto userDto = mapper.set(tokenUserService.addUserToToken(tokenId, userId)).mapTo(UserDto.class);
+            UserDto userDto = mapper.set(tokenUserService.save(tokenId, userId)).mapTo(UserDto.class);
             UserResourceLinks userResourceLinks = new UserResourceLinks(uriInfo);
             userDto.getLinks().add(userResourceLinks.getSelf(userDto.getId()));
             userDto.getLinks().add(userResourceLinks.getRoles(userDto.getId()));

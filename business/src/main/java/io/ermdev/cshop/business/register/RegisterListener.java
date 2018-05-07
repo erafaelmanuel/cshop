@@ -69,7 +69,7 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             token.setUser(user);
             token = tokenService.save(token);
 
-            tokenUserService.addUserToToken(token.getId(), user.getId());
+            tokenUserService.save(token.getId(), user.getId());
             if (onRegisterSuccess != null) {
                 onRegisterSuccess.onSuccess();
             }

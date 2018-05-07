@@ -22,7 +22,7 @@ public interface TokenUserRepository {
     Token findTokenByUserId(@Param("userId") Long userId);
 
     @Insert("INSERT INTO tbl_token_user(tokenId, userId) VALUES(#{tokenId}, #{userId})")
-    void addUserToToken(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
+    void save(@Param("tokenId") Long tokenId, @Param("userId") Long userId);
 
     @Delete("DELETE FROM tbl_token_user WHERE tokenId=#{tokenId}")
     void deleteUserFromToken(@Param("tokenId") Long tokenId);
