@@ -40,17 +40,16 @@ public class RegisterController {
     }
 
     @PostMapping("register")
-    public String register(@ModelAttribute("userDto") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String register(@ModelAttribute("userDto") @Valid UserDto dto, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            final User user = mapper.set(userDto).mapTo(User.class);
+            final User user = mapper.set(dto).mapTo(User.class);
             final String url = messageSource.getMessage("cshop.url", null, null);
             final RegisterSource registerSource = new RegisterSource();
+            final RegisterEvent registerEvent = new RegisterEvent(registerSource);
 
             registerSource.setUser(user);
             registerSource.setUrl(url);
             registerSource.setLocale(null);
-
-            RegisterEvent registerEvent = new RegisterEvent(registerSource);
             registerEvent.setOnRegisterFailure(() -> result.reject("email"));
 
             publisher.publishEvent(registerEvent);
@@ -58,7 +57,7 @@ public class RegisterController {
         }
         if (result.hasErrors()) {
             result.rejectValue("email", "message.error");
-            return getRegister(userDto, model);
+            return getRegister(dto, model);
         }
         return showRegisterComplete(model);
     }

@@ -32,6 +32,8 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
 
     private DateHelper dateHelper;
 
+    private Sender sender;
+
     @Autowired
     public RegisterListener(UserService userService, TokenService tokenService, TokenUserService tokenUserService,
                             ConfirmationMail confirmationMail, DateHelper dateHelper) {
@@ -46,19 +48,19 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
     public void onApplicationEvent(RegisterEvent event) {
         onRegisterSuccess = event.getOnRegisterSuccess();
         onRegisterFailure = event.getOnRegisterFailure();
-        registerUser((RegisterSource) event.getSource());
+        register((RegisterSource) event.getSource());
     }
 
-    private void registerUser(RegisterSource registerSource) {
-        try {
-            Token token = new Token();
-            User user = registerSource.getUser();
-            final String generatedUsername = user.getEmail().split("@")[0];
-            final String generatedTokenKey = UUID.randomUUID().toString();
-            final String url = registerSource.getUrl();
-            final Locale locale = registerSource.getLocale();
+    private void register(RegisterSource registerSource) {
+        final String generatedTokenKey = UUID.randomUUID().toString();
+        final String url = registerSource.getUrl();
+        final Locale locale = registerSource.getLocale();
 
-            user.setUsername(generatedUsername);
+        Token token = new Token();
+        User user = registerSource.getUser();
+
+        try {
+            user.setUsername(user.getEmail());
             user.setEnabled(false);
             user = userService.save(user);
 
@@ -71,8 +73,8 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
             if (onRegisterSuccess != null) {
                 onRegisterSuccess.onSuccess();
             }
-            ConfirmRegistrationThread confirmRegistrationThread = new ConfirmRegistrationThread(token, url, locale);
-            confirmRegistrationThread.start();
+            sender = new Sender(token, url, locale);
+            sender.start();
         } catch (EntityException e) {
             if (onRegisterFailure != null) {
                 onRegisterFailure.onFailure();
@@ -80,13 +82,20 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
         }
     }
 
-    class ConfirmRegistrationThread extends Thread {
+    private void sendConfirmRegistration(Token token, String url, Locale locale) {
+        MimeMailMessage mimeMailMessage = confirmationMail.constructMail(token, url, locale);
+        confirmationMail.getMailSender().send(mimeMailMessage.getMimeMessage());
+    }
+
+    class Sender extends Thread {
 
         private Token token;
+
         private String url;
+
         private Locale locale;
 
-        public ConfirmRegistrationThread(Token token, String url, Locale locale) {
+        Sender(Token token, String url, Locale locale) {
             this.token = token;
             this.url = url;
             this.locale = locale;
@@ -94,13 +103,7 @@ public class RegisterListener implements ApplicationListener<RegisterEvent> {
 
         @Override
         public void run() {
-            super.run();
             sendConfirmRegistration(token, url, locale);
         }
-    }
-
-    private void sendConfirmRegistration(Token token, String url, Locale locale) {
-        MimeMailMessage mimeMailMessage = confirmationMail.constructMail(token, url, locale);
-        confirmationMail.getMailSender().send(mimeMailMessage.getMimeMessage());
     }
 }
