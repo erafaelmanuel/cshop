@@ -59,11 +59,11 @@ public class RegisterController {
             result.rejectValue("email", "message.error");
             return getRegister(dto, model);
         }
-        return showRegisterComplete(model);
+        return getSuccess(model);
     }
 
     @GetMapping("register/complete")
-    public String showRegisterComplete(Model model, @RequestParam(value = "userId", required = false) Long userId) {
+    public String getSuccess(Model model, @RequestParam(value = "userId", required = false) Long userId) {
         if (userId == null) {
             return getRegister(new UserDto(), model);
         } else {
@@ -73,7 +73,7 @@ public class RegisterController {
     }
 
     @PostMapping("register/complete")
-    public String showRegisterComplete(Model model) {
+    public String getSuccess(Model model) {
         return "register-complete";
     }
 
@@ -119,7 +119,7 @@ public class RegisterController {
                 publisher.publishEvent(resendEvent);
                 if (!returnValue.hasError()) {
                     model.addAttribute("userId", userId);
-                    return showRegisterComplete(model);
+                    return getSuccess(model);
                 } else {
                     throw new ResourceException("Invalid request");
                 }

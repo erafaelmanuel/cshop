@@ -26,14 +26,14 @@ public class LoginController {
     }
 
     @PostMapping("login/success")
-    public String loginSuccess(Authentication authentication, Model model) {
+    public String getLoginSuccess(Authentication authentication, Model model) {
         try {
             final User user = userService.findByUsername(authentication.getName());
             model.addAttribute("user", user);
+            return "redirect:/catalog";
         } catch (EntityException e) {
             model.addAttribute("message", e.getMessage());
             return "error/500";
         }
-        return "redirect:/catalog";
     }
 }
