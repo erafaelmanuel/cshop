@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(scanBasePackages = {"io.ermdev.cshop"})
+@SpringBootApplication(scanBasePackages = {"io.ermdev.cshop", "com.rem.cs.web"})
 @MapperScan({"io.ermdev.cshop.data.repository"})
 public class CShopApplication {
 
