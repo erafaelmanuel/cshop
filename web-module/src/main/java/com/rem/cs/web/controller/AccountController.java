@@ -5,6 +5,7 @@ import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
 import com.rem.cs.web.dto.UserDto;
+import io.ermdev.cshop.commons.DateHelper;
 import io.ermdev.cshop.commons.IdGenerator;
 import mapfierj.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Calendar;
 
 @Controller
-public class RegisterController {
+public class AccountController {
 
     private UserRepository userRepository;
     private TokenRepository tokenRepository;
@@ -28,7 +31,7 @@ public class RegisterController {
     private HttpServletRequest request;
 
     @Autowired
-    public RegisterController(UserRepository userRepository, TokenRepository tokenRepository, MessageSource
+    public AccountController(UserRepository userRepository, TokenRepository tokenRepository, MessageSource
             messageSource, HttpServletRequest request) {
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
@@ -45,7 +48,7 @@ public class RegisterController {
 
     @GetMapping("/account/register")
     public String getRegisterPage() {
-        return "register";
+        return "accnt-reg-form";
     }
 
     @PostMapping("/register")
@@ -53,19 +56,51 @@ public class RegisterController {
         if (result.hasErrors()) {
             return "register";
         }
-        if (userRepository.findByEmail(userDto.getEmail()) != null) {
-            result.reject("Email already exist!");
+        final User tempUser = userRepository.findByEmail(userDto.getEmail());
+        if (tempUser != null) {
+            if (!tempUser.isActivated()) {
+                /* Todo Confirmation Page */
+                return "";
+            }
         }
-        User user = new Mapper().set(userDto).mapTo(User.class);
+        final User user = new Mapper().set(userDto).mapTo(User.class);
         user.setId(String.valueOf(IdGenerator.randomUUID()));
         user.setActivated(false);
 
-        Token token = new Token();
+        final Token token = new Token();
         token.setKey(String.valueOf(IdGenerator.randomUUID()));
+        token.setExpiryDate(new DateHelper().setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
 
-        System.out.print(request.getContextPath());
+        final StringBuilder builder = new StringBuilder();
+        builder.append(request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+        builder.append("account/activate");
+        builder.append("?userId=");
+        builder.append(user.getId());
+        builder.append("&token=");
+        builder.append(token.getKey());
 
+        userRepository.save(user);
+        tokenRepository.save(token);
 
-        return "register-success";
+        System.out.println(builder.toString());
+
+        return "accnt-reg-help";
     }
+
+    @GetMapping("account/activate")
+    public String activateUser(@RequestParam("userId") String userId, @RequestParam("tokenId") String tokenId) {
+        final User user = userRepository.findOne(userId);
+        final Token token = tokenRepository.findOne(tokenId);
+        final Calendar calendar = Calendar.getInstance();
+
+        if (!user.isActivated() && (token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
+            user.setActivated(true);
+            userRepository.save(user);
+            tokenRepository.delete(token);
+        }
+
+        return "";
+    }
+
+
 }

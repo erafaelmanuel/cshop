@@ -17,14 +17,14 @@ public class User {
     @Column(name = "_name")
     private String name;
 
-    @Column(name = "_email")
+    @Column(name = "_email", unique = true)
     private String email;
 
     @Column(name = "_password")
     private String password;
 
     @Column(name = "_activated")
-    private Boolean activated;
+    private boolean activated;
 
     @ManyToMany
     @JoinTable(name = "tbl_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns =
@@ -67,11 +67,11 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getActivated() {
+    public boolean isActivated() {
         return activated;
     }
 
-    public void setActivated(Boolean activated) {
+    public void setActivated(boolean activated) {
         this.activated = activated;
     }
 
