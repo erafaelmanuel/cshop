@@ -1,5 +1,6 @@
 package com.rem.cs.web.validation;
 
+import com.rem.cs.web.validation.annotation.Email;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;

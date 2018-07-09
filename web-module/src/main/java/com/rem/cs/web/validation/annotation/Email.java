@@ -1,4 +1,6 @@
-package com.rem.cs.web.validation;
+package com.rem.cs.web.validation.annotation;
+
+import com.rem.cs.web.validation.EmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

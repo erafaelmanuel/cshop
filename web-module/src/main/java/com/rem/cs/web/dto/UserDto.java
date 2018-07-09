@@ -1,6 +1,6 @@
-package com.rem.cs.web;
+package com.rem.cs.web.dto;
 
-import com.rem.cs.web.validation.Email;
+import com.rem.cs.web.validation.annotation.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;

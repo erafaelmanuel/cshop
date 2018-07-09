@@ -1,22 +1,14 @@
 package io.ermdev.cshop.core;
 
-import io.ermdev.cshop.typeconverter.UserConverter;
-import mapfierj.Mapper;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"io.ermdev.cshop", "com.rem.cs.web"})
-@MapperScan({"io.ermdev.cshop.data.repository"})
+@EnableJpaRepositories(basePackages = {"com.rem.cs.data.jpa"})
+@SpringBootApplication(scanBasePackages = {"io.ermdev.cshop", "com.rem.cs.web", "com.rem.cs.data.jpa"})
+@ComponentScan("com.rem.cs.data.jpa")
 public class CShopApplication {
-
-    @Bean
-    public Mapper mapper(UserConverter userConverter) {
-        Mapper mapper = new Mapper();
-        mapper.getConverter().register(userConverter);
-        return mapper;
-    }
 
     public static void main(String args[]) {
         SpringApplication.run(CShopApplication.class, args);

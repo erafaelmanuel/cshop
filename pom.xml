@@ -3,20 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.ermdev</groupId>
-    <artifactId>cshop</artifactId>
+    <groupId>com.rem.cs</groupId>
+    <artifactId>parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>business</module>
+        <!--<module>business</module>-->
         <module>commons</module>
-        <module>core</module>
-        <module>data</module>
+        <!--<module>core</module>-->
+        <!--<module>data</module>-->
         <module>exception</module>
-        <module>rest</module>
-        <module>security</module>
+        <!--<module>rest</module>-->
+        <!--<module>security</module>-->
         <module>type-converter</module>
-        <module>web</module>
+        <!--<module>web</module>-->
         <module>web-module</module>
+        <module>data-module</module>
+        <module>application-module</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -46,62 +48,38 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>business</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
+                <groupId>com.rem.cs</groupId>
                 <artifactId>commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>data</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
+                <groupId>com.rem.cs</groupId>
                 <artifactId>exception</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>rest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>security</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.ermdev</groupId>
+                <groupId>com.rem.cs</groupId>
                 <artifactId>type-converter</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.ermdev</groupId>
-                <artifactId>web</artifactId>
+                <groupId>com.rem.cs</groupId>
+                <artifactId>application-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.ermdev</groupId>
+                <groupId>com.rem.cs</groupId>
                 <artifactId>web-module</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.rem.cs</groupId>
+                <artifactId>data-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -121,6 +99,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
         <!--<dependency>-->

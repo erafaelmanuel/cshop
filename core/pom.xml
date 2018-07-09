@@ -16,21 +16,6 @@
             <groupId>io.ermdev</groupId>
             <artifactId>type-converter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>data</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>rest</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.ermdev</groupId>
-            <artifactId>web-module</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
