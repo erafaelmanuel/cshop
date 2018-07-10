@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="#{cshop.description}"/>
+    <meta name="author" th:content="#{cshop.author}"/>
+
+    <title>Cloth Shop</title>
+    <!-- Google material fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+
+    <!-- Custom styles for header html -->
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/reg-validating.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<th:block th:include="header :: header"/>
+
+    <!--<div class="alert alert-success registration-message" role="alert">-->
+        <!--<h4 class="alert-heading">Message</h4>-->
+        <!--<p th:text="#{register.message.complete}"></p>-->
+        <!--<form action="/register/resend-verification" method="post">-->
+            <!--<input type="hidden" name="userId" th:value="${userId}"/>-->
+            <!--<button class="btn btn-success">Resend Email</button>-->
+        <!--</form>-->
+    <!--</div>-->
+
+<div class="alert alert-success registration-message reg-val-message" role="alert">
+    <p align="center">We sent an email to <b>rafaelmanuel@gmail.com</b>. It contain a link you need to click in order to confirm
+        your account.
+        <p align="center">You need to do this before you can access our site as a registered member</p>
+    </p>
+    <ul class="reg-val-options">
+        <li>
+            <form action="/register/resend-verification" method="post">
+                <input type="hidden" name="userId" th:value="${userId}"/>
+                <button class="btn btn-success">Resend Confirmation Email</button>
+            </form>
+        </li>
+        <li>
+            <form action="/register/resend-verification" method="post">
+                <input type="hidden" name="userId" th:value="${userId}"/>
+                <button class="btn btn-success">Change Email Address</button>
+            </form>
+        </li>
+        <li>
+            <form action="/register/resend-verification" method="post">
+                <input type="hidden" name="userId" th:value="${userId}"/>
+                <button class="btn btn-success">Cancel Registration</button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/header.js}"></script>
+</body>
+</html>

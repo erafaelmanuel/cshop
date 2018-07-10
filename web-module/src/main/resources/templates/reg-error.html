@@ -19,17 +19,15 @@
     <!-- Custom styles for header html -->
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
 
+    <link th:href="@{/css/reg-validating.css}" rel="stylesheet"/>
+
 </head>
 <body>
 <th:block th:include="header :: header"/>
 
     <div class="alert alert-success registration-message" role="alert">
         <h4 class="alert-heading">Message</h4>
-        <p th:text="#{register.message.complete}"></p>
-        <form action="/register/resend-verification" method="post">
-            <input type="hidden" name="userId" th:value="${userId}"/>
-            <button class="btn btn-success">Resend Email</button>
-        </form>
+        <p>Something have gone wrong</p>
     </div>
 
     <!-- Footer -->

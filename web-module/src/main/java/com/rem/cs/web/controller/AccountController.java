@@ -46,22 +46,25 @@ public class AccountController {
         model.addAttribute("subtitle", messageSource.getMessage("reg.subtitle", null, null));
     }
 
-    @GetMapping("/account/register")
-    public String getRegisterPage() {
-        return "accnt-reg-form";
+    @GetMapping("/register/sign-up")
+    public String registerSignUp() {
+        return "reg-sign-up";
     }
 
-    @PostMapping("/register")
+    @GetMapping("/register/validating")
+    public String registerValidating() {
+        return "reg-validating";
+    }
+
+    @PostMapping("/register/sign-up")
     public String registerNewUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "register";
+            return "reg-sign-up";
         }
         final User tempUser = userRepository.findByEmail(userDto.getEmail());
         if (tempUser != null) {
-            if (!tempUser.isActivated()) {
-                /* Todo Confirmation Page */
-                return "";
-            }
+            result.rejectValue("email", "message.error");
+            return "reg-sign-up";
         }
         final User user = new Mapper().set(userDto).mapTo(User.class);
         user.setId(String.valueOf(IdGenerator.randomUUID()));
@@ -73,10 +76,10 @@ public class AccountController {
 
         final StringBuilder builder = new StringBuilder();
         builder.append(request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
-        builder.append("account/activate");
-        builder.append("?userId=");
+        builder.append("register/activate");
+        builder.append("?uid=");
         builder.append(user.getId());
-        builder.append("&token=");
+        builder.append("&tid=");
         builder.append(token.getKey());
 
         userRepository.save(user);
@@ -84,22 +87,29 @@ public class AccountController {
 
         System.out.println(builder.toString());
 
-        return "accnt-reg-help";
+        return "redirect:../register/validating";
     }
 
-    @GetMapping("account/activate")
-    public String activateUser(@RequestParam("userId") String userId, @RequestParam("tokenId") String tokenId) {
+    @GetMapping("register/activate")
+    public String activateUser(@RequestParam(value = "uid", required = false) String userId,
+                               @RequestParam(value = "tid", required = false) String tokenId) {
         final User user = userRepository.findOne(userId);
         final Token token = tokenRepository.findOne(tokenId);
         final Calendar calendar = Calendar.getInstance();
 
-        if (!user.isActivated() && (token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
-            user.setActivated(true);
-            userRepository.save(user);
-            tokenRepository.delete(token);
+        if (user == null || user.isActivated()) {
+            System.out.println("user ang problem");
+            return "reg-error";
         }
+        if (token == null || !(token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
+            System.out.println("token ang problem");
+            return "reg-error";
+        }
+        user.setActivated(true);
+        userRepository.save(user);
+        tokenRepository.delete(token);
 
-        return "";
+        return "accnt-dashboard";
     }
 
 
