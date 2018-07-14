@@ -7,9 +7,11 @@ import javax.validation.constraints.NotNull;
 
 public class UserDto {
 
+    private String id;
+
     @NotNull
     @NotEmpty(message = "Name is required")
-    public String name;
+    private String name;
 
     @NotNull
     @NotEmpty(message = "Email is required")
@@ -19,6 +21,17 @@ public class UserDto {
     @NotNull
     @NotEmpty(message = "Password is required")
     private String password;
+
+    public UserDto() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -42,14 +55,5 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

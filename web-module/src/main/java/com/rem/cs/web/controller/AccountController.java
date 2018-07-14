@@ -42,22 +42,19 @@ public class AccountController {
     @ModelAttribute
     public void init(Model model) {
         model.addAttribute("user", new UserDto());
+        model.addAttribute("token", null);
         model.addAttribute("title", messageSource.getMessage("reg.title", null, null));
         model.addAttribute("subtitle", messageSource.getMessage("reg.subtitle", null, null));
     }
 
-    @GetMapping("/register/sign-up")
-    public String registerSignUp() {
+    @GetMapping("/register")
+    public String getRegister() {
         return "reg-sign-up";
     }
 
-    @GetMapping("/register/validating")
-    public String registerValidating() {
-        return "reg-validating";
-    }
-
-    @PostMapping("/register/sign-up")
-    public String registerNewUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    @PostMapping("/register")
+    public String postRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+        final Mapper mapper = new Mapper();
         if (result.hasErrors()) {
             return "reg-sign-up";
         }
@@ -66,7 +63,7 @@ public class AccountController {
             result.rejectValue("email", "message.error");
             return "reg-sign-up";
         }
-        final User user = new Mapper().set(userDto).mapTo(User.class);
+        final User user = mapper.set(userDto).mapTo(User.class);
         user.setId(String.valueOf(IdGenerator.randomUUID()));
         user.setActivated(false);
 
@@ -85,14 +82,17 @@ public class AccountController {
         userRepository.save(user);
         tokenRepository.save(token);
 
+        model.addAttribute("user", mapper.set(user).mapTo(UserDto.class));
+        model.addAttribute("token", token);
+
         System.out.println(builder.toString());
 
-        return "redirect:../register/validating";
+        return "reg-validating";
     }
 
     @GetMapping("register/activate")
-    public String activateUser(@RequestParam(value = "uid", required = false) String userId,
-                               @RequestParam(value = "tid", required = false) String tokenId) {
+    public String getActivation(@RequestParam(value = "uid", required = false) String userId,
+                                @RequestParam(value = "tid", required = false) String tokenId) {
         final User user = userRepository.findOne(userId);
         final Token token = tokenRepository.findOne(tokenId);
         final Calendar calendar = Calendar.getInstance();
@@ -109,7 +109,7 @@ public class AccountController {
         userRepository.save(user);
         tokenRepository.delete(token);
 
-        return "accnt-dashboard";
+        return "";
     }
 
 
