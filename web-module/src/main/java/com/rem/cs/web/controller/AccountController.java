@@ -5,10 +5,9 @@ import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
 import com.rem.cs.web.dto.UserDto;
-import io.ermdev.cshop.commons.DateHelper;
-import io.ermdev.cshop.commons.IdGenerator;
-import mapfierj.Mapper;
+import com.rem.cs.web.listener.UserEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
+import java.util.HashMap;
 
 @Controller
 public class AccountController {
@@ -29,14 +29,16 @@ public class AccountController {
     private TokenRepository tokenRepository;
     private MessageSource messageSource;
     private HttpServletRequest request;
+    private ApplicationEventPublisher publisher;
 
     @Autowired
     public AccountController(UserRepository userRepository, TokenRepository tokenRepository, MessageSource
-            messageSource, HttpServletRequest request) {
+            messageSource, HttpServletRequest request, ApplicationEventPublisher publisher) {
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
         this.messageSource = messageSource;
         this.request = request;
+        this.publisher = publisher;
     }
 
     @ModelAttribute
@@ -54,45 +56,24 @@ public class AccountController {
 
     @PostMapping("/register")
     public String postRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
-        final Mapper mapper = new Mapper();
-        if (result.hasErrors()) {
-            return "reg-sign-up";
-        }
-        final User tempUser = userRepository.findByEmail(userDto.getEmail());
-        if (tempUser != null) {
+        final HashMap<String, Object> hashMap = new HashMap<>();
+
+        if (result.hasErrors() || userRepository.findByEmail(userDto.getEmail()) != null) {
             result.rejectValue("email", "message.error");
             return "reg-sign-up";
+        } else {
+            hashMap.put("do", UserEvent.CREATE_USER);
+            hashMap.put("user", userDto);
+            hashMap.put("request", request);
+            publisher.publishEvent(new UserEvent(hashMap));
+            return "reg-validating";
         }
-        final User user = mapper.set(userDto).mapTo(User.class);
-        user.setId(String.valueOf(IdGenerator.randomUUID()));
-        user.setActivated(false);
-
-        final Token token = new Token();
-        token.setKey(String.valueOf(IdGenerator.randomUUID()));
-        token.setExpiryDate(new DateHelper().setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
-
-        final StringBuilder builder = new StringBuilder();
-        builder.append(request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
-        builder.append("register/activate");
-        builder.append("?uid=");
-        builder.append(user.getId());
-        builder.append("&tid=");
-        builder.append(token.getKey());
-
-        userRepository.save(user);
-        tokenRepository.save(token);
-
-        model.addAttribute("user", mapper.set(user).mapTo(UserDto.class));
-        model.addAttribute("token", token);
-
-        System.out.println(builder.toString());
-
-        return "reg-validating";
     }
 
     @GetMapping("register/activate")
     public String getActivation(@RequestParam(value = "uid", required = false) String userId,
                                 @RequestParam(value = "tid", required = false) String tokenId) {
+        final HashMap<String, Object> hashMap = new HashMap<>();
         final User user = userRepository.findOne(userId);
         final Token token = tokenRepository.findOne(tokenId);
         final Calendar calendar = Calendar.getInstance();
@@ -105,11 +86,11 @@ public class AccountController {
             System.out.println("token ang problem");
             return "reg-error";
         }
-        user.setActivated(true);
-        userRepository.save(user);
-        tokenRepository.delete(token);
-
-        return "";
+        hashMap.put("do", UserEvent.ACTIVATE_USER);
+        hashMap.put("user", user);
+        hashMap.put("token", token);
+        publisher.publishEvent(new UserEvent(hashMap));
+        return "1";
     }
 
 
