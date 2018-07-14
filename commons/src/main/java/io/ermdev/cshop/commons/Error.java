@@ -1,5 +1,6 @@
 package io.ermdev.cshop.commons;
 
+@Deprecated
 public class Error {
 
     private String message;

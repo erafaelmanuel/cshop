@@ -1,5 +1,6 @@
 package io.ermdev.cshop.commons;
 
+@Deprecated
 public class Link {
 
     private String rel;

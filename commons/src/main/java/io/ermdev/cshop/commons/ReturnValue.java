@@ -1,5 +1,6 @@
 package io.ermdev.cshop.commons;
 
+@Deprecated
 public class ReturnValue {
 
     private boolean hasError;

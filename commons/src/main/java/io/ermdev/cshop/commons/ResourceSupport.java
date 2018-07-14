@@ -3,6 +3,7 @@ package io.ermdev.cshop.commons;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ResourceSupport {
 
     private List<Link> _links = new ArrayList<>();
