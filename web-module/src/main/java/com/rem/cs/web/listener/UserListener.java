@@ -5,6 +5,7 @@ import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
 import com.rem.cs.web.dto.UserDto;
+import com.rem.cs.web.event.UserEvent;
 import com.rem.mappyfy.Mapper;
 import io.ermdev.cshop.commons.DateHelper;
 import io.ermdev.cshop.commons.IdGenerator;

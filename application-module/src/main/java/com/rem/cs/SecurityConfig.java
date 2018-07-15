@@ -9,12 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private AuthenticationFailureHandlerImpl failureHandler;
-
-    private UserDetailServiceImpl userDetailService;
+    private final AuthenticationSuccessHandlerImpl successHandler;
+    private final AuthenticationFailureHandlerImpl failureHandler;
+    private final UserDetailServiceImpl userDetailService;
 
     @Autowired
-    public SecurityConfig(AuthenticationFailureHandlerImpl failureHandler, UserDetailServiceImpl userDetailService) {
+    public SecurityConfig(AuthenticationSuccessHandlerImpl successHandler, AuthenticationFailureHandlerImpl
+            failureHandler, UserDetailServiceImpl userDetailService) {
+        this.successHandler = successHandler;
         this.failureHandler = failureHandler;
         this.userDetailService = userDetailService;
     }
@@ -34,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .loginPage("/login")
-                .successForwardUrl("/login/success")
+                .successHandler(successHandler)
                 .failureHandler(failureHandler)
                 .permitAll()
                 .and()

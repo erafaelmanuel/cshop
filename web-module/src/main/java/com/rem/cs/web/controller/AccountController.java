@@ -5,12 +5,10 @@ import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
 import com.rem.cs.web.dto.UserDto;
-import com.rem.cs.web.listener.UserEvent;
-import io.ermdev.cshop.exception.EntityException;
+import com.rem.cs.web.event.UserEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +19,7 @@ import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@SessionAttributes({"currentUser", "cartItems"})
+@SessionAttributes({"verifiedUser", "cartItems"})
 @Controller
 public class AccountController {
 
@@ -75,26 +73,9 @@ public class AccountController {
         }
     }
 
-    @PostMapping("login/success")
-    public String onLoginSuccess(Authentication authentication, Model model) {
-        System.out.println(authentication);
-        final User user = userRepository.findByEmail(authentication.getName()).orElse(null);
-        try {
-            if (user == null) {
-                throw new EntityException("Error!");
-            } else {
-                model.addAttribute("currentUser", user);
-                return "redirect:/catalog";
-            }
-        } catch (EntityException e) {
-            model.addAttribute("message", e.getMessage());
-            return "error/500";
-        }
-    }
-
     @GetMapping("register/activate")
-    public String getActivation(@RequestParam(value = "uid", required = false) String userId,
-                                @RequestParam(value = "tid", required = false) String tokenId) {
+    public String onActivate(@RequestParam(value = "uid", required = false) String userId,
+                             @RequestParam(value = "tid", required = false) String tokenId) {
         final HashMap<String, Object> hashMap = new HashMap<>();
         final User user = userRepository.findById(userId).orElse(null);
         final Token token = tokenRepository.findById(tokenId).orElse(null);
