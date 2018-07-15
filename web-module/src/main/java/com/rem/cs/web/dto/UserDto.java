@@ -1,25 +1,13 @@
 package com.rem.cs.web.dto;
 
-import com.rem.cs.web.validation.annotation.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.constraints.NotNull;
-
 public class UserDto {
 
     private String id;
 
-    @NotNull
-    @NotEmpty(message = "Name is required")
     private String name;
 
-    @NotNull
-    @NotEmpty(message = "Email is required")
-    @Email
     private String email;
 
-    @NotNull
-    @NotEmpty(message = "Password is required")
     private String password;
 
     public UserDto() {

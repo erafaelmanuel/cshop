@@ -14,7 +14,7 @@
     <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
-<th:block th:include="header :: header"/>
+<th:block th:include="fragment/header :: header"/>
 <div class="login-page">
     <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
         <p th:text="#{login.message.success}"></p>

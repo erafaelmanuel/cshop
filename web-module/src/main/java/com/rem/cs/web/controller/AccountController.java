@@ -3,14 +3,17 @@ package com.rem.cs.web.controller;
 import com.rem.cs.data.jpa.token.Token;
 import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
-import com.rem.cs.data.jpa.user.UserRepository;
+import com.rem.cs.data.jpa.user.UserService;
+import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
+import com.rem.cs.web.validation.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +26,17 @@ import java.util.HashMap;
 @Controller
 public class AccountController {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private TokenRepository tokenRepository;
     private MessageSource messageSource;
     private HttpServletRequest request;
     private ApplicationEventPublisher publisher;
 
     @Autowired
-    public AccountController(UserRepository userRepository, TokenRepository tokenRepository, MessageSource
+    public AccountController(UserService userService, TokenRepository tokenRepository, MessageSource
             messageSource, HttpServletRequest request, ApplicationEventPublisher publisher) {
-        this.userRepository = userRepository;
+        this.userService = userService;
+        this.userService = userService;
         this.tokenRepository = tokenRepository;
         this.messageSource = messageSource;
         this.request = request;
@@ -54,44 +58,63 @@ public class AccountController {
 
     @GetMapping("/register")
     public String getRegister() {
-        return "reg-sign-up";
+        return "sign-up";
     }
 
     @PostMapping("/register")
-    public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result) {
         final HashMap<String, Object> hashMap = new HashMap<>();
 
-        if (result.hasErrors() || userRepository.findByEmail(userDto.getEmail()).orElse(null) != null) {
-            result.rejectValue("email", "message.error");
-            return "reg-sign-up";
+        if (StringUtils.isEmpty(userDto.getName())) {
+            result.rejectValue("name", "error_message.name.required");
+        }
+        if (StringUtils.isEmpty(userDto.getPassword())) {
+            result.rejectValue("password", "error_message.password.required");
+        }
+        if (StringUtils.isEmpty(userDto.getEmail())) {
+            result.rejectValue("email", "error_message.email.required");
+        }
+        if (!userDto.getEmail().matches(EmailValidator.EMAIL_PATTERN)) {
+            result.rejectValue("email", "error_message.email.invalid");
+        }
+        if (userService.countByEmail(userDto.getEmail()) > 0) {
+            result.rejectValue("email", "error_message.email.duplicated");
+        }
+        if (result.hasErrors()) {
+            return "sign-up";
         } else {
             hashMap.put("do", UserEvent.CREATE_USER);
             hashMap.put("user", userDto);
             hashMap.put("request", request);
+
             publisher.publishEvent(new UserEvent(hashMap));
-            return "reg-validating";
+            return "validating";
         }
     }
 
     @GetMapping("register/activate")
     public String onActivate(@RequestParam(value = "uid", required = false) String userId,
                              @RequestParam(value = "tid", required = false) String tokenId) {
-        final HashMap<String, Object> hashMap = new HashMap<>();
-        final User user = userRepository.findById(userId).orElse(null);
-        final Token token = tokenRepository.findById(tokenId).orElse(null);
-        final Calendar calendar = Calendar.getInstance();
+        try {
+            final HashMap<String, Object> hashMap = new HashMap<>();
+            final User user = userService.findById(userId);
+            final Token token = tokenRepository.findById(tokenId).orElse(null);
+            final Calendar calendar = Calendar.getInstance();
 
-        if (user == null || user.isActivated()) {
+            if (user.isActivated()) {
+                return "error/500";
+            }
+            if (token == null || !(token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
+                return "error/500";
+            }
+            hashMap.put("do", UserEvent.ACTIVATE_USER);
+            hashMap.put("user", user);
+            hashMap.put("token", token);
+            publisher.publishEvent(new UserEvent(hashMap));
+            return "catalog";
+        } catch (EntityException e) {
             return "error/500";
         }
-        if (token == null || !(token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
-            return "error/500";
-        }
-        hashMap.put("do", UserEvent.ACTIVATE_USER);
-        hashMap.put("user", user);
-        hashMap.put("token", token);
-        publisher.publishEvent(new UserEvent(hashMap));
-        return "1";
     }
 
 

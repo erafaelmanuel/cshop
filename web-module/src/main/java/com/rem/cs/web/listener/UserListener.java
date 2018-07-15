@@ -4,6 +4,7 @@ import com.rem.cs.data.jpa.token.Token;
 import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
+import com.rem.cs.data.jpa.user.UserService;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
 import com.rem.mappyfy.Mapper;
@@ -22,13 +23,13 @@ import java.util.HashMap;
 @Component
 public class UserListener implements ApplicationListener<UserEvent> {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private TokenRepository tokenRepository;
     private JavaMailSender mailSender;
 
     @Autowired
-    public UserListener(UserRepository userRepository, TokenRepository tokenRepository, JavaMailSender mailSender) {
-        this.userRepository = userRepository;
+    public UserListener(UserService userService, TokenRepository tokenRepository, JavaMailSender mailSender) {
+        this.userService = userService;
         this.tokenRepository = tokenRepository;
         this.mailSender = mailSender;
     }
@@ -62,15 +63,14 @@ public class UserListener implements ApplicationListener<UserEvent> {
         builder.append("&tid=");
         builder.append(token.getKey());
 
-        userRepository.save(user);
+        userService.save(user);
         tokenRepository.save(token);
-
         sendConfirmationEmail(user, builder.toString());
     }
 
     private void activateUser(User user, Token token) {
         user.setActivated(true);
-        userRepository.save(user);
+        userService.save(user);
         tokenRepository.delete(token);
     }
 
