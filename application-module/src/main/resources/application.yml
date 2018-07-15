@@ -1,0 +1,30 @@
+server:
+  port: 8080
+spring:
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        one-indexed-parameters: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_cs?useSSL=false
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show_sql: true
+    database-plaform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl_auto: update
+  mail:
+    host: smtp.gmail.com
+    username: ermdev.io@gmail.com
+    password: makejarnotwaR&0
+    port: 587
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+

@@ -1,4 +1,4 @@
-package io.ermdev.cshop.exception;
+package com.rem.cs.exception;
 
 public class TokenException extends Exception {
 

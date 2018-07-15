@@ -3,7 +3,7 @@ package com.rem.cs;
 import com.rem.cs.data.jpa.role.Role;
 import com.rem.cs.data.jpa.user.User;
 import com.rem.cs.data.jpa.user.UserRepository;
-import io.ermdev.cshop.exception.EntityException;
+import com.rem.cs.exception.EntityException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

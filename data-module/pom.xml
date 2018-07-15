@@ -11,5 +11,12 @@
     </parent>
     <artifactId>data-module</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.rem.cs</groupId>
+            <artifactId>exception</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>
