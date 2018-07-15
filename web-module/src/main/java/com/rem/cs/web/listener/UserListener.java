@@ -3,7 +3,6 @@ package com.rem.cs.web.listener;
 import com.rem.cs.data.jpa.token.Token;
 import com.rem.cs.data.jpa.token.TokenRepository;
 import com.rem.cs.data.jpa.user.User;
-import com.rem.cs.data.jpa.user.UserRepository;
 import com.rem.cs.data.jpa.user.UserService;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
@@ -37,35 +36,31 @@ public class UserListener implements ApplicationListener<UserEvent> {
     @Override
     public void onApplicationEvent(UserEvent event) {
         final HashMap hashMap = (HashMap) event.getSource();
-        if ((int) hashMap.get("do") == 1) {
-            createUser((UserDto) hashMap.get("user"), (HttpServletRequest) hashMap.get("request"));
-        } else if ((int) hashMap.get("do") == 2) {
-            activateUser((User) hashMap.get("user"), (Token) hashMap.get("token"));
+        switch ((int) hashMap.get("do")) {
+            case 1: {
+                createUser((UserDto) hashMap.get("user"), (String) hashMap.get("baseUrl"));
+                break;
+            }
+            case 2: {
+                activateUser((User) hashMap.get("user"), (Token) hashMap.get("token"));
+                break;
+            }
+            case 3: {
+                sendConfirmationEmail((User) hashMap.get("user"), (String) hashMap.get("baseUrl"));
+                break;
+            }
         }
     }
 
-    private void createUser(UserDto userDto, HttpServletRequest request) {
+    private void createUser(UserDto userDto, String baseUrl) {
         final Mapper mapper = new Mapper();
         final User user = mapper.set(userDto).mapTo(User.class);
-        final Token token = new Token();
-        final StringBuilder builder = new StringBuilder();
 
         user.setId(String.valueOf(IdGenerator.randomUUID()));
         user.setActivated(false);
 
-        token.setKey(String.valueOf(IdGenerator.randomUUID()));
-        token.setExpiryDate(new DateHelper().setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
-
-        builder.append(request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
-        builder.append("register/activate");
-        builder.append("?uid=");
-        builder.append(user.getId());
-        builder.append("&tid=");
-        builder.append(token.getKey());
-
         userService.save(user);
-        tokenRepository.save(token);
-        sendConfirmationEmail(user, builder.toString());
+        sendConfirmationEmail(user, baseUrl);
     }
 
     private void activateUser(User user, Token token) {
@@ -74,19 +69,33 @@ public class UserListener implements ApplicationListener<UserEvent> {
         tokenRepository.delete(token);
     }
 
-    private void sendConfirmationEmail(User user, String url) {
+    private void sendConfirmationEmail(User user, String baseUrl) {
         Thread thread = new Thread(() -> {
             try {
+                final Token token = new Token();
+                final StringBuilder builder = new StringBuilder();
+
                 final String address = "ermdev.io@gmail.com";
                 final String recipientAddress = user.getEmail();
                 final String title = "Cloth Shop";
                 final String subject = "Account Details for " + user.getName() + " at " + title;
 
+                token.setKey(String.valueOf(IdGenerator.randomUUID()));
+                token.setExpiryDate(new DateHelper().setTimeNow().addTimeInMinute(DateHelper.DAY_IN_MINUTE).getDate());
+                tokenRepository.save(token);
+
+                builder.append(baseUrl);
+                builder.append("register/activate");
+                builder.append("?uid=");
+                builder.append(user.getId());
+                builder.append("&tid=");
+                builder.append(token.getKey());
+
                 MimeMailMessage mailMessage = new MimeMailMessage(mailSender.createMimeMessage());
                 mailMessage.setTo(recipientAddress);
                 mailMessage.setSubject(subject);
                 mailMessage.getMimeMessage().setFrom(new InternetAddress(address, title));
-                mailMessage.getMimeMessage().setContent(url, "text/html");
+                mailMessage.getMimeMessage().setContent(builder.toString(), "text/html");
                 mailSender.send(mailMessage.getMimeMessage());
 
             } catch (Exception e) {

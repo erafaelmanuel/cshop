@@ -23,43 +23,33 @@
 
 </head>
 <body>
-<th:block th:include="fragment/header :: header"/>
-
-    <!--<div class="alert alert-success registration-message" role="alert">-->
-        <!--<h4 class="alert-heading">Message</h4>-->
-        <!--<p th:text="#{register.message.complete}"></p>-->
-        <!--<form action="/register/resend-verification" method="post">-->
-            <!--<input type="hidden" name="userId" th:value="${userId}"/>-->
-            <!--<button class="btn btn-success">Resend Email</button>-->
-        <!--</form>-->
-    <!--</div>-->
-
-<div class="alert alert-success registration-message reg-val-message" role="alert">
-    <p align="center">We sent an email to <b>rafaelmanuel@gmail.com</b>. It contain a link you need to click in order to confirm
-        your account.
-        <p align="center">You need to do this before you can access our site as a registered member</p>
-    </p>
-    <ul class="reg-val-options">
-        <li>
-            <form action="/register/resend-verification" method="post">
-                <input type="hidden" name="userId" th:value="${userId}"/>
-                <button class="btn btn-success">Resend Confirmation Email</button>
-            </form>
-        </li>
-        <li>
-            <form action="/register/resend-verification" method="post">
-                <input type="hidden" name="userId" th:value="${userId}"/>
-                <button class="btn btn-success">Change Email Address</button>
-            </form>
-        </li>
-        <li>
-            <form action="/register/resend-verification" method="post">
-                <input type="hidden" name="userId" th:value="${userId}"/>
-                <button class="btn btn-success">Cancel Registration</button>
-            </form>
-        </li>
-    </ul>
-</div>
+    <th:block th:include="fragment/header :: header"/>
+    <div class="alert alert-success registration-message reg-val-message" role="alert">
+        <p align="center">We sent an email to <b>rafaelmanuel@gmail.com</b>. It contain a link you need to click in order to confirm
+            your account.
+            <p align="center">You need to do this before you can access our site as a registered member</p>
+        </p>
+        <ul class="reg-val-options">
+            <li>
+                <form action="/register/resend-confirmation" method="post">
+                    <input type="hidden" name="email" th:value="${email}"/>
+                    <button class="btn btn-success">Resend Confirmation Email</button>
+                </form>
+            </li>
+            <li>
+                <form action="/register/resend-verification" method="post">
+                    <input type="hidden" name="userId" th:value="${userId}"/>
+                    <button class="btn btn-success">Change Email Address</button>
+                </form>
+            </li>
+            <li>
+                <form action="/register/resend-verification" method="post">
+                    <input type="hidden" name="userId" th:value="${userId}"/>
+                    <button class="btn btn-success">Cancel Registration</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">

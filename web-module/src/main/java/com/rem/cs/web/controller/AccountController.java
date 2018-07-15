@@ -62,7 +62,7 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result) {
+    public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         final HashMap<String, Object> hashMap = new HashMap<>();
 
         if (StringUtils.isEmpty(userDto.getName())) {
@@ -85,9 +85,9 @@ public class AccountController {
         } else {
             hashMap.put("do", UserEvent.CREATE_USER);
             hashMap.put("user", userDto);
-            hashMap.put("request", request);
-
+            hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
             publisher.publishEvent(new UserEvent(hashMap));
+            model.addAttribute("email", userDto.getEmail());
             return "validating";
         }
     }
@@ -111,7 +111,27 @@ public class AccountController {
             hashMap.put("user", user);
             hashMap.put("token", token);
             publisher.publishEvent(new UserEvent(hashMap));
-            return "catalog";
+            return "redirect:/catalog";
+        } catch (EntityException e) {
+            return "error/500";
+        }
+    }
+
+    @PostMapping("register/resend-confirmation")
+    public String onResendConfirmationEmail(@RequestParam(value = "email") String email) {
+        try {
+            final HashMap<String, Object> hashMap = new HashMap<>();
+            final User user = userService.findByEmail(email);
+
+            if (!user.isActivated()) {
+                hashMap.put("do", UserEvent.RESEND_CONFIRMATION_EMAIL);
+                hashMap.put("user", user);
+                hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+                publisher.publishEvent(new UserEvent(hashMap));
+                return "validating";
+            } else {
+                return "redirect:/login";
+            }
         } catch (EntityException e) {
             return "error/500";
         }
