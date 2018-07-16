@@ -1,6 +1,6 @@
 package com.rem.cs.web.validation.annotation;
 
-import com.rem.cs.web.validation.EmailValidator;
+import com.rem.cs.web.validation.PasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -12,8 +12,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = EmailValidator.class)
-public @interface Email {
+@Constraint(validatedBy = PasswordValidator.class)
+public @interface Password {
 
     String message() default "";
 

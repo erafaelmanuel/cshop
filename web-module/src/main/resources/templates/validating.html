@@ -25,7 +25,7 @@
 <body>
     <th:block th:include="fragment/header :: header"/>
     <div class="alert alert-success registration-message reg-val-message" role="alert">
-        <p align="center">We sent an email to <b>rafaelmanuel@gmail.com</b>. It contain a link you need to click in order to confirm
+        <p align="center">We sent an email to <b th:text="${email}">. It contain a link you need to click in order to confirm
             your account.
             <p align="center">You need to do this before you can access our site as a registered member</p>
         </p>

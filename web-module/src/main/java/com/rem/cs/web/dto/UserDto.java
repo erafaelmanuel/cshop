@@ -1,13 +1,20 @@
 package com.rem.cs.web.dto;
 
+import com.rem.cs.web.validation.annotation.Email;
+import com.rem.cs.web.validation.annotation.Name;
+import com.rem.cs.web.validation.annotation.Password;
+
 public class UserDto {
 
     private String id;
 
+    @Name
     private String name;
 
+    @Email
     private String email;
 
+    @Password
     private String password;
 
     public UserDto() {

@@ -65,21 +65,6 @@ public class AccountController {
     public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         final HashMap<String, Object> hashMap = new HashMap<>();
 
-        if (StringUtils.isEmpty(userDto.getName())) {
-            result.rejectValue("name", "error_message.name.required");
-        }
-        if (StringUtils.isEmpty(userDto.getPassword())) {
-            result.rejectValue("password", "error_message.password.required");
-        }
-        if (StringUtils.isEmpty(userDto.getEmail())) {
-            result.rejectValue("email", "error_message.email.required");
-        }
-        if (!userDto.getEmail().matches(EmailValidator.EMAIL_PATTERN)) {
-            result.rejectValue("email", "error_message.email.invalid");
-        }
-        if (userService.countByEmail(userDto.getEmail()) > 0) {
-            result.rejectValue("email", "error_message.email.duplicated");
-        }
         if (result.hasErrors()) {
             return "sign-up";
         } else {
