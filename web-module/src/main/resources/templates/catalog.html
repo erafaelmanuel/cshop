@@ -64,12 +64,31 @@
             </div>
         </div>
     </div>
+    <ul class="pagination justify-content-center">
+        <li th:class="${isFirst} ? 'page-item disabled': 'page-item'">
+            <a class="page-link" aria-label="Previous" th:href="'/catalog?page=' + ${cp-1}">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item disabled" th:if="${prevEllipsis}">
+            <a class="page-link">...</a>
+        </li>
+        <li th:each="p, iterStat : ${pages}" th:class="${p} eq ${cp} ? 'page-item active':'page-item'">
+            <a class="page-link" th:href="'/catalog?page=' + ${p}" th:text="${p}" />
+        </li>
+        <li class="page-item disabled" th:if="${nextEllipsis}">
+            <a class="page-link">...</a>
+        </li>
+        <li th:class="${isLast} ? 'page-item disabled': 'page-item'">
+            <a class="page-link" aria-label="Next" th:href="'/catalog?page=' + ${cp+1}">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
 </div>
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; ermdev.io 2017</p>
-    </div>
-</footer>
+<th:block th:include="fragment/footer :: footer"/>
 <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
