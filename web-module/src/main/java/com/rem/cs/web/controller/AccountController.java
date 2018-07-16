@@ -7,13 +7,11 @@ import com.rem.cs.data.jpa.user.UserService;
 import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
-import com.rem.cs.web.validation.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -103,7 +101,7 @@ public class AccountController {
     }
 
     @PostMapping("register/resend-confirmation")
-    public String onResendConfirmationEmail(@RequestParam(value = "email") String email) {
+    public String onResendConfirmationEmail(@RequestParam(value = "email") String email, Model model) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
             final User user = userService.findByEmail(email);
@@ -113,11 +111,36 @@ public class AccountController {
                 hashMap.put("user", user);
                 hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
                 publisher.publishEvent(new UserEvent(hashMap));
+                model.addAttribute("email", email);
                 return "validating";
             } else {
                 return "redirect:/login";
             }
         } catch (EntityException e) {
+            return "error/500";
+        }
+    }
+
+    @PostMapping("register/change-email-address")
+    public String onChangeEmailAddress(@RequestParam(value = "email") String email,
+                                       @RequestParam(value = "new_email") String newEmail, Model model) {
+//        if (!newEmail.matches("^[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*@\" +\n" +
+//                "[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z0-9]+)$")) {
+//            return "error/500";
+//        }
+        try {
+            final HashMap<String, Object> hashMap = new HashMap<>();
+            final User user = userService.findByEmail(email);
+
+            hashMap.put("do", UserEvent.CHANGE_EMAIL_ADDRESS);
+            hashMap.put("user", user);
+            hashMap.put("email", newEmail);
+            hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+            publisher.publishEvent(new UserEvent(hashMap));
+            model.addAttribute("email", newEmail);
+            return "validating";
+        } catch (EntityException e) {
+            e.printStackTrace();
             return "error/500";
         }
     }

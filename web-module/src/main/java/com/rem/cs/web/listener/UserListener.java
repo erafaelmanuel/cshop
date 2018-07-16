@@ -49,6 +49,11 @@ public class UserListener implements ApplicationListener<UserEvent> {
                 sendConfirmationEmail((User) hashMap.get("user"), (String) hashMap.get("baseUrl"));
                 break;
             }
+            case 4: {
+                changeUserEmail((User) hashMap.get("user"), (String) hashMap.get("email"),
+                        (String) hashMap.get("baseUrl"));
+                break;
+            }
         }
     }
 
@@ -67,6 +72,12 @@ public class UserListener implements ApplicationListener<UserEvent> {
         user.setActivated(true);
         userService.save(user);
         tokenRepository.delete(token);
+    }
+
+    private void changeUserEmail(User user, String email, String baseUrl) {
+        user.setEmail(email);
+        userService.save(user);
+        sendConfirmationEmail(user, baseUrl);
     }
 
     private void sendConfirmationEmail(User user, String baseUrl) {
@@ -97,7 +108,6 @@ public class UserListener implements ApplicationListener<UserEvent> {
                 mailMessage.getMimeMessage().setFrom(new InternetAddress(address, title));
                 mailMessage.getMimeMessage().setContent(builder.toString(), "text/html");
                 mailSender.send(mailMessage.getMimeMessage());
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
