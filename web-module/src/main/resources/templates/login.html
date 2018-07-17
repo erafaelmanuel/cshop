@@ -10,7 +10,8 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
     <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -23,12 +24,12 @@
         <p th:text="#{login.message.error}"></p>
     </div>
     <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
-        <h2>Welcome Back</h2>
-        <p>You can sign in with your email.</p>
+        <h2>Welcome</h2>
+        <p>Sign in with your email.</p>
     </div>
     <div class="form">
         <form action="/login" method="post" class="login-form">
-            <input type="text" placeholder="Username" name="username"/>
+            <input type="text" placeholder="Email" name="username"/>
             <input type="password" placeholder="Password" name="password"/>
             <button>login</button>
             <p class="message">Not registered? <a href="/register">Create an account</a></p>

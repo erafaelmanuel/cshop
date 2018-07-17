@@ -9,11 +9,9 @@
     <title>Cloth Shop</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
-
-    <link th:href="@{/css/header.css}" rel="stylesheet"/>
-
+    <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -40,7 +38,7 @@
                 <p th:each="error, iterStat : ${#fields.errors('email')}" th:text="${error}"
                    th:if="${iterStat.first}" class="form-error">Email error</p>
             </div>
-            <button>create</button>
+            <button>register</button>
             <p class="message">Already registered? <a href="/login">Sign In</a></p>
         </form>
     </div>

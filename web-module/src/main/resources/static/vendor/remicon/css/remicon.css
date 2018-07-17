@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'remicon';
+  src:  url('../fonts/remicon.eot?mrp018');
+  src:  url('../fonts/remicon.eot?mrp018#iefix') format('embedded-opentype'),
+    url('../fonts/remicon.ttf?mrp018') format('truetype'),
+    url('../fonts/remicon.woff?mrp018') format('woff'),
+    url('../fonts/remicon.svg?mrp018#remicon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'remicon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-mail:before {
+  content: "\e901";
+}
+.icon-shopping-cart:before {
+  content: "\e900";
+}

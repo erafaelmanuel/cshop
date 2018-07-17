@@ -1,0 +1,80 @@
+body {
+  padding-top: 54px;
+  background: #ecf0f1;
+}
+
+.navbar-custom {
+    background-color: #f1f2f6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: #000;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,.5);
+}
+
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #000;
+}
+
+.nav-item {
+    position:relative;
+    display:flex;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+.nav-item .icon {
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.nav-item .item {
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.nav-item .icon a {
+  margin-top: 5px;
+}
+
+.nav-item a i {
+  color: #000;
+  font-size: 20px;
+}
+
+.nav-item a span {
+  color: #2d3436;
+}
+
+.badge {
+    position: absolute;
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 90px;
+    min-width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    padding: 0 3px;
+    top: 0px;
+    right: -5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
