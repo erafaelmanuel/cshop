@@ -8,6 +8,10 @@ body {
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
+.navbar-custom .container {
+    margin: 5px auto;
+}
+
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
     color: #000;
@@ -24,36 +28,37 @@ body {
     color: #000;
 }
 
-.nav-item {
-    position:relative;
-    display:flex;
-    padding-right: 3px;
-    padding-left: 3px;
-}
-
-.nav-item .icon {
-  margin-top: auto;
-  margin-bottom: auto;
-  display: flex;
-}
-
 .nav-item .item {
-  margin-top: auto;
-  margin-bottom: auto;
-  display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 10px;
+    position: relative;
 }
 
-.nav-item .icon a {
-  margin-top: 5px;
+.nav-item .nav-link {
+    margin: 0px !important;
+    padding: 0px !important;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.nav-item a i {
-  color: #000;
-  font-size: 20px;
+.account-toggle {
+    margin: 0px !important;
+    padding: 0px !important;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-toggle span {
+    position: relative;
+    left: 4px;
 }
 
 .nav-item a span {
-  color: #2d3436;
+    color: #2d3436;
 }
 
 .badge {
@@ -68,9 +73,24 @@ body {
     line-height: 22px;
     text-align: center;
     padding: 0 3px;
-    top: 0px;
-    right: -5px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    bottom: 17px;
+    left: 18px;
+
+}
+
+.dropdown-header {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.dropdown-item {
+    font-size: 13px;
+}
+
+.settings-item:hover {
+    color: #fff !important;
+    background: #5352ed;
 }
 
 @media (min-width: 992px) {
