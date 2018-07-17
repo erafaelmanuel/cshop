@@ -28,23 +28,21 @@ public class CatalogController {
     }
 
     @GetMapping("/catalog")
-    public String getCatalog(@PageableDefault(sort = "name", size = 1) Pageable pageable, Model model) {
+    public String getCatalog(@PageableDefault(sort = "name", size = 20) Pageable pageable, Model model) {
         try {
             final Mapper mapper = new Mapper();
             final List<ItemDto> items = new ArrayList<>();
             final Page<Item> pageItems = itemService.findAll(pageable);
             final int pages[] = new int[pageItems.getTotalPages() < 5 ? pageItems.getTotalPages() : 5];
+
             int currentPage = pageable.getPageNumber() + 1;
             boolean prevEllipsis = false;
             boolean nextEllipsis = false;
 
-
-            pageItems.forEach(item -> items.add(
-                    mapper
-                            .set(item)
-                            .ignore("categories")
-                            .mapTo(ItemDto.class)));
-
+            pageItems.forEach(item -> items.add(mapper
+                    .set(item)
+                    .ignore("categories")
+                    .mapTo(ItemDto.class)));
             if (currentPage > pageItems.getTotalPages()) {
                 currentPage = 1;
             }
@@ -85,6 +83,7 @@ public class CatalogController {
             model.addAttribute("nextEllipsis", nextEllipsis);
             model.addAttribute("isFirst", pageItems.isFirst());
             model.addAttribute("isLast", pageItems.isLast());
+            model.addAttribute("cartItems", items);
         } catch (Exception e) {
             e.printStackTrace();
         }

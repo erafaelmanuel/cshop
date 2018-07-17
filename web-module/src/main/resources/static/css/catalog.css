@@ -27,11 +27,15 @@
   margin-bottom: 30px;
 }
 
+.catalog-no-item {
+    height: 450px;
+}
+
 .card-img-overlay {
   display: none;
   position: absolute;
   height: 280px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 ul.catalog-item-option {

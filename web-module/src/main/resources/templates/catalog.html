@@ -19,10 +19,13 @@
 <th:block th:include="fragment/header :: header"/>
 <div class="container">
     <div class="my-4">
-        <h2>Result for "All"</h2>
-        <big th:text="'('+ ${itemCount} + ' Items found)'"></big>
+        <h2>Result</h2>
+        <big th:text="${'(' + #lists.size(items) + ' Items found)'}"></big>
     </div>
     <div class="row">
+        <div class="col-lg-6 col-lg-offset-3 catalog-no-item" th:if="${#lists.size(items) &lt; 1}">
+            No item
+        </div>
         <div class="col-lg-3 catalog-item" th:each="item : ${items}">
             <div class="card h-100">
                 <div class="catalog-item-img">
@@ -64,7 +67,7 @@
             </div>
         </div>
     </div>
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center" th:if="${#lists.size(items) &gt; 0}">
         <li th:class="${isFirst} ? 'page-item disabled': 'page-item'">
             <a class="page-link" aria-label="Previous" th:href="'/catalog?page=' + ${cp-1}">
                 <span aria-hidden="true">&laquo;</span>
