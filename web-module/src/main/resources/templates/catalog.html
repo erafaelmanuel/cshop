@@ -17,6 +17,7 @@
     <link th:href="@{/css/cart-modal.css}" rel="stylesheet"/>
 </head>
 <body>
+<!-- HEADER-->
 <th:block th:include="fragment/header :: header"/>
 <div class="container">
     <div class="my-4">
@@ -39,9 +40,9 @@
                                 </button>
                             </li>
                             <li>
-                                <form id="form-cart-add" action="/cart/add" method="get">
+                                <form id="formCartAdd" action="/cart/add" method="post">
                                     <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                    <button id="btn-cart-add" data-toggle="modal" data-target="#">
+                                    <button>
                                         <span class="icon-shopping-cart"></span>
                                     </button>
                                 </form>
@@ -65,8 +66,12 @@
             </div>
         </div>
     </div>
+
+    <!-- PAGINATION-->
     <th:block th:include="fragment/catalog/pagination :: pagination"/>
 </div>
+
+<!-- FOOTER-->
 <th:block th:include="fragment/footer :: footer"/>
 <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title"
      aria-hidden="true">

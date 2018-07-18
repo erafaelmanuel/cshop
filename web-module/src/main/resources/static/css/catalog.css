@@ -40,6 +40,7 @@
 }
 
 .card-img-overlay {
+  border-top: 40px solid #fff;
   display: none;
   height: 230px;
   padding: 0px !important;
@@ -58,14 +59,14 @@
     margin: 0px;
 }
 
-.catalog-item-option li form {
-  display: inline;
-}
-
 .catalog-item-option li {
     width: 75px;
     margin: 0px 6px;
     height: 70px;
+}
+
+.catalog-item-option li form {
+  display: inline;
 }
 
 .catalog-item-option li button {
