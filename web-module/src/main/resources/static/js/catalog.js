@@ -25,8 +25,8 @@
         var url = $(this).attr("action") + "?" + params;
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                $("#cart-badge").empty();
-                $("#cart-badge").append($(xmlhttp.responseText).find("#cart-badge").html());
+                $(".cart-item").empty();
+                $(".cart-item").append($(xmlhttp.responseText).find(".cart-item").html());
                 modalContent(xmlhttp, params);
             }
         }

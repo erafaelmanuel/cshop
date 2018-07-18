@@ -5,17 +5,12 @@ import com.rem.cs.data.jpa.item.ItemService;
 import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +21,13 @@ public class CatalogController {
 
     private final ItemService itemService;
 
-    @Autowired
     public CatalogController(ItemService itemService) {
         this.itemService = itemService;
+    }
+
+    @ModelAttribute("cartItems")
+    public List<ItemDto> setUpCartItems() {
+        return new ArrayList<>();
     }
 
     @GetMapping("/catalog")
@@ -51,7 +50,7 @@ public class CatalogController {
                 currentPage = 1;
             }
             if (pages.length == 5) {
-                if (currentPage < pages.length-1) {
+                if (currentPage < pages.length - 1) {
                     for (int i = 0; i < pages.length; i++) {
                         pages[i] = i + 1;
                     }
@@ -63,7 +62,7 @@ public class CatalogController {
 
                     if (currentPage + 2 >= pageItems.getTotalPages()) {
                         for (int i = 0; i < pages.length; i++) {
-                            pages[(pages.length-1) - i] = pageItems.getTotalPages() - i;
+                            pages[(pages.length - 1) - i] = pageItems.getTotalPages() - i;
                         }
                         prevEllipsis = true;
                     } else {
@@ -87,7 +86,6 @@ public class CatalogController {
             model.addAttribute("nextEllipsis", nextEllipsis);
             model.addAttribute("isFirst", pageItems.isFirst());
             model.addAttribute("isLast", pageItems.isLast());
-            model.addAttribute("cartItems", items);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,21 +93,15 @@ public class CatalogController {
     }
 
     @PostMapping("/cart/add")
-    public String addItemToCart(@RequestParam("itemId") String itemId, ModelMap model) {
+    public String addItemToCart(@RequestParam("itemId") String itemId,
+                                @SessionAttribute(name = "cartItems") List<ItemDto> cartItems, Model model) {
         try {
             final Mapper mapper = new Mapper();
-            final List<ItemDto> items = new ArrayList<>();
-            final Object o = model.get("cartItems");
 
-            if(o != null) {
-                for (Object item : (List) o) {
-                    items.add((ItemDto) item);
-                }
-            }
-            items.add(mapper.set(itemService.findById(itemId))
+            cartItems.add(mapper.set(itemService.findById(itemId))
                     .ignore("categories")
                     .mapTo(ItemDto.class));
-            model.addAttribute("cartItems", items);
+            model.addAttribute("cartItems", cartItems);
             return "fragment/header/cart";
         } catch (EntityException e) {
             e.printStackTrace();
