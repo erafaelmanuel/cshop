@@ -34,23 +34,23 @@
                     <div href="#" class="card-img-overlay text-center">
                         <ul class="catalog-item-option">
                             <li>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Click to view">
-                                    <i class="material-icons">pageview</i>
+                                <a href="#">
+                                    <span class="icon-view"></span>
                                 </a>
                             </li>
                             <li>
                                 <form action="/cart/add" method="get">
                                     <input type="hidden" name="itemId" th:value="${item.id}"/>
                                     <span data-toggle="modal" data-target="#">
-                                            <a class="item-option-add-to-cart" data-toggle="tooltip" data-placement="bottom" title="Add to cart">
-                                                <i class="material-icons">shopping_cart</i>
+                                            <a class="item-option-add-to-cart">
+                                                <span class="icon-shopping-cart"></span>
                                             </a>
                                         </span>
                                 </form>
                             </li>
                             <li>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="Add to favorite">
-                                    <i class="material-icons">favorite</i>
+                                <a href="#">
+                                    <span class="icon-star"></span>
                                 </a>
                             </li>
                         </ul>
@@ -61,8 +61,7 @@
                         <h6 class="card-title">
                             <a href="#"><span th:text="${item.name}"></span></a>
                         </h6>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra
-                            euismod odio, gravida pellentesque urna varius vitae.</p>
+                        <p class="card-text"></p>
                     </div>
                 </div>
             </div>

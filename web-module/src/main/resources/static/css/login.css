@@ -12,7 +12,7 @@
 
 .login-title p {
   font-weight: 300;
-  color: #7f8c8d;
+  color: #000;
 }
 
 .login-error {
@@ -74,7 +74,7 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #54a0ff;
+  background: #5f27cd;
   width: 100%;
   border: 0;
   border-radius: 3px;
@@ -87,7 +87,7 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: #2e86de;
+  background: #341f97;
 }
 
 .form .message {
@@ -96,7 +96,7 @@
   font-size: 12px;
 }
 .form .message a {
-  color: #2e86de;
+  color: #341f97;
   text-decoration: none;
 }
 

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'remicon';
-  src:  url('../fonts/remicon.eot?titel4');
-  src:  url('../fonts/remicon.eot?titel4#iefix') format('embedded-opentype'),
-    url('../fonts/remicon.ttf?titel4') format('truetype'),
-    url('../fonts/remicon.woff?titel4') format('woff'),
-    url('../fonts/remicon.svg?titel4#remicon') format('svg');
+  src:  url('../fonts/remicon.eot?11mcyr');
+  src:  url('../fonts/remicon.eot?11mcyr#iefix') format('embedded-opentype'),
+    url('../fonts/remicon.ttf?11mcyr') format('truetype'),
+    url('../fonts/remicon.woff?11mcyr') format('woff'),
+    url('../fonts/remicon.svg?11mcyr#remicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,19 +27,18 @@
 .icon-mail:before {
   content: "\e900";
 }
-.icon-man:before {
+.icon-settings:before {
   content: "\e901";
 }
-.icon-settings:before {
+.icon-shopping-cart:before {
   content: "\e902";
 }
-.icon-shopping-cart:before {
+.icon-star:before {
   content: "\e903";
 }
-.icon-star:before {
+.icon-user:before {
   content: "\e904";
 }
-.icon-user:before {
+.icon-view:before {
   content: "\e905";
 }
-

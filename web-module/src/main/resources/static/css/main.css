@@ -28,15 +28,23 @@ body {
     color: #000;
 }
 
-.nav-item .item {
+.navbar-custom .nav-item .item {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0px 10px;
+    margin: 0px 9px;
     position: relative;
 }
 
-.nav-item .nav-link {
+.navbar-custom #item-login {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding-right: 30px;
+    font-size: 12px;
+}
+
+.navbar-custom .nav-item .nav-link {
     margin: 0px !important;
     padding: 0px !important;
     display:flex;
@@ -44,7 +52,7 @@ body {
     justify-content: center;
 }
 
-.account-toggle {
+.navbar-custom .account-toggle {
     margin: 0px !important;
     padding: 0px !important;
     display:flex;
@@ -52,16 +60,16 @@ body {
     justify-content: center;
 }
 
-.account-toggle span {
+.navbar-custom .account-toggle span {
     position: relative;
     left: 4px;
 }
 
-.nav-item a span {
+.navbar-custom .nav-item a span {
     color: #2d3436;
 }
 
-.badge {
+.navbar-custom .badge {
     position: absolute;
     display: inline-block;
     color: #fff;
@@ -79,16 +87,16 @@ body {
 
 }
 
-.dropdown-header {
+.navbar-custom .dropdown-header {
     font-size: 12px;
     opacity: 0.8;
 }
 
-.dropdown-item {
+.navbar-custom .dropdown-item {
     font-size: 13px;
 }
 
-.settings-item:hover {
+.navbar-custom .settings-item:hover {
     color: #fff !important;
     background: #5352ed;
 }
