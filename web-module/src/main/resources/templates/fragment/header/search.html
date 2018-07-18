@@ -1,0 +1,14 @@
+<div th:fragment="search">
+    <li class="nav-item">
+        <form action="/catalog" method="get" style="display:inline;">
+            <div style="position:relative;margin-left: 100px;">
+                <input name="search" class="form-control" placeholder="Search an item" value=""
+                       autocomplete="off" type="text"/>
+                <button type="submit" class="btn btn-search">
+                    <span class="icon-magnifying-glass"></span>
+                </button>
+            </div>
+        </form>
+        <div class="ajax-item-search-results" style="display: none;"></div>
+    </li>
+</div>

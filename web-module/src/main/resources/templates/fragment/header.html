@@ -2,10 +2,13 @@
     <nav class="navbar navbar-custom navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">ClothShop</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"-->
+                    <!--aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">-->
+                <!--<span class="navbar-toggler-icon"></span>-->
+            <!--</button>-->
+            <ul class="navbar-nav ml-auto">
+                <th:block th:include="fragment/header/search :: search"/>
+            </ul>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active" th:if="${verifiedUser eq null}">
