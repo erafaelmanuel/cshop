@@ -14,7 +14,7 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item findById(String id) throws EntityException{
+    public Item findById(String id) throws EntityException {
         return itemRepository.findById(id).orElseThrow(() -> new EntityException("No item found"));
     }
 

@@ -1,0 +1,11 @@
+<div th:fragment="cart">
+    <li class="nav-item cart-item">
+        <div class="item">
+            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Cart">
+                <span class="icon-shopping-cart" style="font-size:25px;"></span>
+            </a>
+            <span class="badge" id="cart-badge" th:if="${cartItems != null and #lists.size(cartItems) > 0}"
+                  th:text="${#lists.size(cartItems)}"></span>
+        </div>
+    </li>
+</div>

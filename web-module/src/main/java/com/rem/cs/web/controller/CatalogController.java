@@ -2,6 +2,7 @@ package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
+import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
@@ -88,5 +92,28 @@ public class CatalogController {
             e.printStackTrace();
         }
         return "catalog";
+    }
+
+    @PostMapping("/cart/add")
+    public String addItemToCart(@RequestParam("itemId") String itemId, ModelMap model) {
+        try {
+            final Mapper mapper = new Mapper();
+            final List<ItemDto> items = new ArrayList<>();
+            final Object o = model.get("cartItems");
+
+            if(o != null) {
+                for (Object item : (List) o) {
+                    items.add((ItemDto) item);
+                }
+            }
+            items.add(mapper.set(itemService.findById(itemId))
+                    .ignore("categories")
+                    .mapTo(ItemDto.class));
+            model.addAttribute("cartItems", items);
+            return "fragment/header/cart";
+        } catch (EntityException e) {
+            e.printStackTrace();
+            return "error/500";
+        }
     }
 }

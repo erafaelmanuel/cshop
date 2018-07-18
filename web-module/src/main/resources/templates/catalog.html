@@ -39,9 +39,9 @@
                                 </button>
                             </li>
                             <li>
-                                <form action="/cart/add" method="get">
+                                <form id="form-cart-add" action="/cart/add" method="post">
                                     <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                    <button class="item-option-add-to-cart" data-toggle="modal" data-target="#">
+                                    <button id="btn-cart-add" data-toggle="modal" data-target="#">
                                         <span class="icon-shopping-cart"></span>
                                     </button>
                                 </form>
