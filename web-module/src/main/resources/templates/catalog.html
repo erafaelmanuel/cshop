@@ -31,27 +31,25 @@
             <div class="card h-100">
                 <div class="catalog-item-img">
                     <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
-                    <div href="#" class="card-img-overlay text-center">
+                    <div href="#" class="card-img-overlay">
                         <ul class="catalog-item-option">
                             <li>
-                                <a href="#">
+                                <button>
                                     <span class="icon-view"></span>
-                                </a>
+                                </button>
                             </li>
                             <li>
                                 <form action="/cart/add" method="get">
                                     <input type="hidden" name="itemId" th:value="${item.id}"/>
-                                    <span data-toggle="modal" data-target="#">
-                                            <a class="item-option-add-to-cart">
-                                                <span class="icon-shopping-cart"></span>
-                                            </a>
-                                        </span>
+                                    <button class="item-option-add-to-cart" data-toggle="modal" data-target="#">
+                                        <span class="icon-shopping-cart"></span>
+                                    </button>
                                 </form>
                             </li>
                             <li>
-                                <a href="#">
+                                <button>
                                     <span class="icon-star"></span>
-                                </a>
+                                </button>
                             </li>
                         </ul>
                     </div>

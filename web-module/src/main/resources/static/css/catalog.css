@@ -15,10 +15,13 @@
 }
 
 .card-img-top {
-  flex: 1;
-  height: 100%;
-  max-width: 100%;
-  background-size: contain;
+    flex: 1;
+    height: 100%;
+    max-width: 100%;
+    background-size: contain;
+    border-width: 2px;
+    border-color: #fff;
+    border-style: solid;
 }
 
 .catalog-item-img {
@@ -37,57 +40,53 @@
 
 .card-img-overlay {
   display: none;
-  position: absolute;
   height: 230px;
-  background: #5f27cd;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
-ul.catalog-item-option {
-    list-style-type: none;
+.catalog-item-option {
     display: flex;
-    justify-content: space-between;
-    padding: 0px 10%;
-    padding-top: 25%
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    width: 100%;
+    height: 100%;
+    background: #5f27cd;
+    padding: 0px 6px;
+    margin: 0px;
 }
+
+.catalog-item-option li form {
+  display: inline;
+}
+
 
 ul.catalog-item-option li {
-    display: inline-flex;
+    width: 75px;
+    margin: 0px 6px;
     border-radius: 2px;
+    height: 70px;
+}
+
+.catalog-item-option li button {
+    background: rgba(52, 31, 151,1.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 0;
     cursor: pointer;
-    /**-webkit-box-shadow: 0 1px 6px 0 rgba(0,0,0,0.4);**/
 }
 
-ul.catalog-item-option li form {
-  display: flex;
-}
-
-ul.catalog-item-option li form a, ul.catalog-item-option li form span{
-  margin: auto;
-}
-
-ul.catalog-item-option li:nth-child(1) {
-  background: rgba(52, 31, 151,1.0)
-}
-
-ul.catalog-item-option li:nth-child(2) {
-  background: rgba(52, 31, 151,1.0)
-}
-
-ul.catalog-item-option li:nth-child(3) {
-  background: rgba(52, 31, 151,1.0);
-}
-
-ul.catalog-item-option li a {
-  padding: 12px 16px;
-  text-decoration: none;
-}
-
-ul.catalog-item-option li a, ul.catalog-item-option li a span {
+.catalog-item-option li button span {
   font-size: 20px;
-  margin: auto;
   color: #fff;
 }
 
 .pagination {
-  margin-bottom: 30px;
+  margin: 50px 0px;
 }
