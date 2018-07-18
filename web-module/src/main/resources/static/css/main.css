@@ -1,6 +1,7 @@
 body {
   padding-top: 54px;
   background: #ecf0f1;
+  background: #dcdde1;
 }
 
 .navbar-custom {
@@ -42,6 +43,7 @@ body {
     margin: 0px;
     padding-right: 30px;
     font-size: 12px;
+    font-weight: 500;
 }
 
 .navbar-custom .nav-item .nav-link {

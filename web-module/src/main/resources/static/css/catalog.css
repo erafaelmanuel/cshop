@@ -1,13 +1,14 @@
 
 .card {
-  border-radius: 3px;
   border: none;
+  border-radius: 0;
   background: #fff;
   height: 350px !important;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .card .card-body {
@@ -17,7 +18,7 @@
 .card-img-top {
     flex: 1;
     height: 100%;
-    max-width: 100%;
+    width: 100%;
     background-size: contain;
     border-width: 2px;
     border-color: #fff;
@@ -61,11 +62,9 @@
   display: inline;
 }
 
-
-ul.catalog-item-option li {
+.catalog-item-option li {
     width: 75px;
     margin: 0px 6px;
-    border-radius: 2px;
     height: 70px;
 }
 
@@ -89,4 +88,16 @@ ul.catalog-item-option li {
 
 .pagination {
   margin: 50px 0px;
+}
+
+#catalog-pagination li.active a {
+    background: #5f27cd;
+    border-color: #5f27cd;
+}
+
+@media (min-width: 380px) and (max-width: 574px){
+  .card {
+       margin-right: 20%;
+       margin-left: 20%;
+  }
 }

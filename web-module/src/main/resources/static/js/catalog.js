@@ -26,7 +26,7 @@
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
                 $("#cart-badge").empty();
-                $("#cart-badge").append($(xmlhttp.responseText).find("#art-badge").html());
+                $("#cart-badge").append($(xmlhttp.responseText).find("#cart-badge").html());
                 modalContent(xmlhttp, params);
             }
         }
