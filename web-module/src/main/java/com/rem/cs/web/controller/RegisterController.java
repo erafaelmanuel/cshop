@@ -64,7 +64,7 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String getRegister() {
-        return "register";
+        return "register/sign-up";
     }
 
     @PostMapping("/register")
@@ -77,9 +77,9 @@ public class RegisterController {
             hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
             publisher.publishEvent(new UserEvent(hashMap));
             model.addAttribute("email", userDto.getEmail());
-            return "validating";
+            return "register/validating";
         } else {
-            return "register";
+            return "register/sign-up";
         }
     }
 
@@ -120,7 +120,7 @@ public class RegisterController {
                 hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
                 publisher.publishEvent(new UserEvent(hashMap));
                 model.addAttribute("email", email);
-                return "validating";
+                return "register/validating";
             } else {
                 return "redirect:/login";
             }
@@ -142,7 +142,7 @@ public class RegisterController {
             hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
             publisher.publishEvent(new UserEvent(hashMap));
             model.addAttribute("email", newEmail);
-            return "validating";
+            return "register/validating";
         } catch (EntityException e) {
             e.printStackTrace();
             return "error/500";

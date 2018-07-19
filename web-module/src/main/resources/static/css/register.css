@@ -1,122 +1,102 @@
-
-.register-wrapper {
-  width: 360px;
-  padding-top: 3%;
-  margin: auto;
-  padding-bottom: 200px;
+.containerRegister {
+    width: 100%;
+    height: 768px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px !important;
+    padding-top: 54px;
 }
 
-.register-title {
-  text-align: center;
+.containerRegister .notif-section {
+    position: fixed;
+    margin-top: 20px;
+    top: 0px;
+    right: 0px;
+    opacity: 0;
+    transition: margin-right 0.2s, opacity 0.2s;
 }
 
-.register-title p {
-  font-weight: 300;
-  color: #000;
+.containerRegister .loginTitle {
+    margin: 0px !important;
+    padding: 0px !important;
+    text-align: center;
 }
 
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+.containerRegister .loginTitle p {
+    font-size: 12px;
 }
-.form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
+
+.wrapper {
   background: #fff;
-  width: 100%;
+  height: 350px;
+  width: 300px;
   border: 0;
-  margin-top: 16px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-  border-style: solid;
-  border-color: #8395a7;
-  border-width: thin;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  border-radius: 2px;
+  margin: 0px !important;
+  padding: 0px !important;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-input[name='name'] {
-  margin: 0px;
+#formRegister {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.form button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
+#formRegister .formGroup {
+    width: 80%;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 5%;
+}
+
+#formRegister input {
+    width: 100%;
+    height: 37px;
+    padding: 15.5px 21px;
+    font-size: 12px;
+    outline-color: #5f27cd;
+}
+
+#formRegister .inputError {
+    color: #e84118;;
+    font-size: 10px;
+    padding: 0px !important;
+    margin: 0px  !important;
+}
+
+#formRegister button {
   outline: 0;
   background: #5f27cd;
-  width: 100%;
+  width: 80%;
+  cursor: pointer;
   border: 0;
-  border-radius: 3px;
-  margin-top: 20px;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
+  padding: 10px;
+  color: #fff;
+  font-size: 12px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
-.form button:hover,.form button:active,.form button:focus {
+
+#formRegister button:hover {
   background: #341f97;
 }
-.form .message {
+
+#formRegister .message {
   margin: 15px 0 0;
   color: #b3b3b3;
   font-size: 12px;
 }
-.form .message a {
+#formRegister .message a {
   color: #341f97;
   text-decoration: none;
 }
-
-.form p.form-error {
-    color: #c0392b;
-    font-size: 10px;
-    position: absolute;
-    right: 0px;
-    padding: 0 45px;
-}
-
-.registration-message {
-    width: 80%;
-    margin: 8% auto;
-    margin-bottom: 400px;
-}
-
-@media (max-width:360px) {
-
-  .login-page {
-    width: 90%;
-    padding-bottom: 80px;
-  }
-
-  .login-error {
-    width: 100%;
-  }
-
-  .register-error {
-      width: 100%;
-    }
-
-  .form {
-    width: 100%;
-    padding: 45px 8px;
-  }
-
-  .form input {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  .form button {
-    padding: 10px;
-    font-size: 12px;
-  }
 }
