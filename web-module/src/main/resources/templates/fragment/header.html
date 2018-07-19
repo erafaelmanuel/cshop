@@ -1,42 +1,37 @@
 <div th:fragment="header">
-    <nav class="navbar navbar-custom navbar-expand-lg fixed-top">
+    <nav class="navbar navbarCustom navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">ClothShop</a>
-            <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"-->
-                    <!--aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">-->
-                <!--<span class="navbar-toggler-icon"></span>-->
-            <!--</button>-->
             <ul class="navbar-nav ml-auto">
                 <th:block th:include="fragment/header/search :: search"/>
             </ul>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active" th:if="${verifiedUser eq null}">
-                        <div class="item" id="item-login">
+                        <div class="itemContent" id="item-login">
                             <a class="nav-link" href="/login">LOGIN
                                 <span class="sr-only">(current)</span>
                             </a>
                         </div>
                     </li>
                     <li class="nav-item" th:if="${verifiedUser != null}">
-                        <div class="dropdown item">
-                            <div class="dropdown-toggle account-toggle" data-toggle="dropdown"
-                                 aria-haspopup="true" aria-expanded="false">
+                        <div class="itemContent dropdown">
+                            <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-user" style="font-size:22px"></span>
                             </div>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="#myAccount-button">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="#btnAccount">
                                 <a class="dropdown-header">
                                     Signed in as <br />
                                     <strong th:text="${verifiedUser.email}" />
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item settings-item" href="/account/dashboard">
+                                <a class="dropdown-item" href="/account/dashboard">
                                     Help
                                 </a>
-                                <a class="dropdown-item settings-item" href="/account/setting">
+                                <a class="dropdown-item" href="/account/setting">
                                     Settings
                                 </a>
-                                <a class="dropdown-item settings-item" href="/logout">
+                                <a class="dropdown-item" href="/logout">
                                     Sign out
                                 </a>
                             </div>

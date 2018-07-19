@@ -21,8 +21,8 @@
         var url = $(this).attr("action") + "?" + params;
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                $(".cart-item").empty();
-                $(".cart-item").append($(xmlhttp.responseText).find(".cart-item").html());
+                $(".contentCart").empty();
+                $(".contentCart").append($(xmlhttp.responseText).find(".contentCart").html());
             }
         }
         xmlhttp.open("POST", url, true);
