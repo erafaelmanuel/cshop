@@ -12,7 +12,6 @@
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
     <link th:href="@{/css/template.css}" rel="stylesheet"/>
-    <link th:href="@{/css/main.css}" rel="stylesheet"/>
     <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -37,32 +36,6 @@
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/header.js}"></script>
-<script>
-(function() {
-
-$(document).on("submit", "#formLogin", function() {
-
-        alert("annak ng aso");
-
-        var xmlhttp = new XMLHttpRequest();
-
-        var params = $(this).serialize();
-        var url = $(this).attr("action") + "?" + params;
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-
-            }
-            if (xmlhttp.status == 500 && xmlhttp.readyState == 4) {
-                alert("wath");
-            }
-        }
-        xmlhttp.open("POST", url, true);
-        xmlhttp.send();
-        return false;
-    });
-
-})();
-</script>
+<script th:src="@{/js/login.js}"></script>
 </body>
 </html>

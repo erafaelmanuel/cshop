@@ -1,39 +1,31 @@
 (function(){
-    $(document).on("submit",".login-form", function(){
-        return validateLogin();
+    $(document).on("click", ".notificationCancel", function() {
+        $(".notif-section").css("margin-right", "0px");
+        $(".notif-section").css("opacity", "0");
     });
 
-    function validateLogin() {
-        var isValid = true;
-        if($("input[name='username']").val().trim() === "") {
-            $("input[name='username']").css("border","1px solid #e74c3c");
-            isValid = false;
-        }
-        if($("input[name='password']").val().trim() === "") {
-            $("input[name='password']").css("border","1px solid #e74c3c");
-            isValid = false;
-        }
-        return isValid;
-    }
+    $(document).on("submit", "#formLogin", function() {
+            var xmlhttp = new XMLHttpRequest();
+            var params = $(this).serialize();
+            var url = $(this).attr("action") + "?" + params;
 
-    $(document).on("submit",".register-form", function(){
-         return validateRegister();
-     });
+            $(".notif-section").css("margin-right", "0px");
+            $(".notif-section").css("opacity", "0");
+            xmlhttp.onreadystatechange = function() {
+                if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
 
-    function validateRegister() {
-        var isValid = true;
-        if($("input[name='name']").val().trim() === "") {
-            $("input[name='name']").css("border","1px solid #e74c3c");
-            isValid = false;
-        }
-        if($("input[name='password']").val().trim() === "") {
-            $("input[name='password']").css("border","1px solid #e74c3c");
-            isValid = false;
-        }
-        if($("input[name='email']").val().trim() === "") {
-            $("input[name='email']").css("border","1px solid #e74c3c");
-            isValid = false;
-        }
-        return isValid;
-    }
+                }
+                if (xmlhttp.status == 500 && xmlhttp.readyState == 4) {
+                    var $notif =  jQuery.parseJSON(xmlhttp.responseText);
+
+                    $(".notif-section").find(".notificationBody h6").html($notif.title);
+                    $(".notif-section").find(".notificationBody p").html($notif.message);
+                    $(".notif-section").css("margin-right", "20px");
+                    $(".notif-section").css("opacity", "1");
+                }
+            }
+            xmlhttp.open("POST", url, true);
+            xmlhttp.send();
+            return false;
+        });
 })();
