@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@SessionAttributes({"verifiedUser", "cartItems"})
+@SessionAttributes({"signedInUser", "cartItems"})
 @Controller
 public class AccountController {
 
@@ -47,11 +47,6 @@ public class AccountController {
         model.addAttribute("token", null);
         model.addAttribute("title", messageSource.getMessage("reg.title", null, null));
         model.addAttribute("subtitle", messageSource.getMessage("reg.subtitle", null, null));
-    }
-
-    @GetMapping("/login")
-    public String getLogin() {
-        return "login";
     }
 
     @GetMapping("/register")

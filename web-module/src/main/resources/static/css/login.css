@@ -60,11 +60,12 @@
 #formLogin button {
   outline: 0;
   background: #5f27cd;
-  width: 100%;
+  width: 80%;
+  cursor: pointer;
   border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
+  padding: 10px;
+  color: #fff;
+  font-size: 12px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);

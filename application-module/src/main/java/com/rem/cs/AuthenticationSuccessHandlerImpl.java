@@ -1,11 +1,11 @@
 package com.rem.cs;
 
 import com.rem.cs.data.jpa.user.User;
-import com.rem.cs.data.jpa.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rem.cs.data.jpa.user.UserService;
+import com.rem.cs.exception.EntityException;
+import com.rem.cs.web.dto.UserDto;
+import com.rem.mappyfy.Mapper;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -17,30 +17,31 @@ import java.io.IOException;
 @Component
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
-    final private UserRepository userRepository;
-    final private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    final private UserService userService;
 
-    @Autowired
-    public AuthenticationSuccessHandlerImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthenticationSuccessHandlerImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        final String username = request.getParameter("username");
-        final User user = userRepository.findByEmail(username).orElse(null);
 
-        if (user != null) {
+        try {
+            final String username = request.getParameter("username");
+            final User user = userService.findByEmail(username);
+
             final boolean CREATE_NEW_SESSION = true;
             final HttpSession session = request.getSession(CREATE_NEW_SESSION);
 
             if (session != null) {
-                session.setAttribute("verifiedUser", user);
+                session.setAttribute("signedInUser", new Mapper().set(user)
+                        .ignore("roles")
+                        .mapTo(UserDto.class));
             }
-            redirectStrategy.sendRedirect(request, response, "/catalog");
-        } else {
-            redirectStrategy.sendRedirect(request, response, "/");
+            response.setStatus(200);
+        } catch (EntityException e) {
+            e.printStackTrace();
         }
     }
 }

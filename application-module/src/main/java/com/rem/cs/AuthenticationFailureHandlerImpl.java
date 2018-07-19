@@ -30,16 +30,16 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         final String username = request.getParameter("username");
         final User user;
         final Notification notification = new Notification();
+
+        notification.setTitle("Bad credentials");
+        notification.setMessage("Incorrect email or password.");
         try {
             user = userService.findByEmail(username);
             if (!user.isActivated()) {
                 notification.setTitle("Account hasn't been activated");
                 notification.setMessage("Please activate your account <a href='#'>here</a>.");
             }
-        } catch (EntityException e) {
-            notification.setTitle("Bad credentials");
-            notification.setMessage("Incorrect email or password");
-        }
+        } catch (EntityException e) {}
 
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(500);
