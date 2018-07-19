@@ -13,16 +13,18 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@SessionAttributes({"signedInUser", "cartItems"})
 @Controller
-public class AccountController {
+public class RegisterController {
 
     private UserService userService;
     private TokenRepository tokenRepository;
@@ -31,9 +33,8 @@ public class AccountController {
     private ApplicationEventPublisher publisher;
 
     @Autowired
-    public AccountController(UserService userService, TokenRepository tokenRepository, MessageSource
+    public RegisterController(UserService userService, TokenRepository tokenRepository, MessageSource
             messageSource, HttpServletRequest request, ApplicationEventPublisher publisher) {
-        this.userService = userService;
         this.userService = userService;
         this.tokenRepository = tokenRepository;
         this.messageSource = messageSource;
@@ -41,32 +42,44 @@ public class AccountController {
         this.publisher = publisher;
     }
 
-    @ModelAttribute
-    public void init(Model model) {
-        model.addAttribute("user", new UserDto());
-        model.addAttribute("token", null);
-        model.addAttribute("title", messageSource.getMessage("reg.title", null, null));
-        model.addAttribute("subtitle", messageSource.getMessage("reg.subtitle", null, null));
+    @ModelAttribute("user")
+    public UserDto setUpUser() {
+        return new UserDto();
+    }
+
+    @ModelAttribute("token")
+    public Token setUpToken() {
+        return null;
+    }
+
+    @ModelAttribute("token")
+    public String setUpTitle() {
+        return messageSource.getMessage("reg.title", null, null);
+    }
+
+    @ModelAttribute("token")
+    public String setUpSubtitle() {
+        return messageSource.getMessage("reg.subtitle", null, null);
     }
 
     @GetMapping("/register")
     public String getRegister() {
-        return "sign-up";
+        return "register";
     }
 
     @PostMapping("/register")
     public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         final HashMap<String, Object> hashMap = new HashMap<>();
 
-        if (result.hasErrors()) {
-            return "sign-up";
-        } else {
+        if (!result.hasErrors()) {
             hashMap.put("do", UserEvent.CREATE_USER);
             hashMap.put("user", userDto);
             hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
             publisher.publishEvent(new UserEvent(hashMap));
             model.addAttribute("email", userDto.getEmail());
             return "validating";
+        } else {
+            return "register";
         }
     }
 
@@ -119,10 +132,6 @@ public class AccountController {
     @PostMapping("register/change-email-address")
     public String onChangeEmailAddress(@RequestParam(value = "email") String email,
                                        @RequestParam(value = "new_email") String newEmail, Model model) {
-//        if (!newEmail.matches("^[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*@\" +\n" +
-//                "[A-Za-z0-9]+(\\\\.[A-Za-z0-9]+)*(\\\\.[A-Za-z0-9]+)$")) {
-//            return "error/500";
-//        }
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
             final User user = userService.findByEmail(email);
@@ -139,6 +148,4 @@ public class AccountController {
             return "error/500";
         }
     }
-
-
 }

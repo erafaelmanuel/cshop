@@ -13,7 +13,7 @@ public class LoginController {
 
     @ModelAttribute("signedInUser")
     public UserDto setUpUser() {
-        return new UserDto();
+        return null;
     }
 
     @GetMapping("/login")

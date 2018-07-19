@@ -11,18 +11,17 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
-    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link th:href="@{/css/template.css}" rel="stylesheet"/>
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 <body>
-<th:block th:include="fragment/header :: header"/>
 <div class="register-wrapper" enctype="utf8">
     <div class="register-title">
         <h2 th:text="${title}"></h2>
         <p th:text="${subtitle}"></p>
     </div>
     <div class="form">
-        <form th:object="${user}" action="/register" method="post" class="register-form">
+        <form th:object="${user}" action="/register" method="post" id="register-form">
             <div>
                 <input th:field="*{name}" placeholder="Name"/>
                 <p th:each="error, iterStat : ${#fields.errors('name')}" th:text="${error}"
