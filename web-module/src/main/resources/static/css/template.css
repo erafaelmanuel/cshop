@@ -1,3 +1,7 @@
+body {
+  background: #dcdde1;
+}
+
 .form-control {
     font-weight: 300;
     font-size: 0.875rem;
@@ -8,4 +12,63 @@
     line-height: 1.25;
     color: #495057;
     background-color: #fff;
+}
+
+.notification {
+    display: flex;
+    justify-content: flex-start;
+    width: 300px;
+    height: 50px;
+    border: 0;
+    border-radius: 1px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    background: #fff;
+    position:relative;
+}
+
+.notification .notificationCancel {
+    position: absolute;
+    font-size: 8px;
+    font-weight: bold;
+    top: 10px;
+    right: 10px;
+}
+
+.notificationHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12%;
+    height: 100%;
+}
+
+.notificationHeader span {
+    font-size: 16px;
+    color: #fff;
+}
+
+.notificationError .notificationHeader {
+    background: #e84118;
+}
+
+.notificationBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 88%;
+    height: 100%;
+    font-size: 12px;
+    color: #000;
+    margin-left: 10px;
+}
+
+.notificationBody h6 {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.notificationBody p, .notificationBody h6 {
+    margin: 0px !important;
+    padding: 0px !important;
 }

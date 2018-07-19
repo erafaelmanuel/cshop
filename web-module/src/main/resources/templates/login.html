@@ -11,27 +11,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
+    <link th:href="@{/css/template.css}" rel="stylesheet"/>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
     <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
-<th:block th:include="fragment/header :: header"/>
-<div class="login-page">
-    <div class="alert alert-success activation-message" th:if="${activation} != null and ${activation}">
-        <p th:text="#{login.message.success}"></p>
+<div class="container-fluid containerLogin">
+    <div class="notif-section">
+        <th:block th:include="fragment/notification/error :: error"/>
     </div>
-    <div class="alert alert-danger login-error" th:if="${param.error} != null and ${activation} eq null">
-        <p th:text="#{login.message.error}"></p>
-    </div>
-    <div class="login-title" th:if="${param.error} eq null and ${activation} eq null">
-        <h2>Welcome</h2>
+    <div class="loginTitle" th:if="${param.error} eq null and ${activation} eq null">
+        <h2>ClothShop</h2>
         <p>Sign in with your email.</p>
     </div>
-    <div class="form">
-        <form action="/login" method="post" class="login-form">
-            <input type="text" placeholder="Email" name="username"/>
-            <input type="password" placeholder="Password" name="password"/>
-            <button>login</button>
+    <div class="wrapper">
+        <form action="/login" method="post" id="formLogin">
+            <input name="username" placeholder="Email" type="text" autocomplete="off"/>
+            <input name="password" placeholder="Password" type="password"/>
+            <button>Sign in</button>
             <p class="message">Not registered? <a href="/register">Create an account</a></p>
         </form>
     </div>
@@ -41,5 +38,31 @@
 <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/header.js}"></script>
+<script>
+(function() {
+
+$(document).on("submit", "#formLogin", function() {
+
+        alert("annak ng aso");
+
+        var xmlhttp = new XMLHttpRequest();
+
+        var params = $(this).serialize();
+        var url = $(this).attr("action") + "?" + params;
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
+
+            }
+            if (xmlhttp.status == 500 && xmlhttp.readyState == 4) {
+                alert("wath");
+            }
+        }
+        xmlhttp.open("POST", url, true);
+        xmlhttp.send();
+        return false;
+    });
+
+})();
+</script>
 </body>
 </html>
