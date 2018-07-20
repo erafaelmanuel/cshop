@@ -36,10 +36,18 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         try {
             user = userService.findByEmail(username);
             if (!user.isActivated()) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append("<form class='notif-link' action='register/resend-confirmation' method='post'>");
+                builder.append("<input name='email' type='hidden' value='");
+                builder.append(username).append("'/>");
+                builder.append("<input type='submit' value='here'/>");
+                builder.append("</form>");
+
                 notification.setTitle("Account hasn't been activated");
-                notification.setMessage("Please activate your account <a href='#'>here</a>.");
+                notification.setMessage("Please activate your account " + builder.toString() + ".");
             }
-        } catch (EntityException e) {}
+        } catch (EntityException e) {
+        }
 
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(500);

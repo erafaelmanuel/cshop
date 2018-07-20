@@ -75,3 +75,22 @@
     margin: 0px !important;
     padding: 0px !important;
 }
+
+.notif-link {
+    display: inline;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.notif-link input[type='submit'] {
+    margin: 0px !important;
+    padding: 0px !important;
+    background: none;
+    border: none;
+    color: #1e90ff;
+    cursor: pointer;
+}
+
+.notif-link input[type='submit']:hover {
+    text-decoration: underline;
+}

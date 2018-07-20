@@ -21,10 +21,32 @@
         <th:block th:include="fragment/nav :: nav"/>
     </header>
     <div class="container-fluid validating">
-        <p class="validatingMessage">We sent an email to <b th:text="${email}" />. It contain a link you need to click in order to confirm
-            your account.
-        <p align="center">You need to do this before you can access our site as a registered member</p>
-        </p>
+        <div class="message">
+            We sent an email to <b th:text="${email}" />. It contain a link you need to click in order to confirm your account.
+            <p align="center">You need to do this before you can access our site as a registered member</p>
+        </div>
+        <div id="content">
+            <ul class="selection">
+                <li>
+                    <form action="/register/resend-confirmation" method="post">
+                        <input type="hidden" name="email" th:value="${email}"/>
+                        <button>Resend Confirmation Email</button>
+                    </form>
+                </li>
+                <li>
+                    <form class="form-cancel-registration" action="register/change-email-address" method="post">
+                        <input type="hidden" name="email" th:value="${email}"/>
+                        <button>Change Email Address</button>
+                    </form>
+                </li>
+                <li>
+                    <form action="#" method="post">
+                        <input type="hidden" name="userId" th:value="${userId}"/>
+                        <button>Cancel Registration</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!--<div class="alert alert-success registration-message reg-val-message" role="alert">-->
@@ -32,32 +54,12 @@
             <!--your account.-->
             <!--<p align="center">You need to do this before you can access our site as a registered member</p>-->
         <!--</p>-->
-        <!--<ul class="reg-val-options">-->
-            <!--<li>-->
-                <!--<form action="/register/resend-confirmation" method="post">-->
-                    <!--<input type="hidden" name="email" th:value="${email}"/>-->
-                    <!--<button class="btn btn-success">Resend Confirmation Email</button>-->
-                <!--</form>-->
-            <!--</li>-->
-            <!--<li>-->
-                <!--<form class="form-cancel-registration" action="register/change-email-address" method="post">-->
-                    <!--<input type="hidden" name="email" th:value="${email}"/>-->
-                    <!--<button class="btn btn-success">Change Email Address</button>-->
-                <!--</form>-->
-            <!--</li>-->
-            <!--<li>-->
-                <!--<form action="" method="post">-->
-                    <!--<input type="hidden" name="userId" th:value="${userId}"/>-->
-                    <!--<button class="btn btn-success">Cancel Registration</button>-->
-                <!--</form>-->
-            <!--</li>-->
-        <!--</ul>-->
+        <!---->
     <!--</div>-->
 
-    <!-- Footer -->
+
     <th:block th:include="fragment/footer :: footer"/>
 
-    <!-- Bootstrap core JavaScript -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/header.js}"></script>

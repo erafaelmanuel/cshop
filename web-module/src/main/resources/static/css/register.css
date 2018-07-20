@@ -100,17 +100,56 @@ body:nth-child(2) {
   text-decoration: none;
 }
 
-/* validating */
-
-.containerValidating {
+/* validating(dot)html */
+.validating {
     display: flex:
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 768px;
-    border: 1px solid black;
 }
 
-.validatingMessage {
-
+.validating .message {
+    margin-top: 20px;
+    text-align: center;
 }
+
+#content {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content .selection {
+    list-style-type: none;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#content .selection li {
+    margin: 8px;
+}
+
+#content .selection li form button {
+    width: 180px;
+    outline: 0;
+    background: #5f27cd;
+    cursor: pointer;
+    border: 0;
+    padding: 10px;
+    color: #fff;
+    font-size: 12px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+#content .selection li form button:hover {
+    background: #341f97;
+}
+
+
+
+
