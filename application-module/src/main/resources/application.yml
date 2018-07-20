@@ -12,7 +12,7 @@ spring:
     password:
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
-    show_sql: true
+    show_sql: false
     database-plaform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl_auto: update
