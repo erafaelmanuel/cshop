@@ -1,0 +1,9 @@
+<div th:fragment="cart">
+    <div class="content-group cart">
+        <a class="nav-link" href="#">
+            <span class="icon-shopping-cart"></span>
+        </a>
+        <span class="badge" th:if="${cartItems != null and #lists.size(cartItems) > 0}"
+              th:text="${#lists.size(cartItems)}"></span>
+    </div>
+</div>

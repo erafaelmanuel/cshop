@@ -10,13 +10,13 @@
     background-color: #fff;
 }
 
-.formInputError {
+.input-error {
     outline-color: #e84118;
     border: 2px solid #e84118;
     background: rgba(232, 65, 24, 0.2)
 }
 
-.notification {
+.notif {
     display: flex;
     justify-content: flex-start;
     width: 300px;
@@ -28,7 +28,7 @@
     position:relative;
 }
 
-.notification .notificationCancel {
+.notif .notif-cancel {
     position: absolute;
     font-size: 8px;
     font-weight: bold;
@@ -37,7 +37,7 @@
     cursor: pointer;
 }
 
-.notificationHeader {
+.notif-head {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,16 +45,16 @@
     height: 100%;
 }
 
-.notificationHeader span {
+.notif-head span {
     font-size: 16px;
     color: #fff;
 }
 
-.notificationError .notificationHeader {
+.notif-error .notif-head {
     background: #e84118;
 }
 
-.notificationBody {
+.notif-body {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -66,12 +66,12 @@
     margin-left: 10px;
 }
 
-.notificationBody h6 {
+.notif-body h6 {
     font-size: 0.9em;
     font-weight: bold;
 }
 
-.notificationBody p, .notificationBody h6 {
+.notif-body p, .notif-body h6 {
     margin: 0px !important;
     padding: 0px !important;
 }

@@ -1,5 +1,10 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  background: #dcdde1;
+}
 
-.containerLogin {
+.login {
     width: 100%;
     height: 768px;
     display: flex;
@@ -9,7 +14,7 @@
     padding-top: 54px;
 }
 
-.containerLogin .notif-section {
+.login .notif-section {
     position: fixed;
     margin-top: 20px;
     top: 0px;
@@ -18,17 +23,17 @@
     transition: margin-right 0.2s, opacity 0.2s;
 }
 
-.containerLogin .loginTitle {
+.login .title {
     margin: 0px !important;
     padding: 0px !important;
     text-align: center;
 }
 
-.containerLogin .loginTitle p {
+.login .title p {
     font-size: 12px;
 }
 
-.containerLogin .wrapper {
+.login .wrapper {
   background: #fff;
   height: 250px;
   width: 300px;
@@ -39,7 +44,7 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-#formLogin {
+#form-login {
     width: 100%;
     height: 100%;
     display: flex;
@@ -48,7 +53,7 @@
     align-items: center;
 }
 
-#formLogin input {
+#form-login input {
     height: 37px;
     padding: 15.5px 21px;
     font-size: 12px;
@@ -57,7 +62,7 @@
     outline-color: #5f27cd;
 }
 
-#formLogin button {
+#form-login button {
   outline: 0;
   background: #5f27cd;
   width: 80%;
@@ -71,53 +76,16 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-#formLogin button:hover,.form button:active,.form button:focus {
+#form-login button:hover,.form button:active,.form button:focus {
   background: #341f97;
 }
 
-#formLogin .message {
+#form-login .message {
   margin: 15px 0 0;
   color: #b3b3b3;
   font-size: 12px;
 }
-#formLogin .message a {
+#form-login .message a {
   color: #341f97;
   text-decoration: none;
-}
-
-.registration-message {
-    width: 80%;
-    margin: 8% auto;
-    margin-bottom: 400px;
-}
-
-@media (max-width:360px) {
-
-  .login-page {
-    width: 90%;
-    padding-bottom: 80px;
-  }
-
-  .login-error {
-    width: 100%;
-  }
-
-  .register-error {
-      width: 100%;
-    }
-
-  .form {
-    width: 100%;
-    padding: 45px 8px;
-  }
-
-  .form input {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  .form button {
-    padding: 10px;
-    font-size: 12px;
-  }
 }

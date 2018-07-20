@@ -1,10 +1,10 @@
 (function(){
-    $(document).on("click", ".notificationCancel", function() {
+    $(document).on("click", ".notif-cancel", function() {
         $(".notif-section").css("margin-right", "0px");
         $(".notif-section").css("opacity", "0");
     });
 
-    $(document).on("submit", "#formLogin", function() {
+    $(document).on("submit", "#form-login", function() {
             var xmlhttp = new XMLHttpRequest();
             var params = $(this).serialize();
             var url = $(this).attr("action") + "?" + params;
@@ -19,8 +19,8 @@
                     var $notif =  jQuery.parseJSON(xmlhttp.responseText);
 
                     setTimeout(function() {
-                        $(".notif-section").find(".notificationBody h6").html($notif.title);
-                        $(".notif-section").find(".notificationBody p").html($notif.message);
+                        $(".notif-section").find(".notif-body h6").html($notif.title);
+                        $(".notif-section").find(".notif-body p").html($notif.message);
                         $(".notif-section").css("margin-right", "20px");
                         $(".notif-section").css("opacity", "1");
                     }, 300);

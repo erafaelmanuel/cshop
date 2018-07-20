@@ -19,11 +19,11 @@
 <header>
     <th:block th:include="fragment/nav :: nav" />
 </header>
-<div class="container-fluid containerRegister">
+<div class="container-fluid register">
     <div class="wrapper">
-        <form th:object="${user}" action="/register" method="post" id="formRegister">
+        <form th:object="${user}" action="/register" method="post" id="form-register">
             <div class="formGroup">
-                <input class="formInputError" th:field="*{name}" placeholder="Name" type="text" autocomplete="off"
+                <input class="input-error" th:field="*{name}" placeholder="Name" type="text" autocomplete="off"
                        th:if="${#lists.size(#fields.errors('name')) &gt; 0}"/>
                 <input th:field="*{name}" placeholder="Name" type="text" autocomplete="off"
                        th:if="${#lists.size(#fields.errors('name')) eq 0}"/>
@@ -31,7 +31,7 @@
                    th:if="${iterStat.first}" class="inputError">Name error</p>
             </div>
             <div class="formGroup">
-                <input class="formInputError" th:field="*{password}" type="password" placeholder="Password"
+                <input class="input-error" th:field="*{password}" type="password" placeholder="Password"
                        th:if="${#lists.size(#fields.errors('password')) &gt; 0}"/>
                 <input th:field="*{password}" type="password" placeholder="Password"
                        th:if="${#lists.size(#fields.errors('password')) eq 0}"/>
@@ -39,7 +39,7 @@
                    th:if="${iterStat.first}" class="inputError">Password error</p>
             </div>
             <div class="formGroup">
-                <input class="formInputError" th:field="*{email}" placeholder="Email" type="email" autocomplete="off"
+                <input class="input-error" th:field="*{email}" placeholder="Email" type="email" autocomplete="off"
                        th:if="${#lists.size(#fields.errors('email')) &gt; 0}"/>
                 <input th:field="*{email}" placeholder="Email" type="email" autocomplete="off"
                        th:if="${#lists.size(#fields.errors('email')) eq 0}"/>

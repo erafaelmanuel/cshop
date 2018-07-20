@@ -15,16 +15,16 @@
     <link th:href="@{/css/login.css}" rel="stylesheet"/>
 </head>
 <body>
-<div class="container-fluid containerLogin">
+<div class="container-fluid login">
     <div class="notif-section">
         <th:block th:include="fragment/notification/error :: error"/>
     </div>
-    <div class="loginTitle" th:if="${param.error} eq null and ${activation} eq null">
+    <div class="header-login" th:if="${param.error} eq null and ${activation} eq null">
         <h2>ClothShop</h2>
         <p>Sign in with your email.</p>
     </div>
     <div class="wrapper">
-        <form action="/login" method="post" id="formLogin">
+        <form action="/login" method="post" id="form-login">
             <input name="username" placeholder="Email" type="text" autocomplete="off"/>
             <input name="password" placeholder="Password" type="password"/>
             <button>Sign in</button>

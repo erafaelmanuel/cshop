@@ -16,7 +16,7 @@ body:nth-child(2) {
     padding-top: 66px;
 }
 
-.containerRegister {
+.register {
     width: 100%;
     height: 768px;
     display: flex;
@@ -26,7 +26,7 @@ body:nth-child(2) {
     padding-top: 54px;
 }
 
-.containerRegister .wrapper {
+.register .wrapper {
   background: #fff;
   height: 350px;
   width: 300px;
@@ -37,7 +37,7 @@ body:nth-child(2) {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-#formRegister {
+#form-register {
     width: 100%;
     height: 100%;
     display: flex;
@@ -46,7 +46,7 @@ body:nth-child(2) {
     justify-content: center;
 }
 
-#formRegister .formGroup {
+#form-register .formGroup {
     width: 80%;
     padding: 0px;
     margin: 0px;
@@ -56,7 +56,7 @@ body:nth-child(2) {
     margin-bottom: 5%;
 }
 
-#formRegister input {
+#form-register input {
     width: 100%;
     height: 37px;
     padding: 15.5px 21px;
@@ -64,14 +64,14 @@ body:nth-child(2) {
     outline-color: #5f27cd;
 }
 
-#formRegister .inputError {
+#form-register .inputError {
     color: #e84118;;
     font-size: 10px;
     padding: 0px !important;
     margin: 0px  !important;
 }
 
-#formRegister button {
+#form-register button {
   outline: 0;
   background: #5f27cd;
   width: 80%;
@@ -85,17 +85,17 @@ body:nth-child(2) {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-#formRegister button:hover {
+#form-register button:hover {
   background: #341f97;
 }
 
-#formRegister .message {
+#form-register .message {
   margin: 15px 0 0;
   color: #b3b3b3;
   font-size: 12px;
 }
 
-#formRegister .message a {
+#form-register .message a {
   color: #341f97;
   text-decoration: none;
 }

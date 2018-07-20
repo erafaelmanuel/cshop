@@ -1,5 +1,5 @@
 <div th:fragment="search">
-    <li class="nav-item">
+    <div class="content-group search-box">
         <form action="/catalog" method="get" style="display:inline;">
             <div style="position:relative;margin-left: 100px;">
                 <input name="search" class="form-control" placeholder="Search an item" value=""
@@ -10,5 +10,5 @@
             </div>
         </form>
         <div class="ajax-item-search-results" style="display: none;"></div>
-    </li>
+    </div>
 </div>

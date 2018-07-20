@@ -26,7 +26,7 @@
                         </div>
                     </li>
                     <li class="nav-item" th:if="${signedInUser != null}">
-                        <div class="itemContent dropdown">
+                        <div class="content-group dropdown">
                             <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="icon-user" style="font-size:22px"></span>
                             </div>
@@ -49,21 +49,10 @@
                         </div>
                     </li>
                     <li class="nav-item" th:if="${signedInUser != null}">
-                        <div class="content-group contentInbox">
-                            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Messages">
-                                <span class="icon-mail"></span>
-                            </a>
-                            <span class="badge">2</span>
-                        </div>
+                        <th:block th:include="fragment/nav/inbox :: inbox" />
                     </li>
                     <li class="nav-item">
-                        <div class="content-group contentCart">
-                            <a class="nav-link" href="#" data-toggle="tooltip" data-placement="bottom" title="Cart">
-                                <span class="icon-shopping-cart"></span>
-                            </a>
-                            <span class="badge" th:if="${cartItems != null and #lists.size(cartItems) > 0}"
-                                  th:text="${#lists.size(cartItems)}"></span>
-                        </div>
+                        <th:block th:include="fragment/nav/cart :: cart" />
                     </li>
                 </ul>
             </div>

@@ -16,13 +16,13 @@
 (function() {
     var xmlhttp = new XMLHttpRequest();
 
-    $(document).on("submit", "#formCartAdd", function() {
+    $(document).on("submit", "#form-cart", function() {
         var params = $(this).serialize();
         var url = $(this).attr("action") + "?" + params;
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                $(".contentCart").empty();
-                $(".contentCart").append($(xmlhttp.responseText).find(".contentCart").html());
+                $(".cart").empty();
+                $(".cart").append($(xmlhttp.responseText).find(".cart").html());
             }
         }
         xmlhttp.open("POST", url, true);

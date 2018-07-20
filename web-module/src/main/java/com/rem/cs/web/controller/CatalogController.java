@@ -102,7 +102,7 @@ public class CatalogController {
                     .ignore("categories")
                     .mapTo(ItemDto.class));
             model.addAttribute("cartItems", cartItems);
-            return "fragment/header/cart";
+            return "fragment/nav/cart";
         } catch (EntityException e) {
             e.printStackTrace();
             return "error/500";
