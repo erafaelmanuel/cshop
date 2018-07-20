@@ -1,9 +1,10 @@
 package com.rem.cs.data.jpa.item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.rem.cs.data.jpa.category.Category;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_item")
@@ -24,6 +25,11 @@ public class Item {
 
     @Column(name = "img_url")
     private String imageUrl;
+
+    @ManyToMany
+    @JoinTable(name = "tbl_item_category", joinColumns = {@JoinColumn(name = "item_id")},
+        inverseJoinColumns = {@JoinColumn(name = "category_id")})
+    private Set<Category> categories = new HashSet<>();
 
     public String getId() {
         return id;
@@ -63,5 +69,13 @@ public class Item {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

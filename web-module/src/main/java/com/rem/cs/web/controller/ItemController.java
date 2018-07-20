@@ -2,7 +2,6 @@ package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
-import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.data.domain.Page;
@@ -10,18 +9,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"signedInUser", "cartItems"})
-public class CatalogController {
+@SessionAttributes({"cartItems"})
+public class ItemController {
 
-    private final ItemService itemService;
+    private ItemService itemService;
 
-    public CatalogController(ItemService itemService) {
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
 
@@ -92,20 +94,8 @@ public class CatalogController {
         return "catalog";
     }
 
-    @PostMapping("/cart/add")
-    public String addItemToCart(@RequestParam("itemId") String itemId,
-                                @SessionAttribute(name = "cartItems") List<ItemDto> cartItems, Model model) {
-        try {
-            final Mapper mapper = new Mapper();
-
-            cartItems.add(mapper.set(itemService.findById(itemId))
-                    .ignore("categories")
-                    .mapTo(ItemDto.class));
-            model.addAttribute("cartItems", cartItems);
-            return "fragment/nav/cart";
-        } catch (EntityException e) {
-            e.printStackTrace();
-            return "error/500";
-        }
+    @GetMapping("/item/{itemId}")
+    public String getItemDetail(@PathVariable("itemId") String itemId) {
+        return "item-detail";
     }
 }

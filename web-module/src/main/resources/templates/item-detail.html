@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="#{cshop.description}"/>
+    <meta name="author" th:content="#{cshop.author}"/>
+    <title>Cloth Shop</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
+    <link th:href="@{/css/template.css}" rel="stylesheet"/>
+    <link th:href="@{/css/nav.css}" rel="stylesheet"/>
+    <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <th:block th:include="fragment/nav :: nav"/>
+    </header>
+    <div class="container">
+    </div>
+</body>
+</html>

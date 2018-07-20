@@ -1,6 +1,10 @@
 package com.rem.cs.data.jpa.category;
 
+import com.rem.cs.data.jpa.item.Item;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_category")
@@ -18,6 +22,9 @@ public class Category {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     private Category parent;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Item> items = new HashSet<>();
 
     public String getId() {
         return id;
@@ -49,5 +56,13 @@ public class Category {
 
     public void setParent(Category parent) {
         this.parent = parent;
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 }
