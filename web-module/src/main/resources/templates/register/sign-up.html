@@ -12,11 +12,13 @@
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
     <link th:href="@{/css/template.css}" rel="stylesheet"/>
-    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/nav.css}" rel="stylesheet"/>
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 <body>
-<th:block th:include="fragment/header :: header" />
+<header>
+    <th:block th:include="fragment/nav :: nav" />
+</header>
 <div class="container-fluid containerRegister">
     <div class="wrapper">
         <form th:object="${user}" action="/register" method="post" id="formRegister">

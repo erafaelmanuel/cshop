@@ -1,60 +1,54 @@
-.navbarCustom {
+.navbar-custom {
     background-color: #f1f2f6;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    position: fixed;
-    width: 100%;
 }
 
-.navbarCustom .container {
+.navbar-custom .container {
     margin: 5px auto;
 }
 
-.navbarCustom .navbar-brand,
-.navbarCustom .navbar-text {
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
     color: #000;
     font-weight: 400;
     font-size: 20px;
 }
 
-.navbarCustom .navbar-nav .nav-link {
+.navbar-custom .navbar-nav .nav-link {
     color: rgba(255,255,255,.5);
 }
 
-.navbarCustom .nav-item.active .nav-link,
-.navbarCustom .nav-item:hover .nav-link {
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
     color: #000;
 }
 
-.navbarCustom .itemContent {
+.navbar-custom .content-group {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0px 9px;
     position: relative;
-}
-
-.navbarCustom #item-login {
-    height: 100%;
-    width: 100%;
-    margin: 0px;
-    padding-right: 30px;
     font-size: 12px;
-    font-weight: 500;
 }
 
-.navbarCustom .itemContent .nav-link {
+.navbar-custom ul:nth-child(2) li:nth-child(1) {
+    margin-right: 20px;
+}
+
+.navbar-custom .content-group .nav-link {
     margin: 0px !important;
     padding: 0px !important;
-    display:flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    line-height: 25px;
 }
 
-.navbarCustom .itemContent .nav-link span {
+.navbar-custom .content-group .nav-link span {
     color: #2d3436;
+    font-size:25px;
 }
 
-.navbarCustom .badge {
+.navbar-custom .badge {
     position: absolute;
     display: inline-block;
     color: #fff;
@@ -72,26 +66,26 @@
     background: #341f97;
 }
 
-.navbarCustom .dropdown-toggle span {
+.navbar-custom .dropdown-toggle span {
     position: relative;
     left: 4px;
 }
 
-.navbarCustom .dropdown-header {
+.navbar-custom .dropdown-header {
     font-size: 13px;
     opacity: 0.8;
 }
 
-.navbarCustom .dropdown-item {
+.navbar-custom .dropdown-item {
     font-size: 13px;
 }
 
-.navbarCustom .dropdown-item:hover {
+.navbar-custom .dropdown-item:hover {
     color: #fff !important;
     background: #5352ed;
 }
 
-.navbarCustom input[name='search'] {
+.navbar-custom input[name='search'] {
     border: 0;
     height: 32px;
     border-radius: 3px;
@@ -100,12 +94,12 @@
     padding: 14.5px 16px;
 }
 
-.navbarCustom input[name='search']:focus {
+.navbar-custom input[name='search']:focus {
     border: 0;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-.navbarCustom .btnSearch {
+.navbar-custom .btn-search {
     font-size: 12px;
     font-weight: 400;
     height: 32px;
@@ -121,10 +115,10 @@
     background: #5f27cd;
 }
 
-.navbarCustom .btnSearch:focus {
+.navbar-custom .btn-search:focus {
     box-shadow: none;
 }
 
-.navbarCustom .btnSearch span {
+.navbar-custom .btn-search span {
     color: #fff;
 }

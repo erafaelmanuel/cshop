@@ -11,65 +11,62 @@
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
     <link th:href="@{/css/template.css}" rel="stylesheet"/>
-    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/nav.css}" rel="stylesheet"/>
     <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
 </head>
 <body>
-<!-- HEADER-->
-<th:block th:include="fragment/header :: header"/>
-<div class="container">
-    <div class="my-4">
-        <h2>Result</h2>
-        <big th:text="${'(' + #lists.size(items) + ' Items found)'}"></big>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-lg-offset-3 catalog-no-item" th:if="${#lists.size(items) &lt; 1}">
-            No item
+    <header>
+        <th:block th:include="fragment/nav :: nav"/>
+    </header>
+    <div class="container">
+        <div class="my-4">
+            <h2>Result</h2>
+            <big th:text="${'(' + #lists.size(items) + ' Items found)'}"></big>
         </div>
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 catalog-item" th:each="item : ${items}">
-            <div class="card h-100">
-                <div class="catalog-item-img">
-                    <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
-                    <div href="#" class="card-img-overlay">
-                        <ul class="catalog-item-option">
-                            <li>
-                                <button>
-                                    <span class="icon-view"></span>
-                                </button>
-                            </li>
-                            <li>
-                                <form id="formCartAdd" action="/cart/add" method="post">
-                                    <input type="hidden" name="itemId" th:value="${item.id}"/>
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 catalog-no-item" th:if="${#lists.size(items) &lt; 1}">
+                No item
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 catalog-item" th:each="item : ${items}">
+                <div class="card h-100">
+                    <div class="catalog-item-img">
+                        <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
+                        <div href="#" class="card-img-overlay">
+                            <ul class="catalog-item-option">
+                                <li>
                                     <button>
-                                        <span class="icon-shopping-cart"></span>
+                                        <span class="icon-view"></span>
                                     </button>
-                                </form>
-                            </li>
-                            <li>
-                                <button>
-                                    <span class="icon-star"></span>
-                                </button>
-                            </li>
-                        </ul>
+                                </li>
+                                <li>
+                                    <form id="formCartAdd" action="/cart/add" method="post">
+                                        <input type="hidden" name="itemId" th:value="${item.id}"/>
+                                        <button>
+                                            <span class="icon-shopping-cart"></span>
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <button>
+                                        <span class="icon-star"></span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-block">
-                        <h6 class="card-title">
-                            <span th:text="${item.name}"></span>
-                        </h6>
-                        <p class="card-text"><b>PHP 100.00</b></p>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <h6 class="card-title">
+                                <span th:text="${item.name}"></span>
+                            </h6>
+                            <p class="card-text"><b>PHP 100.00</b></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <th:block th:include="fragment/catalog/pagination :: pagination"/>
     </div>
-
-    <!-- PAGINATION-->
-    <th:block th:include="fragment/catalog/pagination :: pagination"/>
-</div>
-
-<!-- FOOTER-->
 <th:block th:include="fragment/footer :: footer"/>
 <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="cart-modal-title"
      aria-hidden="true">
