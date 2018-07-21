@@ -82,6 +82,16 @@ body:nth-child(2) {
     height: 70px;
 }
 
+.catalog-item-option li:hover {
+    height: 74px;
+    border-top: 2px solid #5f27cd;
+    border-bottom: 2px solid #fff;
+}
+
+.catalog-item-option li a {
+    text-decoration: none;
+}
+
 .catalog-item-option li form {
   display: inline;
 }

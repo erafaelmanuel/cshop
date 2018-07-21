@@ -2,6 +2,7 @@ package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
+import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.data.domain.Page;
@@ -94,8 +95,13 @@ public class ItemController {
         return "catalog";
     }
 
-    @GetMapping("/item/{itemId}")
-    public String getItemDetail(@PathVariable("itemId") String itemId) {
+    @GetMapping("/item/{itemId}.html")
+    public String getItemDetail(@PathVariable("itemId") String itemId, Model model) {
+        try {
+            model.addAttribute("item", itemService.findById(itemId));
+        } catch (EntityException e) {
+            e.printStackTrace();
+        }
         return "item-detail";
     }
 }

@@ -23,23 +23,12 @@
     </h1>
     <div class="row main-section">
         <div class="col-md-6">
-            <img class="item-img img-fluid" src="http://localhost:8080/images/item/5.jpg" alt="">
+            <img class="item-img img-fluid" th:src="${item.imageUrl}" alt="">
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">A Long Neck</h3>
-            <h6>
-                <div class="row">
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                    <div class="col-ld-2"><span class="icon-star"></span></div>
-                </div>
-            </h6>
-
-            <h6 class="my-3">PHP 100.00</h6>
+            <h3 class="my-3" th:text="${item.name}"/>
+            <h3 class="my-3" th:text="${'PHP ' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"/>
             <h3 class="my-3">Item Description</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
                 urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies,
