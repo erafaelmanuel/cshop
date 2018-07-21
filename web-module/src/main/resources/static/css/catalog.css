@@ -37,9 +37,6 @@ body:nth-child(2) {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    border-width: 2px;
-    border-color: #fff;
-    border-style: solid;
 }
 
 .catalog-item-img {
@@ -79,8 +76,8 @@ body:nth-child(2) {
     width: 75px;
     margin: 0px 6px;
     height: 70px;
-    border: 2px solid rgba(220, 221, 225, 1.0);
     border-radius: 5px;
+     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .catalog-item-option li a {
@@ -92,7 +89,7 @@ body:nth-child(2) {
 }
 
 .catalog-item-option li button {
-    background: rgba(53, 59, 72, 0.8);
+    background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,15 +100,12 @@ body:nth-child(2) {
     z-index: 0;
     cursor: pointer;
     border-radius: 5px;
-}
-
-.catalog-item-option li button:hover {
-    background: rgba(241, 242, 246,0.2)
+    outline: none;
 }
 
 .catalog-item-option li button span {
-  font-size: 20px;
-  color: #fff;
+  font-size: 28px;
+  color: #000;
 }
 
 #catalog-pagination {

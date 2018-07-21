@@ -1,5 +1,5 @@
 .navbar-custom {
-    background-color: #f1f2f6;
+    background-color: #F1F1F1;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
@@ -61,9 +61,9 @@
     text-align: center;
     padding: 0 3px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    bottom: 17px;
-    left: 18px;
-    background: #341f97;
+    bottom: 19px;
+    left: 19px;
+    background: #5352ed;
 }
 
 .navbar-custom .dropdown-toggle span {
@@ -112,7 +112,10 @@
     position: absolute;
     top: 0;
     right: 0;
-    background: #5f27cd;
+}
+
+.navbar-custom .btn-search:hover {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .navbar-custom .btn-search:focus {
@@ -120,5 +123,5 @@
 }
 
 .navbar-custom .btn-search span {
-    color: #fff;
+    color: #000;
 }
