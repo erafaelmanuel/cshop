@@ -36,7 +36,7 @@ body:nth-child(2) {
     flex: 1;
     height: 100%;
     width: 100%;
-    background-size: contain;
+    object-fit: cover;
     border-width: 2px;
     border-color: #fff;
     border-style: solid;

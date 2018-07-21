@@ -11,13 +11,49 @@
     <link th:href="@{/vendor/remicon/css/remicon.css}" rel="stylesheet"/>
     <link th:href="@{/css/template.css}" rel="stylesheet"/>
     <link th:href="@{/css/nav.css}" rel="stylesheet"/>
-    <link th:href="@{/css/catalog.css}" rel="stylesheet"/>
+    <link th:href="@{/css/item-detail.css}" rel="stylesheet"/>
 </head>
 <body>
-    <header>
-        <th:block th:include="fragment/nav :: nav"/>
-    </header>
-    <div class="container">
+<header>
+    <th:block th:include="fragment/nav :: nav"/>
+</header>
+<div class="container detail-container">
+    <h1 class="my-4">Page Heading
+        <small>Secondary Text</small>
+    </h1>
+    <div class="row main-section">
+        <div class="col-md-6">
+            <img class="item-img img-fluid" src="http://localhost:8080/images/item/5.jpg" alt="">
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">A Long Neck</h3>
+            <h6>
+                <div class="row">
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                    <div class="col-ld-2"><span class="icon-star"></span></div>
+                </div>
+            </h6>
+
+            <h6 class="my-3">PHP 100.00</h6>
+            <h3 class="my-3">Item Description</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque
+                urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies,
+                justo eu convallis placerat, felis enim.</p>
+            <h3 class="my-3">Item Details</h3>
+            <ul>
+                <li>Lorem Ipsum</li>
+                <li>Dolor Sit Amet</li>
+                <li>Consectetur</li>
+                <li>Adipiscing Elit</li>
+            </ul>
+        </div>
     </div>
+</div>
+<th:block th:include="fragment/footer :: footer"/>
 </body>
 </html>
