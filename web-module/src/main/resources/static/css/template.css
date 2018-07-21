@@ -22,10 +22,11 @@
     width: 300px;
     height: 50px;
     border: 0;
-    border-radius: 1px;
+    border-radius: 2px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     background: #fff;
     position:relative;
+    cursor: pointer;
 }
 
 .notif .notif-cancel {
@@ -43,6 +44,7 @@
     align-items: center;
     width: 12%;
     height: 100%;
+    border-radius: 2px 0px 0px 2px;
 }
 
 .notif-head span {
@@ -52,6 +54,14 @@
 
 .notif-error .notif-head {
     background: #e84118;
+}
+
+.notif-warning .notif-head {
+    background: #ff9f43;
+}
+
+.notif-success .notif-head {
+    background: #16a085;
 }
 
 .notif-body {
@@ -88,7 +98,6 @@
     background: none;
     border: none;
     color: #1e90ff;
-    cursor: pointer;
 }
 
 .notif-link input[type='submit']:hover {
