@@ -23,13 +23,13 @@ body {
     transition: margin-right 0.2s, opacity 0.2s;
 }
 
-.login .title {
+.login .header-login {
     margin: 0px !important;
     padding: 0px !important;
     text-align: center;
 }
 
-.login .title p {
+.login .header-login p {
     font-size: 12px;
 }
 

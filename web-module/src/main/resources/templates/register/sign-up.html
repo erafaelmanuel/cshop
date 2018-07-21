@@ -16,9 +16,6 @@
     <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 <body>
-<header>
-    <th:block th:include="fragment/nav :: nav" />
-</header>
 <div class="container-fluid register">
     <div class="wrapper">
         <form th:object="${user}" action="/register" method="post" id="form-register">
