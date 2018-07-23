@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class ItemController {
 
         while (matcher.find()) {
             builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        if (builder.getParamSize() == 0 && !StringUtils.isEmpty(search)) {
+            builder.with("name", ":", search);
         }
         try {
             final Mapper mapper = new Mapper();

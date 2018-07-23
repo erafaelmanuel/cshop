@@ -33,4 +33,8 @@ public class ItemSpecificationBuilder {
         }
         return result;
     }
+
+    public int getParamSize() {
+        return params.size();
+    }
 }
