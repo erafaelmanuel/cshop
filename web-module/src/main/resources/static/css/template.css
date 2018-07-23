@@ -103,3 +103,34 @@
 .notif-link input[type='submit']:hover {
     text-decoration: underline;
 }
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    list-style-type: none;
+    width: 240px;
+    padding: 10px 0px;
+    margin: 0px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    border-radius: 2px;
+    border-width: thin;
+    border-style: solid;
+    border-color: rgba(116, 125, 140, 0.5);
+}
+
+.list .list-item {
+    font-size: 12px;
+    width: 100%;
+    cursor: pointer;
+    display: block;
+    color: #000;
+    padding: 5px 10px;
+}
+
+.list .list-item:hover {
+    background: rgba(30, 144, 255,1.0);
+    color: #fff;
+}
