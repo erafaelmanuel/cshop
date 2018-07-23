@@ -10,7 +10,7 @@
                     <li class="nav-item">
                         <form action="/catalog" method="get" style="display:inline;">
                             <div style="position:relative;margin-left: 100px;">
-                                <input name="search" class="form-control" placeholder="Enter Keyword" value=""
+                                <input name="search" class="form-control" placeholder="Enter Keyword" th:value="${param.search eq null ? '' : param.search[0]}"
                                        autocomplete="off" type="text"/>
                                 <button type="submit" class="btn btn-search">
                                     <span class="icon-magnifying-glass-alt2"></span>

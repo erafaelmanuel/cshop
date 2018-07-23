@@ -1,7 +1,6 @@
 package com.rem.cs.data.jpa.item;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 
 import java.util.ArrayList;
 import java.util.List;

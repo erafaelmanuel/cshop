@@ -56,11 +56,18 @@ public class ItemController {
                     .ignore("categories")
                     .mapTo(ItemDto.class)));
 
-            final PageHelper helper = new PageHelper(currentPage, pageItems);
+            final PageHelper helper;
+            if (search == null) {
+                 helper = new PageHelper(currentPage, pageItems);
+            } else {
+                helper = new PageHelper(currentPage, pageItems, "search=" + search);
+            }
 
             model.addAttribute("items", items);
             model.addAttribute("pages", helper.getPages());
-            model.addAttribute("cp", currentPage);
+            model.addAttribute("pageNext", helper.getPageNext());
+            model.addAttribute("pagePrev", helper.getPagePrev());
+            model.addAttribute("currentPage", currentPage);
             model.addAttribute("prevEllipsis", helper.hasPrevEllipsis());
             model.addAttribute("nextEllipsis", helper.hasNextEllipsis());
             model.addAttribute("isFirst", pageItems.isFirst());
