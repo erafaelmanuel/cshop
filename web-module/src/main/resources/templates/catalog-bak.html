@@ -28,7 +28,43 @@
             No item
         </div>
         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 catalog-item" th:each="item : ${items}">
-            <th:block th:include="fragment/catalog/item :: item" />
+            <div class="card h-100">
+                <div class="catalog-item-img">
+                    <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
+                    <div href="#" class="card-img-overlay">
+                        <ul class="catalog-item-option">
+                            <li>
+                                <a th:href="'/item/' + ${item.id} + '.html'">
+                                    <button><span class="icon-view"></span></button>
+                                </a>
+                            </li>
+                            <li>
+                                <form id="form-cart" action="/cart/add" method="post">
+                                    <input type="hidden" name="itemId" th:value="${item.id}"/>
+                                    <button>
+                                        <span class="icon-shopping-cart"></span>
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <button>
+                                    <span class="icon-heart"></span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block">
+                        <h6 class="card-title">
+                            <span th:text="${item.name}"></span>
+                        </h6>
+                        <p class="card-text">
+                            <b th:text="${'PHP ' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <th:block th:include="fragment/catalog/pagination :: pagination"/>

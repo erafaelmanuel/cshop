@@ -1,0 +1,23 @@
+<div th:fragment="item">
+    <div class="item">
+        <div class="item-img">
+            <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
+        </div>
+        <div class="item-body">
+            <div class="item-block">
+                <a href="?page=1">
+                    <p class="item-title" th:text="${item.name}"/>
+                </a>
+                <p class="item-price" th:text="${'₱' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"/>
+                <div class="item-control">
+                    <a>
+                        <span class="icon-heart"/>
+                    </a>
+                    <a>
+                        <span class="icon-shopping-cart"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

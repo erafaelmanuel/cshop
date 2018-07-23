@@ -36,7 +36,7 @@ public class ItemController {
 
     @GetMapping("/catalog")
     public String getCatalog(@RequestParam(value = "search", required = false) String search,
-                             @PageableDefault(sort = "name", size = 1) Pageable pageable, Model model) {
+                             @PageableDefault(sort = "name", size = 20) Pageable pageable, Model model) {
 
         final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
         final Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");

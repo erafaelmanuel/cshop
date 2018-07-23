@@ -5,8 +5,6 @@ public class Page {
     private int number;
     private String href;
 
-
-
     public int getNumber() {
         return number;
     }
