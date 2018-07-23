@@ -1,14 +1,11 @@
 <div th:fragment="search">
-    <div class="content-group search-box">
-        <form action="/catalog" method="get" style="display:inline;">
-            <div style="position:relative;margin-left: 100px;">
-                <input name="search" class="form-control" placeholder="Search an item" value=""
-                       autocomplete="off" type="text"/>
-                <button type="submit" class="btn btnSearch">
-                    <span class="icon-magnifying-glass"></span>
-                </button>
-            </div>
-        </form>
-        <div class="ajax-item-search-results" style="display: none;"></div>
-    </div>
+    <form action="/catalog" method="get" style="display:inline;" accept-charset="ISO-8859-1">
+        <div style="position:relative;margin-left: 100px;">
+            <input name="search" class="form-control" placeholder="Enter Keyword" th:value="${param.search eq null ? '' : param.search[0]}"
+                   autocomplete="off" type="text"/>
+            <button type="submit" class="btn btn-search">
+                <span class="icon-magnifying-glass"></span>
+            </button>
+        </div>
+    </form>
 </div>

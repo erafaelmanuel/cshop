@@ -63,7 +63,7 @@
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     bottom: 19px;
     left: 19px;
-    background: #5352ed;
+    background: #0078ff;
 }
 
 .navbar-custom .dropdown-toggle span {
@@ -90,7 +90,7 @@
     height: 32px;
     border-radius: 3px;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
-    width: 300px;
+    width: 320px;
     padding: 14.5px 16px;
 }
 

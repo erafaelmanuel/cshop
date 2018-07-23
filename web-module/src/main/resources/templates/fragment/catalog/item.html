@@ -1,26 +1,29 @@
 <div th:fragment="item">
     <div class="item">
-        <div class="item-img">
-            <img class="card-img-top" th:src="${item.imageUrl}" alt=""/>
-        </div>
-        <div class="item-body">
-            <div class="item-block">
-                <a th:href="'/item/' + ${item.id} + '.html'">
-                    <p class="item-title" th:text="${item.name}"/>
-                </a>
-                <p class="item-price" th:text="${'₱' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"/>
-                <div class="item-control">
-                    <form id="" action="" method="">
-                        <button>
-                            <span class="icon-heart"/>
-                        </button>
-                    </form>
-                    <form id="form-cart" action="/cart/add" method="post">
-                        <input type="hidden" name="itemId" th:value="${item.id}"/>
-                        <button>
-                            <span class="icon-shopping-cart"/>
-                        </button>
-                    </form>
+        <div>
+            <div class="item-img">
+                <img class="item-img-top" th:src="${item.imageUrl}" alt=""/>
+            </div>
+            <div class="item-body">
+                <div class="item-block">
+                    <a th:href="'/item/' + ${item.id} + '.html'">
+                        <p class="item-title" th:text="${item.name}"/>
+                    </a>
+                    <p class="item-price"
+                       th:text="${'₱' + #numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"/>
+                    <div class="item-control">
+                        <form id="" action="" method="">
+                            <button>
+                                <span class="icon-heart"/>
+                            </button>
+                        </form>
+                        <form id="form-cart" action="/cart/add" method="post">
+                            <input type="hidden" name="itemId" th:value="${item.id}"/>
+                            <button>
+                                <span class="icon-shopping-cart"/>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
