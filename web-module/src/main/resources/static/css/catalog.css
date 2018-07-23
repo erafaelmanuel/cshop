@@ -117,6 +117,93 @@ body:nth-child(2) {
     border-color: #5f27cd;
 }
 
+.item {
+    border: none;
+    border-radius: 0;
+    background: #fff;
+    height: 350px !important;
+}
+
+.item:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.item-img {
+  display: flex;
+  align-items: center;
+  height: 230px;
+  cursor: pointer;
+}
+
+.item-body {
+    padding: 2px 8px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.item-body a {
+    text-decoration: none;
+}
+
+.item-title {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 13px;
+    font-weight: 550;
+    line-height: 15px;
+    padding: 0px;
+    margin: 0px;
+    height: 32px;
+    overflow: hidden;
+}
+
+.item-title:hover {
+    color: #0984e3;
+}
+
+.item-price {
+    padding: 0px;
+    margin: 0px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f39c12;
+}
+
+.item-control {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.item-control button {
+    margin-left: 5px;
+    border: 1px solid #636e72;
+    box-shadow: none;
+    width: 60px;
+    height: 32px;
+    color: #636e72;
+    background: inherit;
+    transition: background 1.6s, color 1.6s. box-shadow 1.6s;
+    cursor: pointer;
+}
+
+.item-control button:nth-child(1):hover {
+    color: #fff;
+    background: #ff7675;
+    border: 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.item-control button:nth-child(2):hover {
+    color: #fff;
+    border: 0;
+    background: #0984e3;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.item-control button span {
+    font-size: 14px;
+}
+
 @media (min-width: 380px) and (max-width: 574px){
   .card {
        margin-right: 20%;
