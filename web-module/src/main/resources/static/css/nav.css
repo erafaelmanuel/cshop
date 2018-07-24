@@ -158,17 +158,16 @@
 
 }
 
-.category-1 {
-    top: 15px;
+.category-parent {
+    top: 20px;
     left: 0px;
     display: none;
     position: absolute;
 }
 
-.category-2 {
-    top: 15px;
-    left: 240px;
-    display: none;
+.category-child {
+    top: -1px;
+    left: 238px;
     position: absolute;
 }
 

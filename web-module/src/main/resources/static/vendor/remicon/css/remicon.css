@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'remicon';
-  src:  url('../fonts/remicon.eot?uo92v5');
-  src:  url('../fonts/remicon.eot?uo92v5#iefix') format('embedded-opentype'),
-    url('../fonts/remicon.ttf?uo92v5') format('truetype'),
-    url('../fonts/remicon.woff?uo92v5') format('woff'),
-    url('../fonts/remicon.svg?uo92v5#remicon') format('svg');
+  src:  url('../fonts/remicon.eot?7xbhei');
+  src:  url('../fonts/remicon.eot?7xbhei#iefix') format('embedded-opentype'),
+    url('../fonts/remicon.ttf?7xbhei') format('truetype'),
+    url('../fonts/remicon.woff?7xbhei') format('woff'),
+    url('../fonts/remicon.svg?7xbhei#remicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -57,27 +57,30 @@
 .icon-menu:before {
   content: "\e90a";
 }
-.icon-settings:before {
+.icon-right-arrow:before {
   content: "\e90b";
 }
-.icon-shopping-cart:before {
+.icon-settings:before {
   content: "\e90c";
 }
-.icon-star:before {
+.icon-shopping-cart:before {
   content: "\e90d";
 }
-.icon-star-alt2:before {
+.icon-star:before {
   content: "\e90e";
 }
-.icon-user:before {
+.icon-star-alt2:before {
   content: "\e90f";
 }
-.icon-view:before {
+.icon-user:before {
   content: "\e910";
 }
-.icon-warning:before {
+.icon-view:before {
   content: "\e911";
 }
-.icon-warning-alt3:before {
+.icon-warning:before {
   content: "\e912";
+}
+.icon-warning-alt3:before {
+  content: "\e913";
 }
