@@ -35,9 +35,10 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
             final HttpSession session = request.getSession(CREATE_NEW_SESSION);
 
             if (session != null) {
-                session.setAttribute("signedInUser", new Mapper().set(user)
+                session.setAttribute("signedInUser", new Mapper()
+                        .from(user)
                         .ignore("roles")
-                        .mapTo(UserDto.class));
+                        .toInstanceOf(UserDto.class));
             }
             response.setStatus(200);
         } catch (EntityException e) {

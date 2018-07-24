@@ -1,0 +1,6 @@
+<div th:fragment="category">
+    <ul class="list">
+        <li class="list-item" th:each="category : ${categories}"
+            th:text="${category.name}" />
+    </ul>
+</div>

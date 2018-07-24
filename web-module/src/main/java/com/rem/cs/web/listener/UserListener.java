@@ -59,7 +59,7 @@ public class UserListener implements ApplicationListener<UserEvent> {
 
     private void createUser(UserDto userDto, String baseUrl) {
         final Mapper mapper = new Mapper();
-        final User user = mapper.set(userDto).mapTo(User.class);
+        final User user = mapper.from(userDto).toInstanceOf(User.class);
 
         user.setId(String.valueOf(IdGenerator.randomUUID()));
         user.setActivated(false);

@@ -23,11 +23,12 @@
                 <li class="categories">
                     CATEGORIES
                     <ul class="list category-1">
-                        <li class="list-item">Cras justo odio</li>
-                        <li class="list-item">Dapibus ac facilisis in</li>
-                        <li class="list-item">Morbi leo risus</li>
-                        <li class="list-item">Porta ac consectetur ac</li>
-                        <li class="list-item">Vestibulum at eros</li>
+                        <li class="list-item" th:each="category : ${categories}" th:text="${category.name}"
+                            data-th-attr="categoryId=${category.id}">
+                        </li>
+                    </ul>
+                    <ul class="list category-2">
+
                     </ul>
                 </li>
             </ul>
@@ -75,6 +76,7 @@
 <script th:src="@{/vendor/pooper/pooper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/catalog.js}"></script>
+<script th:src="@{/js/nav.js}"></script>
 </body>
 
 </html>

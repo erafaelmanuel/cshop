@@ -1,12 +1,15 @@
 package com.rem.cs.web.controller;
 
+import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
 import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
 import com.rem.cs.exception.EntityException;
+import com.rem.cs.web.dto.CategoryDto;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.cs.web.util.PageHelper;
 import com.rem.mappyfy.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,9 +28,12 @@ import java.util.regex.Pattern;
 public class ItemController {
 
     private ItemService itemService;
+    private CategoryService categoryService;
 
-    public ItemController(ItemService itemService) {
+    @Autowired
+    public ItemController(ItemService itemService, CategoryService categoryService) {
         this.itemService = itemService;
+        this.categoryService = categoryService;
     }
 
     @ModelAttribute("cartItems")
@@ -56,13 +62,13 @@ public class ItemController {
             final int currentPage = pageable.getPageNumber() + 1;
 
             pageItems.forEach(item -> items.add(mapper
-                    .set(item)
+                    .from(item)
                     .ignore("categories")
-                    .mapTo(ItemDto.class)));
+                    .toInstanceOf(ItemDto.class)));
 
             final PageHelper helper;
             if (search == null) {
-                 helper = new PageHelper(currentPage, pageItems);
+                helper = new PageHelper(currentPage, pageItems);
             } else {
                 helper = new PageHelper(currentPage, pageItems, "search=" + search);
             }
@@ -76,6 +82,11 @@ public class ItemController {
             model.addAttribute("nextEllipsis", helper.hasNextEllipsis());
             model.addAttribute("isFirst", pageItems.isFirst());
             model.addAttribute("isLast", pageItems.isLast());
+            model.addAttribute("categories", mapper
+                    .from(categoryService.findByParenIsNull())
+                    .ignore("parent")
+                    .ignore("items")
+                    .toArrayOf(CategoryDto.class));
         } catch (Exception e) {
             e.printStackTrace();
         }

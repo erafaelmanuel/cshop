@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
             <artifactId>mappyfy</artifactId>
-            <version>2c04deaba0</version>
+            <version>1.0.5</version>
         </dependency>
     </dependencies>
 </project>

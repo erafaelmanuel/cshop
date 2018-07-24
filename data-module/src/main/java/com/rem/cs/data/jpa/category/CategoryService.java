@@ -18,6 +18,10 @@ public class CategoryService {
         return categoryRepository.findByParentId(parentId);
     }
 
+    public List<Category> findByParenIsNull() {
+        return categoryRepository.findByParentIsNull();
+    }
+
     public List<Category> findSubCategories(String id) {
         final List<Category> categories = new ArrayList<>();
         findByParentId(id).forEach( category -> {

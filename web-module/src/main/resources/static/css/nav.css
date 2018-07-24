@@ -159,14 +159,16 @@
 }
 
 .category-1 {
+    top: 15px;
+    left: 0px;
+    display: none;
     position: absolute;
 }
 
-.categories > ul {
-    visibility: hidden;
-}
-
-.categories:hover ul {
-    visibility: visible;
+.category-2 {
+    top: 15px;
+    left: 240px;
+    display: none;
+    position: absolute;
 }
 

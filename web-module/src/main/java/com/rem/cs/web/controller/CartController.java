@@ -32,9 +32,10 @@ public class CartController {
         try {
             final Mapper mapper = new Mapper();
 
-            cartItems.add(mapper.set(itemService.findById(itemId))
+            cartItems.add(mapper
+                    .from(itemService.findById(itemId))
                     .ignore("categories")
-                    .mapTo(ItemDto.class));
+                    .toInstanceOf(ItemDto.class));
             model.addAttribute("cartItems", cartItems);
             return "fragment/nav/cart";
         } catch (EntityException e) {
