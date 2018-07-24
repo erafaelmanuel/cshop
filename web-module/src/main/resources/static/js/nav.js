@@ -33,10 +33,14 @@
 
         $(document).on("mouseenter", ".categories", function() {
             $(".category-parent").css("display", "block");
+            clearTimeout($(this).data('timeout'));
         });
 
         $(document).on("mouseleave", ".categories", function() {
-            $(".category-parent").css("display", "none");
+            var timeout = setTimeout(function() {
+                $(".category-parent").css("display", "none");
+            }, 500);
+            $(this).data("timeout", timeout);
         });
 
 })();

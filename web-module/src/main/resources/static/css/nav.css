@@ -76,6 +76,12 @@
     opacity: 0.8;
 }
 
+.navbar-custom .dropdown-header span {
+    font-size: 11px;
+    font-weight: bold;
+    opacity: 1 !important;
+}
+
 .navbar-custom .dropdown-item {
     font-size: 13px;
 }
@@ -159,7 +165,7 @@
 }
 
 .category-parent {
-    top: 20px;
+    top: 28px;
     left: 0px;
     display: none;
     position: absolute;
