@@ -124,17 +124,18 @@
     width: 100%;
     cursor: pointer;
     display: block;
-    color: #000;
     padding: 10px 10px;
     display: flex;
     align-items: center;
+    color: #000;
 }
 
 .list .list-item:hover {
     color: #5f27cd;
 }
 
-.list > .list-item > a {
+.list > .list-item > a, .list > .list-item > a:hover {
+    color: inherit;
     display: block;
     text-decoration: none;
     margin: 0px;
