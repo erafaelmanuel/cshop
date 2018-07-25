@@ -22,7 +22,7 @@ public class CategoryController {
         final Mapper mapper = new Mapper();
 
         model.addAttribute("categories", mapper
-                .from(categoryService.findSubCategories(categoryId))
+                .from(categoryService.findByParentId(categoryId))
                 .ignore("parent")
                 .ignore("items")
                 .toArrayOf(CategoryDto.class));

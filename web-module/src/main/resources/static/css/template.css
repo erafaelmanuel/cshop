@@ -125,13 +125,13 @@
     cursor: pointer;
     display: block;
     color: #000;
-    padding: 5px 10px;
+    padding: 10px 10px;
     display: flex;
     align-items: center;
 }
 
 .list .list-item:hover {
-    color: rgba(30, 144, 255,1.0);
+    color: #5f27cd;
 }
 
 .list > .list-item > a {
@@ -141,6 +141,7 @@
 }
 
 .list > .list-item > span {
+    font-size: 14px;
     position: absolute;
     right: 10px;
     margin: auto 0px;
@@ -148,7 +149,8 @@
 }
 
 .item-collapse {
-    background: #dcdde1 !important;
+    background: #5f27cd !important;
+    color: #fff !important;
 }
 
 .item-collapse > span {
