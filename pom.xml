@@ -123,7 +123,7 @@
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
             <artifactId>mappyfy</artifactId>
-            <version>e36f51e8a9</version>
+            <version>838f6d2206</version>
         </dependency>
     </dependencies>
 </project>

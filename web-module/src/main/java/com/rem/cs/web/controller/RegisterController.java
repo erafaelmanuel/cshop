@@ -75,6 +75,7 @@ public class RegisterController {
             hashMap.put("do", UserEvent.CREATE_USER);
             hashMap.put("user", userDto);
             hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+
             publisher.publishEvent(new UserEvent(hashMap));
             model.addAttribute("email", userDto.getEmail());
             return "register/validating";
@@ -118,6 +119,7 @@ public class RegisterController {
                 hashMap.put("do", UserEvent.RESEND_CONFIRMATION_EMAIL);
                 hashMap.put("user", user);
                 hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+
                 publisher.publishEvent(new UserEvent(hashMap));
                 model.addAttribute("email", email);
                 return "register/validating";
@@ -140,6 +142,7 @@ public class RegisterController {
             hashMap.put("user", user);
             hashMap.put("email", newEmail);
             hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+
             publisher.publishEvent(new UserEvent(hashMap));
             model.addAttribute("email", newEmail);
             return "register/validating";

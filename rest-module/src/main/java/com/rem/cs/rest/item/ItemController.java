@@ -38,7 +38,6 @@ public class ItemController {
         itemService.findAll(pageable).forEach(item -> {
             final ItemDto dto = mapper.from(item)
                     .bind("id", "uid")
-                    .ignore("categories")
                     .toInstanceOf(ItemDto.class);
 
             dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
@@ -51,11 +50,10 @@ public class ItemController {
     public ResponseEntity<?> getById(@PathVariable("itemId") String itemId) {
         try {
             final Mapper mapper = new Mapper();
-
-            ItemDto dto = mapper.from(itemService.findById(itemId))
+            final ItemDto dto = mapper.from(itemService.findById(itemId))
                     .bind("id", "uid")
-                    .ignore("categories")
                     .toInstanceOf(ItemDto.class);
+
             dto.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (EntityException e) {

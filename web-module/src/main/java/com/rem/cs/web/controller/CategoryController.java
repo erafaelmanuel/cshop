@@ -33,11 +33,7 @@ public class CategoryController {
     public List<CategoryDto> setUpCategories() {
         final Mapper mapper = new Mapper();
 
-        return mapper
-                .from(categoryService.findByParenIsNull())
-                .ignore("parent")
-                .ignore("items")
-                .toListOf(CategoryDto.class);
+        return mapper.from(categoryService.findByParenIsNull()).toListOf(CategoryDto.class);
     }
 
     @PostMapping("/category/subCategoriesOf")
@@ -46,8 +42,6 @@ public class CategoryController {
 
         model.addAttribute("categories", mapper
                 .from(categoryService.findByParentId(categoryId))
-                .ignore("parent")
-                .ignore("items")
                 .toArrayOf(CategoryDto.class));
         return "fragment/nav/category";
     }
@@ -63,12 +57,11 @@ public class CategoryController {
 
         categoryIds.add(categoryId);
         categoryIds.addAll(mapper
-                .set(categoryService.findSubCategories(categoryId))
+                .in(categoryService.findSubCategories(categoryId))
                 .just("id")
                 .toListOf(String.class));
         pageItems = itemService.findByCategoryIds(categoryIds, pageable);
-        pageItems.forEach(item -> items.add(
-                mapper.from(item).ignore("categories").toInstanceOf(ItemDto.class)));
+        pageItems.forEach(item -> items.add(mapper.from(item).toInstanceOf(ItemDto.class)));
 
         final PageHelper helper = new PageHelper(currentPage, pageItems);
 

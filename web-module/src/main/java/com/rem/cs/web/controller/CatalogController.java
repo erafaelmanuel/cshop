@@ -76,8 +76,7 @@ public class CatalogController {
         } else {
             pageItems = itemService.findAll(pageable);
         }
-        pageItems.stream().parallel().forEach(item -> items.add(
-                mapper.from(item).ignore("categories").toInstanceOf(ItemDto.class)));
+        pageItems.stream().parallel().forEach(item -> items.add(mapper.from(item).toInstanceOf(ItemDto.class)));
 
         final PageHelper helper;
         if (search == null) {
