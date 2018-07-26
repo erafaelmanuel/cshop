@@ -25,13 +25,13 @@ import java.util.regex.Pattern;
 
 @Controller
 @SessionAttributes({"signedInUser", "cartItems"})
-public class ItemController {
+public class CatalogController {
 
     private ItemService itemService;
     private CategoryService categoryService;
 
     @Autowired
-    public ItemController(ItemService itemService, CategoryService categoryService) {
+    public CatalogController(ItemService itemService, CategoryService categoryService) {
         this.itemService = itemService;
         this.categoryService = categoryService;
     }

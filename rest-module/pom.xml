@@ -11,5 +11,12 @@
 
     <artifactId>rest-module</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.rem.cs</groupId>
+            <artifactId>data-module</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>

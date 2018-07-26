@@ -1,8 +1,12 @@
-package com.rem.cs.web.dto;
+package com.rem.cs.rest.item;
 
-public class ItemDto {
+import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
-    private String id;
+@Relation(value = "item", collectionRelation = "items")
+public class ItemDto extends ResourceSupport {
+
+    private String uid;
 
     private String name;
 
@@ -12,12 +16,12 @@ public class ItemDto {
 
     private String imageUrl;
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
