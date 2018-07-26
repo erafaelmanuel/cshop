@@ -21,6 +21,12 @@
 
         <dependency>
             <groupId>com.rem.cs</groupId>
+            <artifactId>rest-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rem.cs</groupId>
             <artifactId>web-module</artifactId>
             <version>${project.version}</version>
         </dependency>
