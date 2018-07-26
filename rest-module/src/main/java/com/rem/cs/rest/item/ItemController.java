@@ -36,9 +36,7 @@ public class ItemController {
         final List<ItemDto> resources = new ArrayList<>();
 
         itemService.findAll(pageable).forEach(item -> {
-            final ItemDto dto = mapper.from(item)
-                    .bind("id", "uid")
-                    .toInstanceOf(ItemDto.class);
+            final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
             dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
             resources.add(dto);
@@ -50,9 +48,7 @@ public class ItemController {
     public ResponseEntity<?> getById(@PathVariable("itemId") String itemId) {
         try {
             final Mapper mapper = new Mapper();
-            final ItemDto dto = mapper.from(itemService.findById(itemId))
-                    .bind("id", "uid")
-                    .toInstanceOf(ItemDto.class);
+            final ItemDto dto = mapper.from(itemService.findById(itemId)).toInstanceOf(ItemDto.class);
 
             dto.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
             return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -60,6 +56,5 @@ public class ItemController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 }

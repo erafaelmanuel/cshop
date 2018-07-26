@@ -1,13 +1,9 @@
-package com.rem.cs.rest.item;
+package com.rem.cs.rest.client.item;
 
-import com.rem.mappyfy.Bind;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "item", collectionRelation = "items")
-public class ItemDto extends ResourceSupport {
+public class Item extends ResourceSupport {
 
-    @Bind(fields = {"id"})
     private String uid;
 
     private String name;
@@ -17,6 +13,9 @@ public class ItemDto extends ResourceSupport {
     private Double price;
 
     private String imageUrl;
+
+    public Item() {
+    }
 
     public String getUid() {
         return uid;

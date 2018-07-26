@@ -14,6 +14,7 @@
         <module>data-module</module>
         <module>application-module</module>
         <module>rest-module</module>
+        <module>rest-client</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -74,6 +75,12 @@
                 <artifactId>rest-module</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.rem.cs</groupId>
+                <artifactId>rest-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -123,7 +130,7 @@
         <dependency>
             <groupId>com.github.erafaelmanuel</groupId>
             <artifactId>mappyfy</artifactId>
-            <version>838f6d2206</version>
+            <version>308a9bbf32</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,10 +1,10 @@
 package com.rem.cs.web.controller;
 
+import com.rem.cs.data.jpa.category.Category;
 import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
 import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
-import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.CategoryDto;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.cs.web.util.PageHelper;
@@ -27,13 +27,15 @@ import java.util.regex.Pattern;
 @SessionAttributes({"signedInUser", "cartItems"})
 public class CatalogController {
 
-    private ItemService itemService;
-    private CategoryService categoryService;
+    private final ItemService itemService;
+    private final CategoryService categoryService;
+    private final Mapper mapper;
 
     @Autowired
     public CatalogController(ItemService itemService, CategoryService categoryService) {
         this.itemService = itemService;
         this.categoryService = categoryService;
+        this.mapper = new Mapper();
     }
 
     @ModelAttribute("cartItems")
@@ -43,23 +45,17 @@ public class CatalogController {
 
     @ModelAttribute(name = "categories")
     public List<CategoryDto> setUpCategories() {
-        final Mapper mapper = new Mapper();
+        final List<Category> categories = categoryService.findByParenIsNull();
 
-        return mapper
-                .from(categoryService.findByParenIsNull())
-                .ignore("parent")
-                .ignore("items")
-                .toListOf(CategoryDto.class);
+        return mapper.from(categories).toListOf(CategoryDto.class);
     }
 
     @GetMapping("/catalog")
-    public String getCatalog(@RequestParam(value = "search", required = false) String search,
-                             @PageableDefault(sort = "name", size = 20) Pageable pageable, Model model) {
-
-        final Mapper mapper = new Mapper();
+    public String catalog(@RequestParam(value = "search", required = false) String search,
+                          @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
         final List<ItemDto> items = new ArrayList<>();
-        final Page<Item> pageItems;
         final int currentPage = pageable.getPageNumber() + 1;
+        final Page<Item> pageItems;
 
         if (!StringUtils.isEmpty(search)) {
             final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
@@ -98,11 +94,11 @@ public class CatalogController {
     }
 
     @GetMapping("/item/{itemId}.html")
-    public String getItemDetail(@PathVariable("itemId") String itemId, Model model) {
-        try {
-            model.addAttribute("item", itemService.findById(itemId));
-        } catch (EntityException e) {
-            e.printStackTrace();
+    public String item(@PathVariable("itemId") String itemId, Model model) {
+        final com.rem.cs.rest.client.item.Item item = new com.rem.cs.rest.client.item.ItemService().getById(itemId);
+
+        if (item != null) {
+            model.addAttribute("item", item);
         }
         return "item-detail";
     }

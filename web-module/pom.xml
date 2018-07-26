@@ -24,6 +24,11 @@
 
         <dependency>
             <groupId>com.rem.cs</groupId>
+            <artifactId>rest-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.rem.cs</groupId>
             <artifactId>exception</artifactId>
         </dependency>
     </dependencies>
