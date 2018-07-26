@@ -1,6 +1,6 @@
 <div th:fragment="category">
     <li class="list-item" th:each="category : ${categories}" data-th-attr="categoryId=${category.id}">
-        <a th:text="${category.name}" th:href="'?categoryId=' + ${category.id}"/>
+        <a th:text="${category.name}" th:href="${category.id} + '.html'"/>
         <span class="icon-right-arrow" />
     </li>
 </div>

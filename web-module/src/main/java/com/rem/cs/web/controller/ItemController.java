@@ -1,6 +1,5 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.data.jpa.category.Category;
 import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
@@ -42,9 +41,19 @@ public class ItemController {
         return new ArrayList<>();
     }
 
+    @ModelAttribute(name = "categories")
+    public List<CategoryDto> setUpCategories() {
+        final Mapper mapper = new Mapper();
+
+        return mapper
+                .from(categoryService.findByParenIsNull())
+                .ignore("parent")
+                .ignore("items")
+                .toListOf(CategoryDto.class);
+    }
+
     @GetMapping("/catalog")
     public String getCatalog(@RequestParam(value = "search", required = false) String search,
-                             @RequestParam(value = "categoryId", required = false) String categoryId,
                              @PageableDefault(sort = "name", size = 20) Pageable pageable, Model model) {
 
         final Mapper mapper = new Mapper();
@@ -52,32 +61,23 @@ public class ItemController {
         final Page<Item> pageItems;
         final int currentPage = pageable.getPageNumber() + 1;
 
-        if (!StringUtils.isEmpty(categoryId)) {
-            final List<String> categoryIds = new ArrayList<>();
+        if (!StringUtils.isEmpty(search)) {
+            final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
+            final Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+            final Matcher matcher = pattern.matcher(search + ",");
 
-            categoryService.findSubCategories(categoryId).parallelStream().forEach(category ->
-                    categoryIds.add(category.getId()));
-            categoryIds.add(categoryId);
-            pageItems = itemService.findByCategoryIds(categoryIds, pageable);
-        } else {
-            if (!StringUtils.isEmpty(search)) {
-                final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
-                final Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-                final Matcher matcher = pattern.matcher(search + ",");
-
-                while (matcher.find()) {
-                    builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-                }
-                if (builder.getParamSize() == 0) {
-                    builder.with("name", ":", search);
-                }
-                pageItems = itemService.findAll(builder.build(), pageable);
-            } else {
-                pageItems = itemService.findAll(pageable);
+            while (matcher.find()) {
+                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
             }
+            if (builder.getParamSize() == 0) {
+                builder.with("name", ":", search);
+            }
+            pageItems = itemService.findAll(builder.build(), pageable);
+        } else {
+            pageItems = itemService.findAll(pageable);
         }
-        pageItems.stream().parallel().forEach(item ->
-                items.add(mapper.from(item).ignore("categories").toInstanceOf(ItemDto.class)));
+        pageItems.stream().parallel().forEach(item -> items.add(
+                mapper.from(item).ignore("categories").toInstanceOf(ItemDto.class)));
 
         final PageHelper helper;
         if (search == null) {
@@ -95,11 +95,6 @@ public class ItemController {
         model.addAttribute("nextEllipsis", helper.hasNextEllipsis());
         model.addAttribute("isFirst", pageItems.isFirst());
         model.addAttribute("isLast", pageItems.isLast());
-        model.addAttribute("categories", mapper
-                .from(categoryService.findByParenIsNull())
-                .ignore("parent")
-                .ignore("items")
-                .toArrayOf(CategoryDto.class));
         return "catalog";
     }
 
