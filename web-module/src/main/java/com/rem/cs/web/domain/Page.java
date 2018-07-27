@@ -1,4 +1,4 @@
-package com.rem.cs.web.dto;
+package com.rem.cs.web.domain;
 
 public class Page {
 

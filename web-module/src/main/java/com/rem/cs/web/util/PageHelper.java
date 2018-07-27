@@ -1,6 +1,6 @@
 package com.rem.cs.web.util;
 
-import com.rem.cs.web.dto.Page;
+import com.rem.cs.web.domain.Page;
 
 public class PageHelper {
 

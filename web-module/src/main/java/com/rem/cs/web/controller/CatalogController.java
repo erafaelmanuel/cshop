@@ -5,8 +5,7 @@ import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.rest.client.item.Item;
 import com.rem.cs.rest.client.item.ItemService;
 import com.rem.cs.web.dto.CategoryDto;
-import com.rem.cs.web.dto.ItemDto;
-import com.rem.cs.web.dto.Page;
+import com.rem.cs.web.domain.Page;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -19,23 +18,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @Controller
 @SessionAttributes({"signedInUser", "cartItems"})
 public class CatalogController {
 
+    private final Mapper mapper = new Mapper();
     private final ItemService itemService;
     private final CategoryService categoryService;
-    private final Mapper mapper;
 
     @Autowired
-    public CatalogController(CategoryService categoryService) {
-        this.itemService = new ItemService();
+    public CatalogController(ItemService itemService, CategoryService categoryService) {
+        this.itemService = itemService;
         this.categoryService = categoryService;
-        this.mapper = new Mapper();
     }
 
     @ModelAttribute("cartItems")
-    public List<ItemDto> setUpCartItems() {
+    public List<Item> setUpCartItems() {
         return new ArrayList<>();
     }
 
@@ -47,74 +48,73 @@ public class CatalogController {
     }
 
     @GetMapping("/catalog")
-    public String catalog(@RequestParam(value = "search", required = false) String search,
-                          @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
+    public CharSequence catalog(@RequestParam(value = "search", required = false) String search,
+                                @RequestParam(value = "page", required = false) Integer page,
+                                @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
         final PagedResources<Item> resources = itemService.getAll(pageable.getPageNumber() + 1, search);
-        final int length = (int) resources.getMetadata().getTotalPages() < 5 ?
-                (int) resources.getMetadata().getTotalPages() : 5;
-        final Page[] pages = new Page[length];
+        final int currentPage = (int) resources.getMetadata().getNumber();
+        final int totalPages = (int) resources.getMetadata().getTotalPages();
+        final Page[] pages = new Page[totalPages < 5 ? totalPages : 5];
+
+        final Page pagePrev = new Page(currentPage - 1, linkTo(methodOn(getClass())
+                .catalog(search, currentPage - 1, pageable, model)).toUri().toString());
+
+        final Page pageNext = new Page(currentPage + 1, linkTo(methodOn(getClass())
+                .catalog(search, currentPage + 1, pageable, model)).toUri().toString());
 
         if (pages.length == 5) {
-            if (resources.getMetadata().getNumber() < pages.length - 1) {
-                for (int i = 0; i < pages.length; i++) {
-                    final int number = i + 1;
-                    final String href = "".concat("?page=" + number);
+            final Page pageFirst = new Page(1, linkTo(methodOn(getClass())
+                    .catalog(search, 1, pageable, model)).toUri().toString());
+            final Page pageLast = new Page(totalPages, linkTo(methodOn(getClass())
+                    .catalog(search, totalPages, pageable, model)).toUri().toString());
 
-                    pages[i] = new Page(number, href);
+            if (currentPage < pages.length - 1) {
+                for (int i = 0; i < pages.length; i++) {
+                    final int pNum = i + 1;
+                    final String href = linkTo(methodOn(getClass())
+                            .catalog(search, pNum, pageable, model)).toUri().toString();
+                    pages[i] = new Page(pNum, href);
                 }
-                if (resources.getMetadata().getTotalPages() > pages.length) {
-                    model.addAttribute("pageLast", new Page(resources.getMetadata().getTotalPages(), ""
-                            .concat("?page=" + resources.getMetadata().getTotalPages())
-                            .concat(search != null ? "&search=" + search : "")));
+                if (totalPages > pages.length) {
+                    model.addAttribute("pageLast", pageLast);
                 }
             } else {
-                final int start = (int) resources.getMetadata().getNumber() - 2;
+                final int start = currentPage - 2;
 
-                if (resources.getMetadata().getNumber() + 2 >= resources.getMetadata().getTotalPages()) {
+                if (currentPage + 2 >= totalPages) {
                     for (int i = 0; i < pages.length; i++) {
                         final int index = (5 - 1) - i;
-                        final int number = (int) resources.getMetadata().getTotalPages() - i;
-                        final String href = "".concat("?page=" + number);
-
-                        pages[index] = new Page(number, href);
+                        final int pNum = totalPages - i;
+                        final String href = linkTo(methodOn(getClass())
+                                .catalog(search, pNum, pageable, model)).toUri().toString();
+                        pages[index] = new Page(pNum, href);
                     }
-                    model.addAttribute("pageFirst", new Page(1, ""
-                            .concat("?page=1")
-                            .concat(search != null ? "&search=" + search : "")));
+                    model.addAttribute("pageFirst", pageFirst);
                 } else {
                     for (int i = 0; i < pages.length; i++) {
-                        final int number = start + i;
-                        final String href = "".concat("?page=" + number);
-
-                        pages[i] = new Page(number, href);
+                        final int pNum = start + i;
+                        final String href = linkTo(methodOn(getClass())
+                                .catalog(search, pNum, pageable, model)).toUri().toString();
+                        pages[i] = new Page(pNum, href);
                     }
-                    model.addAttribute("pageFirst", new Page(1, ""
-                            .concat("?page=1")
-                            .concat(search != null ? "&search=" + search : "")));
-                    model.addAttribute("pageLast", new Page(resources.getMetadata().getTotalPages(), ""
-                            .concat("?page=" + resources.getMetadata().getTotalPages())
-                            .concat(search != null ? "&search=" + search : "")));
+                    model.addAttribute("pageFirst", pageFirst);
+                    model.addAttribute("pageLast", pageLast);
                 }
             }
         } else {
             for (int i = 0; i < pages.length; i++) {
-                final int number = i + 1;
-                final String href = "".concat("?page=" + number);
-
-                pages[i] = new Page(number, href);
+                final int pNum = i + 1;
+                final String href = linkTo(methodOn(getClass())
+                        .catalog(search, pNum, pageable, model)).toUri().toString();
+                pages[i] = new Page(pNum, href);
             }
         }
-        model.addAttribute("pagePrev", new Page(resources.getMetadata().getNumber() - 1, ""
-                .concat("?page=" + (resources.getMetadata().getNumber() - 1))
-                .concat(search != null ? "&search=" + search : "")));
-        model.addAttribute("pageNext", new Page(resources.getMetadata().getNumber() + 1, ""
-                .concat("?page=" + (resources.getMetadata().getNumber() + 1))
-                .concat(search != null ? "&search=" + search : "")));
-
-        model.addAttribute("currentPage", resources.getMetadata().getNumber());
-        model.addAttribute("totalPage", resources.getMetadata().getTotalPages());
-        model.addAttribute("items", resources.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPage", totalPages);
+        model.addAttribute("pagePrev", pagePrev);
+        model.addAttribute("pageNext", pageNext);
         model.addAttribute("pages", pages);
+        model.addAttribute("items", resources.getContent());
         return "catalog";
     }
 
