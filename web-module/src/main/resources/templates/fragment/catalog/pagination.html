@@ -1,21 +1,36 @@
 <div th:fragment="pagination">
     <ul class="pagination justify-content-center" id="catalog-pagination" th:if="${#lists.size(items) &gt; 0}">
-        <li th:class="${isFirst} ? 'page-item disabled': 'page-item'">
+        <li th:if="${pagePrev != null}" th:class="${currentPage &gt; 1} ? 'page-item':'page-item disabled'">
             <a class="page-link" aria-label="Previous" th:href="${pagePrev.href}">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="sr-only">Previous</span>
             </a>
         </li>
-        <li class="page-item disabled" th:if="${prevEllipsis}">
-            <a class="page-link">...</a>
+        <th:block th:if="${pageFirst != null}">
+            <li class="page-item">
+                <a class="page-link" aria-label="First" th:href="${pageFirst.href}">
+                    <th:block th:text="${pageFirst.number}"/>
+                </a>
+            </li>
+            <li th:if="${(pageFirst.number + 3) &lt; currentPage}" class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+        </th:block>
+        <li th:each="page, iterStat : ${pages}"
+            th:class="${page.number eq currentPage ? 'page-item active':'page-item'}">
+            <a class="page-link" th:href="${page.href}" th:text="${page.number}"/>
         </li>
-        <li th:each="page, iterStat : ${pages}" th:class="${page.number eq currentPage ? 'page-item active':'page-item'}">
-            <a class="page-link" th:href="${page.href}" th:text="${page.number}" />
-        </li>
-        <li class="page-item disabled" th:if="${nextEllipsis}">
-            <a class="page-link">...</a>
-        </li>
-        <li th:class="${isLast} ? 'page-item disabled': 'page-item'">
+        <th:block th:if="${pageLast != null}">
+            <li th:if="${(pageLast.number - 3) &gt; currentPage}" class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" aria-label="Last" th:href="${pageLast.href}">
+                    <th:block th:text="${pageLast.number}"/>
+                </a>
+            </li>
+        </th:block>
+        <li th:if="${pageNext != null}" th:class="${currentPage &lt; totalPage} ? 'page-item':'page-item disabled'">
             <a class="page-link" aria-label="Next" th:href="${pageNext.href}">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>

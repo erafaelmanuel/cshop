@@ -2,26 +2,22 @@ package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.category.Category;
 import com.rem.cs.data.jpa.category.CategoryService;
-import com.rem.cs.data.jpa.item.Item;
-import com.rem.cs.data.jpa.item.ItemService;
-import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
+import com.rem.cs.rest.client.item.Item;
+import com.rem.cs.rest.client.item.ItemService;
 import com.rem.cs.web.dto.CategoryDto;
 import com.rem.cs.web.dto.ItemDto;
-import com.rem.cs.web.util.PageHelper;
+import com.rem.cs.web.dto.Page;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @SessionAttributes({"signedInUser", "cartItems"})
@@ -32,8 +28,8 @@ public class CatalogController {
     private final Mapper mapper;
 
     @Autowired
-    public CatalogController(ItemService itemService, CategoryService categoryService) {
-        this.itemService = itemService;
+    public CatalogController(CategoryService categoryService) {
+        this.itemService = new ItemService();
         this.categoryService = categoryService;
         this.mapper = new Mapper();
     }
@@ -53,49 +49,78 @@ public class CatalogController {
     @GetMapping("/catalog")
     public String catalog(@RequestParam(value = "search", required = false) String search,
                           @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
-        final List<ItemDto> items = new ArrayList<>();
-        final int currentPage = pageable.getPageNumber() + 1;
-        final Page<Item> pageItems;
+        final PagedResources<Item> resources = itemService.getAll(pageable.getPageNumber() + 1, search);
+        final int length = (int) resources.getMetadata().getTotalPages() < 5 ?
+                (int) resources.getMetadata().getTotalPages() : 5;
+        final Page[] pages = new Page[length];
 
-        if (!StringUtils.isEmpty(search)) {
-            final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
-            final Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-            final Matcher matcher = pattern.matcher(search + ",");
+        if (pages.length == 5) {
+            if (resources.getMetadata().getNumber() < pages.length - 1) {
+                for (int i = 0; i < pages.length; i++) {
+                    final int number = i + 1;
+                    final String href = "".concat("?page=" + number);
 
-            while (matcher.find()) {
-                builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+                    pages[i] = new Page(number, href);
+                }
+                if (resources.getMetadata().getTotalPages() > pages.length) {
+                    model.addAttribute("pageLast", new Page(resources.getMetadata().getTotalPages(), ""
+                            .concat("?page=" + resources.getMetadata().getTotalPages())
+                            .concat(search != null ? "&search=" + search : "")));
+                }
+            } else {
+                final int start = (int) resources.getMetadata().getNumber() - 2;
+
+                if (resources.getMetadata().getNumber() + 2 >= resources.getMetadata().getTotalPages()) {
+                    for (int i = 0; i < pages.length; i++) {
+                        final int index = (5 - 1) - i;
+                        final int number = (int) resources.getMetadata().getTotalPages() - i;
+                        final String href = "".concat("?page=" + number);
+
+                        pages[index] = new Page(number, href);
+                    }
+                    model.addAttribute("pageFirst", new Page(1, ""
+                            .concat("?page=1")
+                            .concat(search != null ? "&search=" + search : "")));
+                } else {
+                    for (int i = 0; i < pages.length; i++) {
+                        final int number = start + i;
+                        final String href = "".concat("?page=" + number);
+
+                        pages[i] = new Page(number, href);
+                    }
+                    model.addAttribute("pageFirst", new Page(1, ""
+                            .concat("?page=1")
+                            .concat(search != null ? "&search=" + search : "")));
+                    model.addAttribute("pageLast", new Page(resources.getMetadata().getTotalPages(), ""
+                            .concat("?page=" + resources.getMetadata().getTotalPages())
+                            .concat(search != null ? "&search=" + search : "")));
+                }
             }
-            if (builder.getParamSize() == 0) {
-                builder.with("name", ":", search);
+        } else {
+            for (int i = 0; i < pages.length; i++) {
+                final int number = i + 1;
+                final String href = "".concat("?page=" + number);
+
+                pages[i] = new Page(number, href);
             }
-            pageItems = itemService.findAll(builder.build(), pageable);
-        } else {
-            pageItems = itemService.findAll(pageable);
         }
-        pageItems.stream().parallel().forEach(item -> items.add(mapper.from(item).toInstanceOf(ItemDto.class)));
+        model.addAttribute("pagePrev", new Page(resources.getMetadata().getNumber() - 1, ""
+                .concat("?page=" + (resources.getMetadata().getNumber() - 1))
+                .concat(search != null ? "&search=" + search : "")));
+        model.addAttribute("pageNext", new Page(resources.getMetadata().getNumber() + 1, ""
+                .concat("?page=" + (resources.getMetadata().getNumber() + 1))
+                .concat(search != null ? "&search=" + search : "")));
 
-        final PageHelper helper;
-        if (search == null) {
-            helper = new PageHelper(currentPage, pageItems);
-        } else {
-            helper = new PageHelper(currentPage, pageItems, "search=" + search);
-        }
-
-        model.addAttribute("items", items);
-        model.addAttribute("pages", helper.getPages());
-        model.addAttribute("pageNext", helper.getPageNext());
-        model.addAttribute("pagePrev", helper.getPagePrev());
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("prevEllipsis", helper.hasPrevEllipsis());
-        model.addAttribute("nextEllipsis", helper.hasNextEllipsis());
-        model.addAttribute("isFirst", pageItems.isFirst());
-        model.addAttribute("isLast", pageItems.isLast());
+        model.addAttribute("currentPage", resources.getMetadata().getNumber());
+        model.addAttribute("totalPage", resources.getMetadata().getTotalPages());
+        model.addAttribute("items", resources.getContent());
+        model.addAttribute("pages", pages);
         return "catalog";
     }
 
     @GetMapping("/item/{itemId}.html")
     public String item(@PathVariable("itemId") String itemId, Model model) {
-        final com.rem.cs.rest.client.item.Item item = new com.rem.cs.rest.client.item.ItemService().getById(itemId);
+        final Item item = new ItemService().getById(itemId);
 
         if (item != null) {
             model.addAttribute("item", item);

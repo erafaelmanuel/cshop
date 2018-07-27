@@ -2,14 +2,21 @@ package com.rem.cs.web.dto;
 
 public class Page {
 
-    private int number;
+    private long number;
     private String href;
 
-    public int getNumber() {
+    public Page() {}
+
+    public Page(long number, String href) {
+        this.number = number;
+        this.href = href;
+    }
+
+    public long getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(long number) {
         this.number = number;
     }
 

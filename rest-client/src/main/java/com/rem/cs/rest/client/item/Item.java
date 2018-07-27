@@ -1,10 +1,13 @@
 package com.rem.cs.rest.client.item;
 
-import org.springframework.hateoas.ResourceSupport;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class Item extends ResourceSupport {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Item {
 
-    private String uid;
+    @JsonAlias("uid")
+    private String id;
 
     private String name;
 
@@ -17,12 +20,12 @@ public class Item extends ResourceSupport {
     public Item() {
     }
 
-    public String getUid() {
-        return uid;
+    public String getId() {
+        return id;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
