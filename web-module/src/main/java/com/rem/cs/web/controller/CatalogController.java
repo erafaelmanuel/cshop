@@ -1,6 +1,6 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.data.jpa.category.Category;
+import com.rem.cs.data.jpa.entity.Category;
 import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.rest.client.item.Item;
 import com.rem.cs.rest.client.item.ItemService;

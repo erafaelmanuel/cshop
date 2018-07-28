@@ -1,8 +1,8 @@
 package com.rem.cs.web.listener;
 
-import com.rem.cs.data.jpa.token.Token;
-import com.rem.cs.data.jpa.token.TokenRepository;
-import com.rem.cs.data.jpa.user.User;
+import com.rem.cs.data.jpa.entity.Token;
+import com.rem.cs.data.jpa.repository.TokenRepository;
+import com.rem.cs.data.jpa.entity.User;
 import com.rem.cs.data.jpa.user.UserService;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
@@ -16,7 +16,6 @@ import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Component;
 
 import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Component

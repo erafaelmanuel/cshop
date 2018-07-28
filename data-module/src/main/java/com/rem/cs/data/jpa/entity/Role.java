@@ -1,7 +1,5 @@
-package com.rem.cs.data.jpa.role;
+package com.rem.cs.data.jpa.entity;
 
-
-import com.rem.cs.data.jpa.user.User;
 
 import javax.persistence.*;
 import java.util.HashSet;

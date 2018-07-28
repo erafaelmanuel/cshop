@@ -1,4 +1,4 @@
-package com.rem.cs.data.jpa.token;
+package com.rem.cs.data.jpa.entity;
 
 
 import javax.persistence.Column;

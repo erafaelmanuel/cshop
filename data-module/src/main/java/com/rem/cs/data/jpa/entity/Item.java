@@ -1,6 +1,5 @@
-package com.rem.cs.data.jpa.item;
+package com.rem.cs.data.jpa.entity;
 
-import com.rem.cs.data.jpa.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +33,6 @@ public class Item {
 
     @ManyToMany
     @JoinTable(name = "tbl_item_category", joinColumns = {@JoinColumn(name = "item_id")},
-        inverseJoinColumns = {@JoinColumn(name = "category_id")})
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
     private Set<Category> categories = new HashSet<>();
 }

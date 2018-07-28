@@ -1,5 +1,7 @@
 package com.rem.cs.data.jpa.category;
 
+import com.rem.cs.data.jpa.entity.Category;
+import com.rem.cs.data.jpa.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

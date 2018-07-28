@@ -1,36 +1,34 @@
-package com.rem.cs.data.jpa.item;
+package com.rem.cs.data.jpa.specification;
 
 import com.rem.cs.data.jpa.domain.SearchCriteria;
-import com.rem.cs.data.jpa.entity.Item;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
-public class ItemSpecificationBuilder {
+public class EntitySpecificationBuilder<T> {
 
     private List<SearchCriteria> params;
 
-    public ItemSpecificationBuilder() {
+    public EntitySpecificationBuilder() {
         params = new ArrayList<>();
     }
 
-    public ItemSpecificationBuilder with(String key, String operation, String value) {
+    public EntitySpecificationBuilder with(String key, String operation, String value) {
         params.add(new SearchCriteria(key, operation, value));
         return this;
     }
 
-    public Specification<Item> build() {
+    public Specification<T> build() {
         if (params.size() == 0) {
             return null;
         }
-        List<Specification<Item>> specs = new ArrayList<>();
+        List<Specification<T>> specs = new ArrayList<>();
         for (SearchCriteria param : params) {
-            specs.add(new ItemSpecification(param));
+            specs.add(new EntitySpecification<T>(param));
         }
 
-        Specification<Item> result = specs.get(0);
+        Specification<T> result = specs.get(0);
         for (int i = 1; i < specs.size(); i++) {
             result = result.and(specs.get(i));
         }

@@ -1,6 +1,7 @@
-package com.rem.cs.data.jpa.user;
+package com.rem.cs.data.jpa.repository;
 
-import com.rem.cs.data.jpa.role.Role;
+import com.rem.cs.data.jpa.entity.Role;
+import com.rem.cs.data.jpa.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,12 +1,13 @@
-package com.rem.cs.rest.item;
+package com.rem.cs.rest.controller;
 
 import com.rem.cs.commons.NumberUtils;
-import com.rem.cs.data.jpa.category.Category;
-import com.rem.cs.data.jpa.item.Item;
-import com.rem.cs.data.jpa.item.ItemJpaRepository;
-import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
+import com.rem.cs.data.jpa.specification.EntitySpecificationBuilder;
+import com.rem.cs.data.jpa.entity.Category;
+import com.rem.cs.data.jpa.entity.Item;
+import com.rem.cs.data.jpa.repository.ItemRepository;
 import com.rem.cs.exception.EntityException;
-import com.rem.cs.rest.category.CategoryDto;
+import com.rem.cs.rest.dto.CategoryDto;
+import com.rem.cs.rest.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -28,14 +30,14 @@ import java.util.regex.Pattern;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@RestController
+@RestController("itemRestController")
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private ItemJpaRepository itemRepo;
+    private ItemRepository itemRepo;
 
     @Autowired
-    public ItemController(ItemJpaRepository itemRepo) {
+    public ItemController(ItemRepository itemRepo) {
         this.itemRepo = itemRepo;
     }
 
@@ -44,7 +46,7 @@ public class ItemController {
                                      @RequestParam(name = "page", required = false) Integer page,
                                      @RequestParam(name = "size", required = false) Integer size,
                                      @RequestParam(name = "sort", required = false) String sort) {
-        final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
+        final EntitySpecificationBuilder<Item> builder = new EntitySpecificationBuilder<>();
         final List<ItemDto> items = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
@@ -68,7 +70,7 @@ public class ItemController {
                 builder.with("name", ":", search);
             }
         }
-        pageItems = itemRepo.findAll(pageable);
+        pageItems = itemRepo.findAll(builder.build(), pageable);
         pageItems.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
@@ -77,8 +79,8 @@ public class ItemController {
                     .withRel("categories"));
             items.add(dto);
         });
-        resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
-                .getPageNumber(), pageItems.getTotalElements(), pageItems.getTotalPages()));
+        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItems
+                .getTotalElements(), pageItems.getTotalPages()));
 
         resources.add(linkTo(methodOn(getClass()).findAll(search, page, size, sort)).withSelfRel());
         if (pageItems.getTotalPages() > 1) {
@@ -103,8 +105,9 @@ public class ItemController {
         final Optional<Item> item = itemRepo.findById(itemId);
 
         try {
-            final ItemDto resource = mapper.from(item.orElseThrow(() -> new EntityException("No item found")))
+            final ItemDto dto = mapper.from(item.orElseThrow(() -> new EntityException("No item found")))
                     .toInstanceOf(ItemDto.class);
+            final Resource<ItemDto> resource = new Resource<>(dto);
 
             resource.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
             return new ResponseEntity<>(resource, HttpStatus.OK);
@@ -136,8 +139,8 @@ public class ItemController {
             dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
             items.add(dto);
         });
-        resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
-                .getPageNumber(), pageItems.getTotalElements(), pageItems.getTotalPages()));
+        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItems
+                .getTotalElements(), pageItems.getTotalPages()));
 
         resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, page, size, sort)).withSelfRel());
         if (pageItems.getTotalPages() > 1) {
@@ -165,7 +168,7 @@ public class ItemController {
         final List<CategoryDto> categories = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.getOrElse(page, 0).intValue();
+        final int tempPage = NumberUtils.indexOfZero(page);
         final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
@@ -179,8 +182,8 @@ public class ItemController {
 
             categories.add(dto);
         });
-        resources = new PagedResources<>(categories, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
-                .getPageNumber(), pageCategories.getTotalElements(), pageCategories.getTotalPages()));
+        resources = new PagedResources<>(categories, new PagedResources.PageMetadata(tempSize, (tempPage + 1),
+                pageCategories.getTotalElements(), pageCategories.getTotalPages()));
 
         if (pageCategories.getTotalPages() > 1) {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, 1, size, sort))

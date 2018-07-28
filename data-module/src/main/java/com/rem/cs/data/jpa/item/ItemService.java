@@ -1,5 +1,7 @@
 package com.rem.cs.data.jpa.item;
 
+import com.rem.cs.data.jpa.entity.Item;
+import com.rem.cs.data.jpa.repository.ItemRepository;
 import com.rem.cs.exception.EntityException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +14,9 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    private ItemJpaRepository itemRepository;
+    private ItemRepository itemRepository;
 
-    public ItemService(ItemJpaRepository itemRepository) {
+    public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 

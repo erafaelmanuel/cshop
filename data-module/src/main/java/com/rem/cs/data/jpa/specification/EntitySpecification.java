@@ -1,7 +1,6 @@
-package com.rem.cs.data.jpa.item;
+package com.rem.cs.data.jpa.specification;
 
 import com.rem.cs.data.jpa.domain.SearchCriteria;
-import com.rem.cs.data.jpa.entity.Item;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,17 +8,16 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-@Deprecated
-public class ItemSpecification implements Specification<Item> {
+public class EntitySpecification<T> implements Specification<T> {
 
     private SearchCriteria criteria;
 
-    public ItemSpecification(SearchCriteria criteria) {
+    public EntitySpecification(SearchCriteria criteria) {
         this.criteria = criteria;
     }
 
     @Override
-    public Predicate toPredicate(Root<Item> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder builder) {
         if (criteria.getOperation().equalsIgnoreCase(">")) {
             return builder.greaterThanOrEqualTo(
                     root.get(criteria.getKey()), criteria.getValue());

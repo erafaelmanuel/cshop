@@ -1,8 +1,11 @@
 package com.rem.cs.data.jpa.user;
 
+import com.rem.cs.data.jpa.entity.User;
+import com.rem.cs.data.jpa.repository.UserRepository;
 import com.rem.cs.exception.EntityException;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Service
 public class UserService {
 
