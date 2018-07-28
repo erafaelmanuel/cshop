@@ -1,5 +1,6 @@
 package com.rem.cs.rest.item;
 
+import com.rem.cs.commons.NumberUtils;
 import com.rem.cs.data.jpa.item.Item;
 import com.rem.cs.data.jpa.item.ItemService;
 import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
@@ -7,9 +8,9 @@ import com.rem.cs.exception.EntityException;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.Link;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,19 +30,26 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class ItemController {
 
     private final ItemService itemService;
-    private final Mapper mapper;
 
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
-        this.mapper = new Mapper();
     }
 
     @GetMapping(produces = {"application/json", "application/hal+json"})
-    public ResponseEntity<?> getAll(@PageableDefault(sort = {"name"}, size = 1) Pageable pageable,
-                                    @RequestParam(name = "search", required = false) String search) {
-        final List<ItemDto> items = new ArrayList<>();
+    public ResponseEntity<?> getAll(@RequestParam(name = "search", required = false) String search,
+                                    @RequestParam(name = "page", required = false) Integer page,
+                                    @RequestParam(name = "size", required = false) Integer size,
+                                    @RequestParam(name = "sort", required = false) String sort) {
         final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
+        final List<ItemDto> items = new ArrayList<>();
+        final Mapper mapper = new Mapper();
+
+        final int tempPage = NumberUtils.getOrElse(page, 0).intValue();
+        final int tempSize = NumberUtils.getOrElse(size, 1).intValue();
+        final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
+
+        final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
 
         final PagedResources<ItemDto> resources;
         final Page<Item> pageItems;
@@ -57,7 +65,6 @@ public class ItemController {
                 builder.with("name", ":", search);
             }
         }
-
         pageItems = itemService.findAll(builder.build(), pageable);
         pageItems.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
@@ -65,29 +72,22 @@ public class ItemController {
             dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
             items.add(dto);
         });
-        resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(),
-                pageable.getPageNumber() + 1, pageItems.getTotalElements(), pageItems.getTotalPages()));
 
-        resources.add(linkTo(getClass())
-                .slash(search != null ? "?search=" + search : "")
-                .withSelfRel());
+        resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
+                .getPageNumber(), pageItems.getTotalElements(), pageItems.getTotalPages()));
+        resources.add(linkTo(methodOn(getClass()).getAll(search, page, size, sort)).withSelfRel());
         if (pageItems.getTotalPages() > 1) {
-            resources.add(linkTo(getClass()).slash("?page=1")
-                    .slash(search != null ? "&search=" + search : "")
-                    .withRel(Link.REL_FIRST));
-            resources.add(linkTo(getClass()).slash("?page=" + pageItems.getTotalPages())
-                    .slash(search != null ? "&search=" + search : "")
-                    .withRel(Link.REL_LAST));
-        }
-        if (!pageItems.isFirst()) {
-            resources.add(linkTo(getClass()).slash("?page=" + pageable.getPageNumber())
-                    .slash(search != null ? "&search=" + search : "")
-                    .withRel(Link.REL_PREVIOUS));
-        }
-        if (!pageItems.isLast()) {
-            resources.add(linkTo(getClass()).slash("?page=" + (pageable.getPageNumber() + 2))
-                    .slash(search != null ? "&search=" + search : "")
-                    .withRel(Link.REL_NEXT));
+            resources.add(linkTo(methodOn(getClass()).getAll(search, 1, size, sort)).withRel("first"));
+            resources.add(linkTo(methodOn(getClass()).getAll(search, pageItems.getTotalPages(), size, sort))
+                    .withRel("last"));
+            if (!pageItems.isFirst()) {
+                resources.add(linkTo(methodOn(getClass()).getAll(search, (page != null) ? page - 1 : null, size, sort))
+                        .withRel("prev"));
+            }
+            if (!pageItems.isLast()) {
+                resources.add(linkTo(methodOn(getClass()).getAll(search, (page != null) ? page + 1 : null, size, sort))
+                        .withRel("next"));
+            }
         }
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
@@ -96,14 +96,12 @@ public class ItemController {
     public ResponseEntity<?> getById(@PathVariable("itemId") String itemId) {
         try {
             final Mapper mapper = new Mapper();
-            final ItemDto dto = mapper.from(itemService.findById(itemId)).toInstanceOf(ItemDto.class);
+            final ItemDto resource = mapper.from(itemService.findById(itemId)).toInstanceOf(ItemDto.class);
 
-            dto.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
-            return new ResponseEntity<>(dto, HttpStatus.OK);
+            resource.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
+            return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (EntityException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }

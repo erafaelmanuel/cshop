@@ -16,6 +16,11 @@
             <groupId>com.rem.cs</groupId>
             <artifactId>data-module</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.rem.cs</groupId>
+            <artifactId>commons</artifactId>
+        </dependency>
     </dependencies>
 
 

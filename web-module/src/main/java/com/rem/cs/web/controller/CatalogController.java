@@ -42,7 +42,7 @@ public class CatalogController {
 
     @ModelAttribute(name = "categories")
     public List<CategoryDto> setUpCategories() {
-        final List<Category> categories = categoryService.findByParentIsNull();
+        final List<Category> categories = categoryService.findByParenIsNull();
 
         return mapper.from(categories).toListOf(CategoryDto.class);
     }
