@@ -33,7 +33,7 @@ public class CategoryController {
     public List<CategoryDto> setUpCategories() {
         final Mapper mapper = new Mapper();
 
-        return mapper.from(categoryService.findByParenIsNull()).toListOf(CategoryDto.class);
+        return mapper.from(categoryService.findByParentIsNull()).toListOf(CategoryDto.class);
     }
 
     @PostMapping("/category/subCategoriesOf")

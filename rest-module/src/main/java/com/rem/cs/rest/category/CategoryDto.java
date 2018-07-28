@@ -1,11 +1,10 @@
-package com.rem.cs.rest.item;
+package com.rem.cs.rest.category;
 
 import com.rem.mappyfy.Bind;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
-@Relation(value = "item", collectionRelation = "items")
-public class ItemDto extends ResourceSupport {
+@Relation(value = "category", collectionRelation = "categories")
+public class CategoryDto {
 
     @Bind(fields = {"id"})
     private String uid;
@@ -14,11 +13,7 @@ public class ItemDto extends ResourceSupport {
 
     private String description;
 
-    private Double price;
-
-    private String imageUrl;
-
-    public ItemDto() {
+    public CategoryDto() {
     }
 
     public String getUid() {
@@ -43,21 +38,5 @@ public class ItemDto extends ResourceSupport {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }

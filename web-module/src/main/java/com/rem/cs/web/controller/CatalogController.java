@@ -4,8 +4,8 @@ import com.rem.cs.data.jpa.category.Category;
 import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.rest.client.item.Item;
 import com.rem.cs.rest.client.item.ItemService;
-import com.rem.cs.web.dto.CategoryDto;
 import com.rem.cs.web.domain.Page;
+import com.rem.cs.web.dto.CategoryDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -42,37 +42,37 @@ public class CatalogController {
 
     @ModelAttribute(name = "categories")
     public List<CategoryDto> setUpCategories() {
-        final List<Category> categories = categoryService.findByParenIsNull();
+        final List<Category> categories = categoryService.findByParentIsNull();
 
         return mapper.from(categories).toListOf(CategoryDto.class);
     }
 
     @GetMapping("/catalog")
-    public CharSequence catalog(@RequestParam(value = "search", required = false) String search,
-                                @RequestParam(value = "page", required = false) Integer page,
-                                @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
+    public CharSequence clickSearch(@RequestParam(value = "search") String search,
+                                    @RequestParam(value = "page", required = false) Integer page,
+                                    @PageableDefault(sort = {"name"}, size = 20) Pageable pageable, Model model) {
         final PagedResources<Item> resources = itemService.getAll(pageable.getPageNumber() + 1, search);
         final int currentPage = (int) resources.getMetadata().getNumber();
         final int totalPages = (int) resources.getMetadata().getTotalPages();
         final Page[] pages = new Page[totalPages < 5 ? totalPages : 5];
 
         final Page pagePrev = new Page(currentPage - 1, linkTo(methodOn(getClass())
-                .catalog(search, currentPage - 1, pageable, model)).toUri().toString());
+                .clickSearch(search, currentPage - 1, pageable, model)).toUri().toString());
 
         final Page pageNext = new Page(currentPage + 1, linkTo(methodOn(getClass())
-                .catalog(search, currentPage + 1, pageable, model)).toUri().toString());
+                .clickSearch(search, currentPage + 1, pageable, model)).toUri().toString());
 
         if (pages.length == 5) {
             final Page pageFirst = new Page(1, linkTo(methodOn(getClass())
-                    .catalog(search, 1, pageable, model)).toUri().toString());
+                    .clickSearch(search, 1, pageable, model)).toUri().toString());
             final Page pageLast = new Page(totalPages, linkTo(methodOn(getClass())
-                    .catalog(search, totalPages, pageable, model)).toUri().toString());
+                    .clickSearch(search, totalPages, pageable, model)).toUri().toString());
 
             if (currentPage < pages.length - 1) {
                 for (int i = 0; i < pages.length; i++) {
                     final int pNum = i + 1;
                     final String href = linkTo(methodOn(getClass())
-                            .catalog(search, pNum, pageable, model)).toUri().toString();
+                            .clickSearch(search, pNum, pageable, model)).toUri().toString();
                     pages[i] = new Page(pNum, href);
                 }
                 if (totalPages > pages.length) {
@@ -86,7 +86,7 @@ public class CatalogController {
                         final int index = (5 - 1) - i;
                         final int pNum = totalPages - i;
                         final String href = linkTo(methodOn(getClass())
-                                .catalog(search, pNum, pageable, model)).toUri().toString();
+                                .clickSearch(search, pNum, pageable, model)).toUri().toString();
                         pages[index] = new Page(pNum, href);
                     }
                     model.addAttribute("pageFirst", pageFirst);
@@ -94,7 +94,7 @@ public class CatalogController {
                     for (int i = 0; i < pages.length; i++) {
                         final int pNum = start + i;
                         final String href = linkTo(methodOn(getClass())
-                                .catalog(search, pNum, pageable, model)).toUri().toString();
+                                .clickSearch(search, pNum, pageable, model)).toUri().toString();
                         pages[i] = new Page(pNum, href);
                     }
                     model.addAttribute("pageFirst", pageFirst);
@@ -105,7 +105,7 @@ public class CatalogController {
             for (int i = 0; i < pages.length; i++) {
                 final int pNum = i + 1;
                 final String href = linkTo(methodOn(getClass())
-                        .catalog(search, pNum, pageable, model)).toUri().toString();
+                        .clickSearch(search, pNum, pageable, model)).toUri().toString();
                 pages[i] = new Page(pNum, href);
             }
         }
@@ -119,7 +119,7 @@ public class CatalogController {
     }
 
     @GetMapping("/item/{itemId}.html")
-    public String item(@PathVariable("itemId") String itemId, Model model) {
+    public CharSequence clickItem(@PathVariable("itemId") String itemId, Model model) {
         final Item item = new ItemService().getById(itemId);
 
         if (item != null) {
