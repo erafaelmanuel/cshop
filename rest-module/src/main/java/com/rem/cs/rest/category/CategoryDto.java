@@ -1,10 +1,11 @@
 package com.rem.cs.rest.category;
 
 import com.rem.mappyfy.Bind;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "category", collectionRelation = "categories")
-public class CategoryDto {
+public class CategoryDto extends ResourceSupport {
 
     @Bind(fields = {"id"})
     private String uid;

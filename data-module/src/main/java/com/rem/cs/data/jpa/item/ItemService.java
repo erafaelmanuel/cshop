@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Deprecated
 @Service
 public class ItemService {
 
-    private ItemRepository itemRepository;
+    private ItemJpaRepository itemRepository;
 
-    public ItemService(ItemRepository itemRepository) {
+    public ItemService(ItemJpaRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
@@ -33,19 +34,7 @@ public class ItemService {
         return itemRepository.findAll(specification, pageable);
     }
 
-    public List<Item> findByCategoryId(String categoryId) {
-        return itemRepository.findByCategoryId(categoryId);
-    }
-
-    public Page<Item> findByCategoryId(String categoryId, Pageable pageable) {
-        return itemRepository.findByCategoryId(categoryId, pageable);
-    }
-
-    public List<Item> findByCategoryIds(List<String> categoryIds) {
-        return itemRepository.findByCategoryIds(categoryIds);
-    }
-
     public Page<Item> findByCategoryIds(List<String> categoryIds, Pageable pageable) {
-        return itemRepository.findByCategoryIds(categoryIds, pageable);
+        return itemRepository.findByCategoryId(categoryIds, pageable);
     }
 }

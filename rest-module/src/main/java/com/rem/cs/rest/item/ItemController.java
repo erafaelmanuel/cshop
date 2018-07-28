@@ -1,10 +1,12 @@
 package com.rem.cs.rest.item;
 
 import com.rem.cs.commons.NumberUtils;
+import com.rem.cs.data.jpa.category.Category;
 import com.rem.cs.data.jpa.item.Item;
-import com.rem.cs.data.jpa.item.ItemService;
+import com.rem.cs.data.jpa.item.ItemJpaRepository;
 import com.rem.cs.data.jpa.item.ItemSpecificationBuilder;
 import com.rem.cs.exception.EntityException;
+import com.rem.cs.rest.category.CategoryDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,23 +32,23 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private final ItemService itemService;
+    private ItemJpaRepository itemRepo;
 
     @Autowired
-    public ItemController(ItemService itemService) {
-        this.itemService = itemService;
+    public ItemController(ItemJpaRepository itemRepo) {
+        this.itemRepo = itemRepo;
     }
 
     @GetMapping(produces = {"application/json", "application/hal+json"})
-    public ResponseEntity<?> getAll(@RequestParam(name = "search", required = false) String search,
-                                    @RequestParam(name = "page", required = false) Integer page,
-                                    @RequestParam(name = "size", required = false) Integer size,
-                                    @RequestParam(name = "sort", required = false) String sort) {
+    public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false) String search,
+                                     @RequestParam(name = "page", required = false) Integer page,
+                                     @RequestParam(name = "size", required = false) Integer size,
+                                     @RequestParam(name = "sort", required = false) String sort) {
         final ItemSpecificationBuilder builder = new ItemSpecificationBuilder();
         final List<ItemDto> items = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.getOrElse(page, 0).intValue();
+        final int tempPage = NumberUtils.indexOfZero(page);
         final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
@@ -65,38 +68,43 @@ public class ItemController {
                 builder.with("name", ":", search);
             }
         }
-        pageItems = itemService.findAll(pageable);
+        pageItems = itemRepo.findAll(pageable);
         pageItems.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
             dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
+            dto.add(linkTo(methodOn(getClass()).findCategoriesById(dto.getUid(), null, null, null))
+                    .withRel("categories"));
             items.add(dto);
         });
         resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
                 .getPageNumber(), pageItems.getTotalElements(), pageItems.getTotalPages()));
 
+        resources.add(linkTo(methodOn(getClass()).findAll(search, page, size, sort)).withSelfRel());
         if (pageItems.getTotalPages() > 1) {
-            resources.add(linkTo(methodOn(getClass()).getAll(search, 1, size, sort)).withRel("first"));
-            resources.add(linkTo(methodOn(getClass()).getAll(search, pageItems.getTotalPages(), size, sort))
+            resources.add(linkTo(methodOn(getClass()).findAll(search, 1, size, sort)).withRel("first"));
+            resources.add(linkTo(methodOn(getClass()).findAll(search, pageItems.getTotalPages(), size, sort))
                     .withRel("last"));
         }
         if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItems.getTotalPages() && !pageItems.isFirst()) {
-            resources.add(linkTo(methodOn(getClass()).getAll(search, (tempPage + 1) - 1, size, sort))
+            resources.add(linkTo(methodOn(getClass()).findAll(search, (tempPage + 1) - 1, size, sort))
                     .withRel("prev"));
         }
         if (!pageItems.isLast()) {
-            resources.add(linkTo(methodOn(getClass()).getAll(search, (tempPage + 1) + 1, size, sort))
+            resources.add(linkTo(methodOn(getClass()).findAll(search, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
-        resources.add(linkTo(methodOn(getClass()).getAll(search, page, size, sort)).withSelfRel());
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/{itemId}"}, produces = {"application/json", "application/hal+json"})
     public ResponseEntity<?> getById(@PathVariable("itemId") String itemId) {
+        final Mapper mapper = new Mapper();
+        final Optional<Item> item = itemRepo.findById(itemId);
+
         try {
-            final Mapper mapper = new Mapper();
-            final ItemDto resource = mapper.from(itemService.findById(itemId)).toInstanceOf(ItemDto.class);
+            final ItemDto resource = mapper.from(item.orElseThrow(() -> new EntityException("No item found")))
+                    .toInstanceOf(ItemDto.class);
 
             resource.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
             return new ResponseEntity<>(resource, HttpStatus.OK);
@@ -106,23 +114,22 @@ public class ItemController {
     }
 
     @GetMapping(value = {"/search/findByCategoryId"}, produces = {"application/json", "application/hal+json"})
-    public ResponseEntity<?> getByCategoryId(@RequestParam(name = "categoryId") String categoryId,
-                                             @RequestParam(name = "page", required = false) Integer page,
-                                             @RequestParam(name = "size", required = false) Integer size,
-                                             @RequestParam(name = "sort", required = false) String sort) {
+    public ResponseEntity<?> findByCategoryId(@RequestParam(name = "categoryId") List<String> categoryIds,
+                                              @RequestParam(name = "page", required = false) Integer page,
+                                              @RequestParam(name = "size", required = false) Integer size,
+                                              @RequestParam(name = "sort", required = false) String sort) {
         final List<ItemDto> items = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.getOrElse(page, 0).intValue();
+        final int tempPage = NumberUtils.indexOfZero(page);
         final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
+        final Page<Item> pageItems = itemRepo.findByCategoryId(categoryIds, pageable);
 
         final PagedResources<ItemDto> resources;
-        final Page<Item> pageItems;
 
-        pageItems = itemService.findByCategoryId(categoryId, pageable);
         pageItems.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
@@ -132,21 +139,64 @@ public class ItemController {
         resources = new PagedResources<>(items, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
                 .getPageNumber(), pageItems.getTotalElements(), pageItems.getTotalPages()));
 
+        resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, page, size, sort)).withSelfRel());
         if (pageItems.getTotalPages() > 1) {
-            resources.add(linkTo(methodOn(getClass()).getByCategoryId(categoryId, 1, size, sort))
+            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, 1, size, sort))
                     .withRel("first"));
-            resources.add(linkTo(methodOn(getClass()).getByCategoryId(categoryId, pageItems
+            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, pageItems
                     .getTotalPages(), size, sort)).withRel("last"));
         }
         if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItems.getTotalPages() && !pageItems.isFirst()) {
-            resources.add(linkTo(methodOn(getClass()).getByCategoryId(categoryId, (tempPage + 1) - 1, size, sort))
+            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, (tempPage + 1) - 1, size, sort))
                     .withRel("prev"));
         }
         if (!pageItems.isLast()) {
-            resources.add(linkTo(methodOn(getClass()).getByCategoryId(categoryId, (tempPage + 1) + 1, size, sort))
+            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
-        resources.add(linkTo(methodOn(getClass()).getByCategoryId(categoryId, page, size, sort)).withSelfRel());
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/{itemId}/categories"}, produces = {"application/json", "application/hal+json"})
+    public ResponseEntity<?> findCategoriesById(@PathVariable("itemId") String itemId,
+                                                @RequestParam(name = "page", required = false) Integer page,
+                                                @RequestParam(name = "size", required = false) Integer size,
+                                                @RequestParam(name = "sort", required = false) String sort) {
+        final List<CategoryDto> categories = new ArrayList<>();
+        final Mapper mapper = new Mapper();
+
+        final int tempPage = NumberUtils.getOrElse(page, 0).intValue();
+        final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
+        final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
+
+        final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
+        final Page<Category> pageCategories = itemRepo.findCategoriesById(itemId, pageable);
+
+        final PagedResources<CategoryDto> resources;
+
+        pageCategories.forEach(category -> {
+            final CategoryDto dto = mapper.from(category).toInstanceOf(CategoryDto.class);
+
+            categories.add(dto);
+        });
+        resources = new PagedResources<>(categories, new PagedResources.PageMetadata(pageable.getPageSize(), pageable
+                .getPageNumber(), pageCategories.getTotalElements(), pageCategories.getTotalPages()));
+
+        if (pageCategories.getTotalPages() > 1) {
+            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, 1, size, sort))
+                    .withRel("first"));
+            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, pageCategories
+                    .getTotalPages(), size, sort)).withRel("last"));
+        }
+        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageCategories.getTotalPages() && !pageCategories.isFirst()) {
+            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, (tempPage + 1) - 1, size, sort))
+                    .withRel("prev"));
+        }
+        if (!pageCategories.isLast()) {
+            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, (tempPage + 1) + 1, size, sort))
+                    .withRel("next"));
+        }
+        resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, page, size, sort)).withSelfRel());
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 }
