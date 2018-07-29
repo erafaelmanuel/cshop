@@ -1,33 +1,36 @@
-(function(){
-
-  $(".catalog-item-img").mouseover(function(){
-    $(this).find(".card-img-overlay").css("display","block");
-  });
-
-   $(".card-img-overlay").mouseleave(function(){
-     $(this).css("display","none");
-   });
-
-   $(".card").mouseleave(function(){
-        $(this).find(".card-img-overlay").css("display","none");
-   });
-})();
-
 (function() {
-    var xmlhttp = new XMLHttpRequest();
+    $(".catalog-item-img").mouseover(function(){
+        $(this).find(".card-img-overlay").css({"display":"block"});
+    });
+
+    $(".card-img-overlay").mouseleave(function(){
+        $(this).css({"display":"none"});
+    });
+
+    $(".card").mouseleave(function(){
+        $(this).find(".card-img-overlay").css({"display":"none"});
+    });
 
     $(document).on("submit", "#form-cart", function() {
-        var params = $(this).serialize();
-        var url = $(this).attr("action") + "?" + params;
-        xmlhttp.onreadystatechange = function() {
-            if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                $(".cart").empty();
-                $(".cart").append($(xmlhttp.responseText).find(".cart").html());
-            }
-        }
-        xmlhttp.open("POST", url, true);
-        xmlhttp.send();
+        $url = $(this).attr("action");
 
+        $.ajax({
+            type: "POST",
+            url: $url,
+            data: objectifyForm($(this).serializeArray()),
+            success: function(data) {
+                $(".cart").empty();
+                $(".cart").append($(data).find(".cart").html());
+            }
+        });
         return false;
     });
+
+    function objectifyForm(params) {
+        var data = {};
+        $.each(params, function(i, param) {
+            data[param.name] = param.value;
+        });
+        return data;
+    }
 })();

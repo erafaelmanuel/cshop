@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@Controller
+@Controller("registerWebController")
 public class RegisterController {
 
     private UserService userService;
@@ -43,32 +43,32 @@ public class RegisterController {
     }
 
     @ModelAttribute("user")
-    public UserDto setUpUser() {
+    public UserDto initUser() {
         return new UserDto();
     }
 
     @ModelAttribute("token")
-    public Token setUpToken() {
+    public Token initToken() {
         return null;
     }
 
     @ModelAttribute("token")
-    public String setUpTitle() {
+    public String initTitle() {
         return messageSource.getMessage("reg.title", null, null);
     }
 
     @ModelAttribute("token")
-    public String setUpSubtitle() {
+    public String initSubtitle() {
         return messageSource.getMessage("reg.subtitle", null, null);
     }
 
     @GetMapping("/register")
-    public String getRegister() {
+    public String viewRegister() {
         return "register/sign-up";
     }
 
     @PostMapping("/register")
-    public String onRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
+    public String doRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
         final HashMap<String, Object> hashMap = new HashMap<>();
 
         if (!result.hasErrors()) {
@@ -85,7 +85,7 @@ public class RegisterController {
     }
 
     @GetMapping("register/activate")
-    public String onActivate(@RequestParam(value = "uid", required = false) String userId,
+    public String doActivate(@RequestParam(value = "uid", required = false) String userId,
                              @RequestParam(value = "tid", required = false) String tokenId) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
@@ -110,7 +110,7 @@ public class RegisterController {
     }
 
     @PostMapping("register/resend-confirmation")
-    public String onResendConfirmationEmail(@RequestParam(value = "email") String email, Model model) {
+    public String doResendConfirmationEmail(@RequestParam(value = "email") String email, Model model) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
             final User user = userService.findByEmail(email);
@@ -132,7 +132,7 @@ public class RegisterController {
     }
 
     @PostMapping("register/change-email-address")
-    public String onChangeEmailAddress(@RequestParam(value = "email") String email,
+    public String doChangeEmailAddress(@RequestParam(value = "email") String email,
                                        @RequestParam(value = "new_email") String newEmail, Model model) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();

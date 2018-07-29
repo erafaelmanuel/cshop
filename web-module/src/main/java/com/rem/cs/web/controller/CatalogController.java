@@ -5,6 +5,7 @@ import com.rem.cs.rest.client.resource.client.CategoryService;
 import com.rem.cs.rest.client.resource.item.Item;
 import com.rem.cs.rest.client.resource.item.ItemService;
 import com.rem.cs.web.domain.Page;
+import com.rem.mappyfy.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ import java.util.Map;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@Controller
+@Controller("catalogWebCategory")
 @SessionAttributes({"signedInUser", "cartItems"})
 public class CatalogController {
 
@@ -139,5 +140,26 @@ public class CatalogController {
             model.addAttribute("item", item);
         }
         return "item-detail";
+    }
+
+    @Deprecated
+    @GetMapping("/{categoryId}.html")
+    public String clickCategory(@PathVariable("categoryId") String categoryId,
+                                @RequestParam(name = "page", required = false) Integer page,
+                                @RequestParam(name = "size", required = false) Integer size,
+                                @RequestParam(name = "sort", required = false) String sort, Model model) {
+
+        final List<String> categoryIds = new ArrayList<>();
+        final Mapper mapper = new Mapper();
+        final PagedResources<Item> resources;
+
+        categoryIds.add(categoryId);
+        categoryIds.addAll(mapper.in(categoryService.findByAncestor(categoryId, page, size, sort).getContent())
+                .just("id")
+                .toListOf(String.class));
+        resources = itemService.findByCategoryId(categoryIds, page, size, sort);
+
+        model.addAttribute("items", resources.getContent());
+        return "catalog";
     }
 }

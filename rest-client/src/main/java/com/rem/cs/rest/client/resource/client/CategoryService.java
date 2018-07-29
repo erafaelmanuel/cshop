@@ -64,17 +64,17 @@ public class CategoryService extends BaseService {
                 }).getBody();
     }
 
-    public PagedResources<Category> findByParentId(String categoryId, int page, int size, String sort) {
+    public PagedResources<Category> findByParentId(String categoryId, Number page, Number size, String sort) {
         final String url = "http://localhost:8080/api/categories/search/findByParentId";
         final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 
         if (!StringUtils.isEmpty(categoryId)) {
             builder.queryParam("categoryId", categoryId);
         }
-        if (page > 0) {
+        if (page != null && page.intValue() > 0) {
             builder.queryParam("page", page);
         }
-        if (size > 0) {
+        if (size != null && size.intValue() > 0) {
             builder.queryParam("size", size);
         }
         if (!StringUtils.isEmpty(sort)) {
@@ -85,7 +85,7 @@ public class CategoryService extends BaseService {
                 }).getBody();
     }
 
-    public Resources<Category> findByAncestor(String categoryId, int page, int size, String sort) {
+    public Resources<Category> findByAncestor(String categoryId, Number page, Number size, String sort) {
         final String url = "http://localhost:8080/api/categories/search/findByAncestor";
         final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 

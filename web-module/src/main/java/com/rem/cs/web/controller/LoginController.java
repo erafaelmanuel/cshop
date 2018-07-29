@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class LoginController {
 
     @ModelAttribute("signedInUser")
-    public UserDto setUpUser() {
+    public UserDto initUser() {
         return null;
     }
 
     @GetMapping("/login")
-    public String getLogin(@SessionAttribute(name = "signedInUser", required = false) UserDto user) {
+    public String viewLogin(@SessionAttribute(name = "signedInUser", required = false) UserDto user) {
         if (user != null) {
             return "redirect:/catalog";
         } else {

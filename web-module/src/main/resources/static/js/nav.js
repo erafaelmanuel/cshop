@@ -18,11 +18,15 @@
                             .css({"height": $(".category-parent").css("height")})
                             .addClass("list category-child"));
 
-                        $.each(data._embedded.categories, function(i, category){
+                        $.each(data._embedded.categories, function(i, category) {
+                            $href = category.uid + ".html";
+
                             $listItem = $(document.createElement('li'))
                                 .addClass("list-item")
                                 .attr("categoryId", category.uid)
-                                .append($(document.createElement('a')).html(category.name));
+                                .append($(document.createElement('a'))
+                                    .attr({"href": $href})
+                                    .html(category.name));
                             $item.find(".category-child").append($listItem);
                         });
                     }
