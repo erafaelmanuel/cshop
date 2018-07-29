@@ -1,8 +1,9 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.data.jpa.category.CategoryService;
 import com.rem.cs.data.jpa.entity.Item;
 import com.rem.cs.data.jpa.item.ItemService;
+import com.rem.cs.data.jpa.repository.CategoryRepository;
+import com.rem.cs.data.jpa.service.CategoryService;
 import com.rem.cs.web.dto.CategoryDto;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.cs.web.util.PageHelper;
@@ -22,9 +23,11 @@ public class CategoryController {
 
     final private CategoryService categoryService;
     final private ItemService itemService;
+    private CategoryRepository categoryRepo;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, ItemService itemService) {
+    public CategoryController(CategoryRepository categoryRepo, CategoryService categoryService, ItemService itemService) {
+        this.categoryRepo = categoryRepo;
         this.categoryService = categoryService;
         this.itemService = itemService;
     }
@@ -33,7 +36,7 @@ public class CategoryController {
     public List<CategoryDto> setUpCategories() {
         final Mapper mapper = new Mapper();
 
-        return mapper.from(categoryService.findByParenIsNull()).toListOf(CategoryDto.class);
+        return mapper.from(categoryRepo.findByParentIsNull(null).getContent()).toListOf(CategoryDto.class);
     }
 
     @PostMapping("/category/subCategoriesOf")
@@ -41,7 +44,7 @@ public class CategoryController {
         final Mapper mapper = new Mapper();
 
         model.addAttribute("categories", mapper
-                .from(categoryService.findByParentId(categoryId))
+                .from(categoryRepo.findByParentId(categoryId, null).getContent())
                 .toArrayOf(CategoryDto.class));
         return "fragment/nav/category";
     }
@@ -57,7 +60,7 @@ public class CategoryController {
 
         categoryIds.add(categoryId);
         categoryIds.addAll(mapper
-                .in(categoryService.findSubCategories(categoryId))
+                .in(categoryService.findByAncestor(categoryId))
                 .just("id")
                 .toListOf(String.class));
         pageItems = itemService.findByCategoryIds(categoryIds, pageable);

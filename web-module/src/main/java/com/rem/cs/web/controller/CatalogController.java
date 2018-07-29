@@ -1,7 +1,7 @@
 package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.entity.Category;
-import com.rem.cs.data.jpa.category.CategoryService;
+import com.rem.cs.data.jpa.repository.CategoryRepository;
 import com.rem.cs.rest.client.item.Item;
 import com.rem.cs.rest.client.item.ItemService;
 import com.rem.cs.web.domain.Page;
@@ -27,12 +27,12 @@ public class CatalogController {
 
     private final Mapper mapper = new Mapper();
     private final ItemService itemService;
-    private final CategoryService categoryService;
+    private final CategoryRepository categoryRepo;
 
     @Autowired
-    public CatalogController(ItemService itemService, CategoryService categoryService) {
+    public CatalogController(ItemService itemService, CategoryRepository categoryRepo) {
         this.itemService = itemService;
-        this.categoryService = categoryService;
+        this.categoryRepo = categoryRepo;
     }
 
     @ModelAttribute("cartItems")
@@ -42,7 +42,7 @@ public class CatalogController {
 
     @ModelAttribute(name = "categories")
     public List<CategoryDto> setUpCategories() {
-        final List<Category> categories = categoryService.findByParenIsNull();
+        final List<Category> categories = categoryRepo.findByParentIsNull(null).getContent();
 
         return mapper.from(categories).toListOf(CategoryDto.class);
     }

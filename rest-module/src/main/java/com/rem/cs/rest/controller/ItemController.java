@@ -180,11 +180,13 @@ public class ItemController {
         pageCategories.forEach(category -> {
             final CategoryDto dto = mapper.from(category).toInstanceOf(CategoryDto.class);
 
+            dto.add(linkTo(methodOn(CategoryController.class).findById(dto.getUid())).withSelfRel());
             categories.add(dto);
         });
         resources = new PagedResources<>(categories, new PagedResources.PageMetadata(tempSize, (tempPage + 1),
                 pageCategories.getTotalElements(), pageCategories.getTotalPages()));
 
+        resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, page, size, sort)).withSelfRel());
         if (pageCategories.getTotalPages() > 1) {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, 1, size, sort))
                     .withRel("first"));
@@ -199,7 +201,6 @@ public class ItemController {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
-        resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, page, size, sort)).withSelfRel());
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 }
