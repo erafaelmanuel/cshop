@@ -5,11 +5,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import static org.springframework.http.HttpMethod.GET;
 
 @Service("categoryRestClientService")
 public class CategoryService extends BaseService {
@@ -30,8 +29,9 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(sort)) {
             builder.queryParam("sort", sort);
         }
-        return restTemplate.exchange(builder.toUriString(), GET, null,
-                new ParameterizedTypeReference<PagedResources<Category>>() {}).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<PagedResources<Category>>() {
+                }).getBody();
     }
 
     public Resource<Category> findById(String id) {
@@ -41,8 +41,9 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(id)) {
             builder.pathSegment(id);
         }
-        return restTemplate.exchange(builder.toUriString(), GET, null,
-                new ParameterizedTypeReference<Resource<Category>>() {}).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resource<Category>>() {
+                }).getBody();
     }
 
     public PagedResources<Category> findByParentIsNull(int page, int size, String sort) {
@@ -58,8 +59,9 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(sort)) {
             builder.queryParam("sort", sort);
         }
-        return restTemplate.exchange(builder.toUriString(), GET, null,
-                new ParameterizedTypeReference<PagedResources<Category>>() {}).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<PagedResources<Category>>() {
+                }).getBody();
     }
 
     public PagedResources<Category> findByParentId(String categoryId, int page, int size, String sort) {
@@ -78,8 +80,9 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(sort)) {
             builder.queryParam("sort", sort);
         }
-        return restTemplate.exchange(builder.toUriString(), GET, null,
-                new ParameterizedTypeReference<PagedResources<Category>>() {}).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<PagedResources<Category>>() {
+                }).getBody();
     }
 
     public Resources<Category> findByAncestor(String categoryId, int page, int size, String sort) {
@@ -89,7 +92,8 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(categoryId)) {
             builder.queryParam("categoryId", categoryId);
         }
-        return restTemplate.exchange(builder.toUriString(), GET, null,
-                new ParameterizedTypeReference<Resources<Category>>() {}).getBody();
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resources<Category>>() {
+                }).getBody();
     }
 }

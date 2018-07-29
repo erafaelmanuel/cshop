@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-@Controller
+@Controller("loginWebController")
 @SessionAttributes({"signedInUser"})
 public class LoginController {
 
