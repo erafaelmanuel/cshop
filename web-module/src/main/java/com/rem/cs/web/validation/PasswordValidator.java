@@ -1,7 +1,6 @@
 package com.rem.cs.web.validation;
 
-import com.rem.cs.data.jpa.user.UserService;
-import com.rem.cs.web.validation.annotation.Name;
+import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.web.validation.annotation.Password;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;

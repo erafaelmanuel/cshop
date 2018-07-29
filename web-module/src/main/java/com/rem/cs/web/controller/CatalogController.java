@@ -1,9 +1,9 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.data.jpa.entity.Category;
-import com.rem.cs.data.jpa.repository.CategoryRepository;
-import com.rem.cs.rest.client.item.Item;
-import com.rem.cs.rest.client.item.ItemService;
+import com.rem.cs.rest.client.resource.client.Category;
+import com.rem.cs.rest.client.resource.client.CategoryService;
+import com.rem.cs.rest.client.resource.item.Item;
+import com.rem.cs.rest.client.resource.item.ItemService;
 import com.rem.cs.web.domain.Page;
 import com.rem.cs.web.dto.CategoryDto;
 import com.rem.mappyfy.Mapper;
@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,12 +28,12 @@ public class CatalogController {
 
     private final Mapper mapper = new Mapper();
     private final ItemService itemService;
-    private final CategoryRepository categoryRepo;
+    private CategoryService categoryService;
 
     @Autowired
-    public CatalogController(ItemService itemService, CategoryRepository categoryRepo) {
+    public CatalogController(ItemService itemService, CategoryService categoryService) {
         this.itemService = itemService;
-        this.categoryRepo = categoryRepo;
+        this.categoryService = categoryService;
     }
 
     @ModelAttribute("cartItems")
@@ -42,7 +43,8 @@ public class CatalogController {
 
     @ModelAttribute(name = "categories")
     public List<CategoryDto> setUpCategories() {
-        final List<Category> categories = categoryRepo.findByParentIsNull(null).getContent();
+        final Collection<Category> categories = categoryService.findByParentIsNull(0, 0, null)
+                .getContent();
 
         return mapper.from(categories).toListOf(CategoryDto.class);
     }

@@ -2,7 +2,7 @@ package com.rem.cs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rem.cs.data.jpa.entity.User;
-import com.rem.cs.data.jpa.user.UserService;
+import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.Notification;
 import org.springframework.security.core.AuthenticationException;

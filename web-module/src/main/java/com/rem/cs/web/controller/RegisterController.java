@@ -3,7 +3,7 @@ package com.rem.cs.web.controller;
 import com.rem.cs.data.jpa.entity.Token;
 import com.rem.cs.data.jpa.repository.TokenRepository;
 import com.rem.cs.data.jpa.entity.User;
-import com.rem.cs.data.jpa.user.UserService;
+import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.exception.EntityException;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;

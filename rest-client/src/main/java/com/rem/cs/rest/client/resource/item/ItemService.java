@@ -1,6 +1,6 @@
-package com.rem.cs.rest.client.item;
+package com.rem.cs.rest.client.resource.item;
 
-import com.rem.cs.rest.client.BaseService;
+import com.rem.cs.rest.client.resource.BaseService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpMethod;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Component("restClientItemService")
+@Component("itemRestClientService")
 public class ItemService extends BaseService {
 
     public ItemService() {}

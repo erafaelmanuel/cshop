@@ -1,4 +1,4 @@
-package com.rem.cs.data.jpa.user;
+package com.rem.cs.data.jpa.service;
 
 import com.rem.cs.data.jpa.entity.User;
 import com.rem.cs.data.jpa.repository.UserRepository;

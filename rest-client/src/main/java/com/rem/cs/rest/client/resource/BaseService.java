@@ -1,5 +1,6 @@
-package com.rem.cs.rest.client;
+package com.rem.cs.rest.client.resource;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.ResourceSupport;
@@ -33,6 +34,7 @@ public class BaseService {
         final MappingJackson2HttpMessageConverter halConverter = new
                 TypeConstrainedMappingJackson2HttpMessageConverter(ResourceSupport.class);
 
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.registerModule(new Jackson2HalModule());
 
         halConverter.setSupportedMediaTypes(Collections.singletonList(MediaTypes.HAL_JSON));

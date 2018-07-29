@@ -1,6 +1,6 @@
 package com.rem.cs.web.validation;
 
-import com.rem.cs.data.jpa.user.UserService;
+import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.web.validation.annotation.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

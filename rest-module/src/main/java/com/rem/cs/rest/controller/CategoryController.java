@@ -52,8 +52,8 @@ public class CategoryController {
         final List<CategoryDto> categories = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.indexOfZero(page);
-        final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
+        final int tempPage = NumberUtils.zeroBased(page);
+        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
@@ -125,8 +125,8 @@ public class CategoryController {
         final List<CategoryDto> categories = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.indexOfZero(page);
-        final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
+        final int tempPage = NumberUtils.zeroBased(page);
+        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
@@ -169,8 +169,8 @@ public class CategoryController {
         final List<CategoryDto> categories = new ArrayList<>();
         final Mapper mapper = new Mapper();
 
-        final int tempPage = NumberUtils.indexOfZero(page);
-        final int tempSize = NumberUtils.getOrElse(size, 20).intValue();
+        final int tempPage = NumberUtils.zeroBased(page);
+        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
