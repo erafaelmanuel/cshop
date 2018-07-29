@@ -35,7 +35,7 @@ public class CatalogController {
     }
 
     @ModelAttribute("cartItems")
-    public List<Item> initItems() {
+    public List<Item> initCartItems() {
         return new ArrayList<>();
     }
 
@@ -133,7 +133,7 @@ public class CatalogController {
 
     @GetMapping("/item/{itemId}.html")
     public CharSequence clickItem(@PathVariable("itemId") String itemId, Model model) {
-        final Item item = new ItemService().getById(itemId);
+        final Item item = new ItemService().findById(itemId).getContent();
 
         if (item != null) {
             model.addAttribute("item", item);

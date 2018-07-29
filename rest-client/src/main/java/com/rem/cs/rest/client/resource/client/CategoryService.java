@@ -41,7 +41,6 @@ public class CategoryService extends BaseService {
         if (!StringUtils.isEmpty(id)) {
             builder.pathSegment(id);
         }
-        System.out.println(builder.toUriString());
         return restTemplate.exchange(builder.toUriString(), GET, null,
                 new ParameterizedTypeReference<Resource<Category>>() {}).getBody();
     }

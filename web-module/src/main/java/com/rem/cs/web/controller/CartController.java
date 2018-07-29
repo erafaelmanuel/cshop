@@ -1,7 +1,8 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.data.jpa.item.ItemService;
 import com.rem.cs.exception.EntityException;
+import com.rem.cs.rest.client.resource.item.Item;
+import com.rem.cs.rest.client.resource.item.ItemService;
 import com.rem.cs.web.dto.ItemDto;
 import com.rem.mappyfy.Mapper;
 import org.springframework.stereotype.Controller;
@@ -22,22 +23,15 @@ public class CartController {
     }
 
     @ModelAttribute("cartItems")
-    public List<ItemDto> setUpCartItems() {
+    public List<Item> initCartItems() {
         return new ArrayList<>();
     }
 
     @PostMapping("/cart/add")
     public String addItem(@RequestParam("itemId") String itemId,
-                          @SessionAttribute(name = "cartItems") List<ItemDto> cartItems, Model model) {
-        try {
-            final Mapper mapper = new Mapper();
-
-            cartItems.add(mapper.from(itemService.findById(itemId)).toInstanceOf(ItemDto.class));
-            model.addAttribute("cartItems", cartItems);
-            return "fragment/nav/cart";
-        } catch (EntityException e) {
-            e.printStackTrace();
-            return "error/500";
-        }
+                          @SessionAttribute(name = "cartItems") List<Item> cartItems, Model model) {
+        cartItems.add(itemService.findById(itemId).getContent());
+        model.addAttribute("cartItems", cartItems);
+        return "fragment/nav/cart";
     }
 }
