@@ -1,29 +1,33 @@
 (function(){
-    var xmlhttp = new XMLHttpRequest();
-
         $(document).on("mouseenter", ".list-item", function() {
             $item = $(this);
-            var params = "cid=" + $item.attr("categoryId");
-            var url = "/category/subCategoriesOf?" + params;
+            var categoryId = $item.attr("categoryId");
 
-            xmlhttp.onreadystatechange = function() {
-                if(xmlhttp.status == 200 && xmlhttp.readyState == 4) {
-                    if ($(xmlhttp.responseText).find(".list-item").length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/api/categories/search/findByParentId",
+                data: {
+                    "categoryId" : categoryId,
+                    "size" : 100
+                    },
+                success: function(data) {
+                    if (data.page.totalPages > 0) {
                         $item.addClass("item-collapse");
-                        if ( $item.find(".category-child").length > 0) {
-                            $item.find(".category-child").empty();
-                        } else {
-                            $item.append($(document.createElement('ul'))
-                                .css("height", $(".category-parent").css("height"))
-                                .addClass("list category-child")
-                            );
-                        }
-                        $item.find(".category-child").append($(xmlhttp.responseText).find(".list-item"));
+                        $item.find(".category-child").empty();
+                        $item.append($(document.createElement('ul'))
+                            .css({"height": $(".category-parent").css("height")})
+                            .addClass("list category-child"));
+
+                        $.each(data._embedded.categories, function(i, category){
+                            $listItem = $(document.createElement('li'))
+                                .addClass("list-item")
+                                .attr("categoryId", category.uid)
+                                .append($(document.createElement('a')).html(category.name));
+                            $item.find(".category-child").append($listItem);
+                        });
                     }
                 }
-            }
-            xmlhttp.open("POST", url, true);
-            xmlhttp.send();
+            });
         });
 
         $(document).on("mouseleave", ".list-item", function() {

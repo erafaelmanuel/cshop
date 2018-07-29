@@ -134,7 +134,7 @@ public class CategoryController {
 
         final PagedResources<CategoryDto> resources;
 
-        categoryRepo.findByParentIsNull(pageable).forEach(category -> {
+        pageCategories.forEach(category -> {
             final CategoryDto dto = mapper.from(category).toInstanceOf(CategoryDto.class);
 
             dto.add(linkTo(methodOn(getClass()).findById(dto.getUid())).withSelfRel());
@@ -174,11 +174,11 @@ public class CategoryController {
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
-        final Page<Category> pageCategories = categoryRepo.findByParentIsNull(pageable);
+        final Page<Category> pageCategories = categoryRepo.findByParentId(categoryId, pageable);
 
         final PagedResources<CategoryDto> resources;
 
-        categoryRepo.findByParentId(categoryId, pageable).forEach(category -> {
+        pageCategories.forEach(category -> {
             final CategoryDto dto = mapper.from(category).toInstanceOf(CategoryDto.class);
 
             dto.add(linkTo(methodOn(getClass()).findById(dto.getUid())).withSelfRel());

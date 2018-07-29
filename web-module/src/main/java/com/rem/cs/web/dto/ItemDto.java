@@ -1,5 +1,6 @@
 package com.rem.cs.web.dto;
 
+@Deprecated
 public class ItemDto {
 
     private String id;
