@@ -53,7 +53,7 @@ public class CategoryController {
         final Mapper mapper = new Mapper();
 
         final int tempPage = NumberUtils.zeroBased(page);
-        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
+        final int tempSize = NumberUtils.getOrDefault(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
@@ -126,7 +126,7 @@ public class CategoryController {
         final Mapper mapper = new Mapper();
 
         final int tempPage = NumberUtils.zeroBased(page);
-        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
+        final int tempSize = NumberUtils.getOrDefault(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
@@ -170,7 +170,7 @@ public class CategoryController {
         final Mapper mapper = new Mapper();
 
         final int tempPage = NumberUtils.zeroBased(page);
-        final int tempSize = NumberUtils.getFirstOrTheOther(size, 20).intValue();
+        final int tempSize = NumberUtils.getOrDefault(size, 20).intValue();
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));

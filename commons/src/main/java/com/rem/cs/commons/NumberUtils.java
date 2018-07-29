@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 public class NumberUtils {
 
-    public static Number getFirstOrTheOther(Number num1, @NotNull Number num2) {
+    public static Number getOrDefault(Number num1, @NotNull Number num2) {
         return num1 != null ? num1 : num2 != null ? num2 : 0;
     }
 
