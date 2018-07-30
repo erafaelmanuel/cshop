@@ -41,7 +41,8 @@ public class UserListener implements ApplicationListener<UserEvent> {
                 break;
             }
             case 2: {
-                activateUser((User) hashMap.get("user"), (Token) hashMap.get("token"));
+                final User tempUser = new Mapper().from(hashMap.get("user")).toInstanceOf(User.class);
+                activateUser(tempUser, (Token) hashMap.get("token"));
                 break;
             }
             case 3: {

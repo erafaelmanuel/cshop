@@ -1,4 +1,4 @@
-package com.rem.cs.rest.client.resource.client;
+package com.rem.cs.rest.client.resource.category;
 
 import com.rem.cs.rest.client.resource.BaseService;
 import org.springframework.core.ParameterizedTypeReference;

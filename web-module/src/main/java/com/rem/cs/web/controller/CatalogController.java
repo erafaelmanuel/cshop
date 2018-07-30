@@ -1,7 +1,7 @@
 package com.rem.cs.web.controller;
 
-import com.rem.cs.rest.client.resource.client.Category;
-import com.rem.cs.rest.client.resource.client.CategoryService;
+import com.rem.cs.rest.client.resource.category.Category;
+import com.rem.cs.rest.client.resource.category.CategoryService;
 import com.rem.cs.rest.client.resource.item.Item;
 import com.rem.cs.rest.client.resource.item.ItemService;
 import com.rem.cs.web.domain.Page;

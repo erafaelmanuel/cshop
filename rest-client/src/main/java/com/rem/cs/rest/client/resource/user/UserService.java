@@ -3,6 +3,7 @@ package com.rem.cs.rest.client.resource.user;
 import com.rem.cs.rest.client.resource.BaseService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,6 +31,30 @@ public class UserService extends BaseService {
         return restTemplate.exchange(
                 builder.toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference
                         <PagedResources<User>>() {
+                }).getBody();
+    }
+
+    public Resource<User> findById(String id) {
+        final String url = "http://localhost:8080/api/users/";
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+
+        if (!StringUtils.isEmpty(id)) {
+            builder.pathSegment(id);
+        }
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resource<User>>() {
+                }).getBody();
+    }
+
+    public Resource<User> findByEmail(String email) {
+        final String url = "http://localhost:8080/api/users/search/findByEmail";
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+
+        if (!StringUtils.isEmpty(email)) {
+            builder.queryParam("email", email);
+        }
+        return restTemplate.exchange(builder.toUriString(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resource<User>>() {
                 }).getBody();
     }
 }

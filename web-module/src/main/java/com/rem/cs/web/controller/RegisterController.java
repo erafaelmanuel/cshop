@@ -2,9 +2,9 @@ package com.rem.cs.web.controller;
 
 import com.rem.cs.data.jpa.entity.Token;
 import com.rem.cs.data.jpa.repository.TokenRepository;
-import com.rem.cs.data.jpa.entity.User;
-import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.exception.EntityException;
+import com.rem.cs.rest.client.resource.user.User;
+import com.rem.cs.rest.client.resource.user.UserService;
 import com.rem.cs.web.dto.UserDto;
 import com.rem.cs.web.event.UserEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,15 +89,18 @@ public class RegisterController {
                              @RequestParam(value = "tid", required = false) String tokenId) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
-            final User user = userService.findById(userId);
+            final User user = userService.findById(userId).getContent();
             final Token token = tokenRepository.findById(tokenId).orElse(null);
             final Calendar calendar = Calendar.getInstance();
 
+            if (user == null) {
+                throw new EntityException("No user found");
+            }
             if (user.isActivated()) {
-                return "error/500";
+                throw new EntityException("User is already activated");
             }
             if (token == null || !(token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
-                return "error/500";
+                throw new EntityException("Invalid token");
             }
             hashMap.put("do", UserEvent.ACTIVATE_USER);
             hashMap.put("user", user);
@@ -113,8 +116,11 @@ public class RegisterController {
     public String doResendConfirmationEmail(@RequestParam(value = "email") String email, Model model) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
-            final User user = userService.findByEmail(email);
+            final User user = userService.findByEmail(email).getContent();
 
+            if (user == null) {
+                throw new EntityException("No user found");
+            }
             if (!user.isActivated()) {
                 hashMap.put("do", UserEvent.RESEND_CONFIRMATION_EMAIL);
                 hashMap.put("user", user);
@@ -136,8 +142,11 @@ public class RegisterController {
                                        @RequestParam(value = "new_email") String newEmail, Model model) {
         try {
             final HashMap<String, Object> hashMap = new HashMap<>();
-            final User user = userService.findByEmail(email);
+            final User user = userService.findByEmail(email).getContent();
 
+            if (user == null) {
+                throw new EntityException("No user found");
+            }
             hashMap.put("do", UserEvent.CHANGE_EMAIL_ADDRESS);
             hashMap.put("user", user);
             hashMap.put("email", newEmail);
