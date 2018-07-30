@@ -6,7 +6,7 @@ import com.rem.cs.exception.EntityException;
 import com.rem.cs.rest.client.resource.user.User;
 import com.rem.cs.rest.client.resource.user.UserService;
 import com.rem.cs.web.dto.UserDto;
-import com.rem.cs.web.event.UserEvent;
+import com.rem.cs.web.event.RegistrationEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -69,14 +69,14 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String doRegister(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, Model model) {
-        final HashMap<String, Object> hashMap = new HashMap<>();
+        final HashMap<String, Object> parameters = new HashMap<>();
 
         if (!result.hasErrors()) {
-            hashMap.put("do", UserEvent.CREATE_USER);
-            hashMap.put("user", userDto);
-            hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+            parameters.put("do", RegistrationEvent.CREATE_USER);
+            parameters.put("user", userDto);
+            parameters.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
 
-            publisher.publishEvent(new UserEvent(hashMap));
+            publisher.publishEvent(new RegistrationEvent(parameters));
             model.addAttribute("email", userDto.getEmail());
             return "register/validating";
         } else {
@@ -88,7 +88,7 @@ public class RegisterController {
     public String doActivate(@RequestParam(value = "uid", required = false) String userId,
                              @RequestParam(value = "tid", required = false) String tokenId) {
         try {
-            final HashMap<String, Object> hashMap = new HashMap<>();
+            final HashMap<String, Object> parameters = new HashMap<>();
             final User user = userService.findById(userId).getContent();
             final Token token = tokenRepository.findById(tokenId).orElse(null);
             final Calendar calendar = Calendar.getInstance();
@@ -102,10 +102,11 @@ public class RegisterController {
             if (token == null || !(token.getExpiryDate().getTime() - calendar.getTime().getTime() > 0)) {
                 throw new EntityException("Invalid token");
             }
-            hashMap.put("do", UserEvent.ACTIVATE_USER);
-            hashMap.put("user", user);
-            hashMap.put("token", token);
-            publisher.publishEvent(new UserEvent(hashMap));
+            parameters.put("do", RegistrationEvent.ACTIVATE_USER);
+            parameters.put("user", user);
+            parameters.put("token", token);
+
+            publisher.publishEvent(new RegistrationEvent(parameters));
             return "redirect:/catalog";
         } catch (EntityException e) {
             return "error/500";
@@ -115,18 +116,18 @@ public class RegisterController {
     @PostMapping("register/resend-confirmation")
     public String doResendConfirmationEmail(@RequestParam(value = "email") String email, Model model) {
         try {
-            final HashMap<String, Object> hashMap = new HashMap<>();
+            final HashMap<String, Object> parameters = new HashMap<>();
             final User user = userService.findByEmail(email).getContent();
 
             if (user == null) {
                 throw new EntityException("No user found");
             }
             if (!user.isActivated()) {
-                hashMap.put("do", UserEvent.RESEND_CONFIRMATION_EMAIL);
-                hashMap.put("user", user);
-                hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+                parameters.put("do", RegistrationEvent.RESEND_CONFIRMATION_EMAIL);
+                parameters.put("user", user);
+                parameters.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
 
-                publisher.publishEvent(new UserEvent(hashMap));
+                publisher.publishEvent(new RegistrationEvent(parameters));
                 model.addAttribute("email", email);
                 return "register/validating";
             } else {
@@ -141,18 +142,18 @@ public class RegisterController {
     public String doChangeEmailAddress(@RequestParam(value = "email") String email,
                                        @RequestParam(value = "new_email") String newEmail, Model model) {
         try {
-            final HashMap<String, Object> hashMap = new HashMap<>();
+            final HashMap<String, Object> parameters = new HashMap<>();
             final User user = userService.findByEmail(email).getContent();
 
             if (user == null) {
                 throw new EntityException("No user found");
             }
-            hashMap.put("do", UserEvent.CHANGE_EMAIL_ADDRESS);
-            hashMap.put("user", user);
-            hashMap.put("email", newEmail);
-            hashMap.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
+            parameters.put("do", RegistrationEvent.CHANGE_EMAIL_ADDRESS);
+            parameters.put("user", user);
+            parameters.put("email", newEmail);
+            parameters.put("baseUrl", request.getRequestURL().toString().replace(request.getRequestURI(), "/"));
 
-            publisher.publishEvent(new UserEvent(hashMap));
+            publisher.publishEvent(new RegistrationEvent(parameters));
             model.addAttribute("email", newEmail);
             return "register/validating";
         } catch (EntityException e) {

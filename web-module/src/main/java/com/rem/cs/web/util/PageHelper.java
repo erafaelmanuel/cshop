@@ -2,6 +2,7 @@ package com.rem.cs.web.util;
 
 import com.rem.cs.web.domain.Page;
 
+@Deprecated
 public class PageHelper {
 
     private boolean prevEllipsis;

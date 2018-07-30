@@ -5,7 +5,7 @@ import com.rem.cs.data.jpa.repository.TokenRepository;
 import com.rem.cs.data.jpa.entity.User;
 import com.rem.cs.data.jpa.service.UserService;
 import com.rem.cs.web.dto.UserDto;
-import com.rem.cs.web.event.UserEvent;
+import com.rem.cs.web.event.RegistrationEvent;
 import com.rem.mappyfy.Mapper;
 import io.ermdev.cshop.commons.DateHelper;
 import io.ermdev.cshop.commons.IdGenerator;
@@ -19,39 +19,39 @@ import javax.mail.internet.InternetAddress;
 import java.util.HashMap;
 
 @Component
-public class UserListener implements ApplicationListener<UserEvent> {
+public class RegistrationListener implements ApplicationListener<RegistrationEvent> {
 
     private UserService userService;
     private TokenRepository tokenRepository;
     private JavaMailSender mailSender;
 
     @Autowired
-    public UserListener(UserService userService, TokenRepository tokenRepository, JavaMailSender mailSender) {
+    public RegistrationListener(UserService userService, TokenRepository tokenRepository, JavaMailSender mailSender) {
         this.userService = userService;
         this.tokenRepository = tokenRepository;
         this.mailSender = mailSender;
     }
 
     @Override
-    public void onApplicationEvent(UserEvent event) {
-        final HashMap hashMap = (HashMap) event.getSource();
-        switch ((int) hashMap.get("do")) {
+    public void onApplicationEvent(RegistrationEvent event) {
+        final HashMap parameters = (HashMap) event.getSource();
+        switch ((int) parameters.get("do")) {
             case 1: {
-                createUser((UserDto) hashMap.get("user"), (String) hashMap.get("baseUrl"));
+                createUser((UserDto) parameters.get("user"), (String) parameters.get("baseUrl"));
                 break;
             }
             case 2: {
-                final User tempUser = new Mapper().from(hashMap.get("user")).toInstanceOf(User.class);
-                activateUser(tempUser, (Token) hashMap.get("token"));
+                final User tempUser = new Mapper().from(parameters.get("user")).toInstanceOf(User.class);
+                activateUser(tempUser, (Token) parameters.get("token"));
                 break;
             }
             case 3: {
-                sendConfirmationEmail((User) hashMap.get("user"), (String) hashMap.get("baseUrl"));
+                sendConfirmationEmail((User) parameters.get("user"), (String) parameters.get("baseUrl"));
                 break;
             }
             case 4: {
-                changeUserEmail((User) hashMap.get("user"), (String) hashMap.get("email"),
-                        (String) hashMap.get("baseUrl"));
+                changeUserEmail((User) parameters.get("user"), (String) parameters.get("email"),
+                        (String) parameters.get("baseUrl"));
                 break;
             }
         }

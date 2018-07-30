@@ -2,7 +2,7 @@ package com.rem.cs.web.event;
 
 import org.springframework.context.ApplicationEvent;
 
-public class UserEvent extends ApplicationEvent {
+public class RegistrationEvent extends ApplicationEvent {
 
     public static final int CREATE_USER = 1;
 
@@ -12,7 +12,7 @@ public class UserEvent extends ApplicationEvent {
 
     public static final int CHANGE_EMAIL_ADDRESS = 4;
 
-    public UserEvent(Object source) {
+    public RegistrationEvent(Object source) {
         super(source);
     }
 }
