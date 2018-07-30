@@ -57,7 +57,7 @@ public class ItemController {
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
 
         final PagedResources<ItemDto> resources;
-        final Page<Item> pageItems;
+        final Page<Item> pageItem;
 
         if (!StringUtils.isEmpty(search)) {
             final Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
@@ -70,29 +70,29 @@ public class ItemController {
                 builder.with("name", ":", search);
             }
         }
-        pageItems = itemRepo.findAll(builder.build(), pageable);
-        pageItems.forEach(item -> {
+        pageItem = itemRepo.findAll(builder.build(), pageable);
+        pageItem.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
-            dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
+            dto.add(linkTo(methodOn(getClass()).findById(dto.getUid())).withSelfRel());
             dto.add(linkTo(methodOn(getClass()).findCategoriesById(dto.getUid(), null, null, null))
                     .withRel("categories"));
             items.add(dto);
         });
-        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItems
-                .getTotalElements(), pageItems.getTotalPages()));
+        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItem
+                .getTotalElements(), pageItem.getTotalPages()));
 
         resources.add(linkTo(methodOn(getClass()).findAll(search, page, size, sort)).withSelfRel());
-        if (pageItems.getTotalPages() > 1) {
+        if (pageItem.getTotalPages() > 1) {
             resources.add(linkTo(methodOn(getClass()).findAll(search, 1, size, sort)).withRel("first"));
-            resources.add(linkTo(methodOn(getClass()).findAll(search, pageItems.getTotalPages(), size, sort))
+            resources.add(linkTo(methodOn(getClass()).findAll(search, pageItem.getTotalPages(), size, sort))
                     .withRel("last"));
         }
-        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItems.getTotalPages() && !pageItems.isFirst()) {
+        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItem.getTotalPages() && !pageItem.isFirst()) {
             resources.add(linkTo(methodOn(getClass()).findAll(search, (tempPage + 1) - 1, size, sort))
                     .withRel("prev"));
         }
-        if (!pageItems.isLast()) {
+        if (!pageItem.isLast()) {
             resources.add(linkTo(methodOn(getClass()).findAll(search, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
@@ -100,7 +100,7 @@ public class ItemController {
     }
 
     @GetMapping(value = {"/{itemId}"}, produces = {"application/json", "application/hal+json"})
-    public ResponseEntity<?> getById(@PathVariable("itemId") String itemId) {
+    public ResponseEntity<?> findById(@PathVariable("itemId") String itemId) {
         final Mapper mapper = new Mapper();
         final Optional<Item> item = itemRepo.findById(itemId);
 
@@ -109,7 +109,7 @@ public class ItemController {
                     .toInstanceOf(ItemDto.class);
             final Resource<ItemDto> resource = new Resource<>(dto);
 
-            resource.add(linkTo(methodOn(getClass()).getById(itemId)).withSelfRel());
+            resource.add(linkTo(methodOn(getClass()).findById(itemId)).withSelfRel());
             return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (EntityException e) {
             return ResponseEntity.notFound().build();
@@ -129,31 +129,31 @@ public class ItemController {
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
-        final Page<Item> pageItems = itemRepo.findByCategoryId(categoryIds, pageable);
+        final Page<Item> pageItem = itemRepo.findByCategoryId(categoryIds, pageable);
 
         final PagedResources<ItemDto> resources;
 
-        pageItems.forEach(item -> {
+        pageItem.forEach(item -> {
             final ItemDto dto = mapper.from(item).toInstanceOf(ItemDto.class);
 
-            dto.add(linkTo(methodOn(getClass()).getById(dto.getUid())).withSelfRel());
+            dto.add(linkTo(methodOn(getClass()).findById(dto.getUid())).withSelfRel());
             items.add(dto);
         });
-        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItems
-                .getTotalElements(), pageItems.getTotalPages()));
+        resources = new PagedResources<>(items, new PagedResources.PageMetadata(tempSize, (tempPage + 1), pageItem
+                .getTotalElements(), pageItem.getTotalPages()));
 
         resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, page, size, sort)).withSelfRel());
-        if (pageItems.getTotalPages() > 1) {
+        if (pageItem.getTotalPages() > 1) {
             resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, 1, size, sort))
                     .withRel("first"));
-            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, pageItems
+            resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, pageItem
                     .getTotalPages(), size, sort)).withRel("last"));
         }
-        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItems.getTotalPages() && !pageItems.isFirst()) {
+        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageItem.getTotalPages() && !pageItem.isFirst()) {
             resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, (tempPage + 1) - 1, size, sort))
                     .withRel("prev"));
         }
-        if (!pageItems.isLast()) {
+        if (!pageItem.isLast()) {
             resources.add(linkTo(methodOn(getClass()).findByCategoryId(categoryIds, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
@@ -173,31 +173,31 @@ public class ItemController {
         final String tempSort = !StringUtils.isEmpty(sort) ? sort : "name";
 
         final Pageable pageable = PageRequest.of(tempPage, tempSize, Sort.by(tempSort));
-        final Page<Category> pageCategories = itemRepo.findCategoriesById(itemId, pageable);
+        final Page<Category> pageCategory = itemRepo.findCategoriesById(itemId, pageable);
 
         final PagedResources<CategoryDto> resources;
 
-        pageCategories.forEach(category -> {
+        pageCategory.forEach(category -> {
             final CategoryDto dto = mapper.from(category).toInstanceOf(CategoryDto.class);
 
             dto.add(linkTo(methodOn(CategoryController.class).findById(dto.getUid())).withSelfRel());
             categories.add(dto);
         });
         resources = new PagedResources<>(categories, new PagedResources.PageMetadata(tempSize, (tempPage + 1),
-                pageCategories.getTotalElements(), pageCategories.getTotalPages()));
+                pageCategory.getTotalElements(), pageCategory.getTotalPages()));
 
         resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, page, size, sort)).withSelfRel());
-        if (pageCategories.getTotalPages() > 1) {
+        if (pageCategory.getTotalPages() > 1) {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, 1, size, sort))
                     .withRel("first"));
-            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, pageCategories
+            resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, pageCategory
                     .getTotalPages(), size, sort)).withRel("last"));
         }
-        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageCategories.getTotalPages() && !pageCategories.isFirst()) {
+        if ((tempPage + 1) > 1 && (tempPage + 1) <= pageCategory.getTotalPages() && !pageCategory.isFirst()) {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, (tempPage + 1) - 1, size, sort))
                     .withRel("prev"));
         }
-        if (!pageCategories.isLast()) {
+        if (!pageCategory.isLast()) {
             resources.add(linkTo(methodOn(getClass()).findCategoriesById(itemId, (tempPage + 1) + 1, size, sort))
                     .withRel("next"));
         }
